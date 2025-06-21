@@ -30,30 +30,33 @@ class CustomerWorkerInfoCard extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: getTextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-              color: AppColors.primaryBlack,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 4.0, top: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: getTextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: AppColors.primaryBlack,
+              ),
             ),
-          ),
-          SizedBox(height: 12),
-          // Override valueColor for all InfoCardRow children
-          ...children.map((child) {
-            if (child is InfoCardRow) {
-              return InfoCardRow(
-                label: child.label,
-                value: child.value,
-                valueColor: valueColor,
-              );
-            }
-            return child;
-          }),
-        ],
+            SizedBox(height: 16),
+            // Override valueColor for all InfoCardRow children
+            ...children.map((child) {
+              if (child is InfoCardRow) {
+                return InfoCardRow(
+                  label: child.label,
+                  value: child.value,
+                  valueColor: valueColor,
+                );
+              }
+              return child;
+            }),
+          ],
+        ),
       ),
     );
   }

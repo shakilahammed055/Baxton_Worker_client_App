@@ -26,7 +26,7 @@ class WOnbController extends GetxController {
     ),
   ];
 
-  RxList<double> topPaddings = <double>[270, 190, 210].obs;
+  RxList<double> topPaddings = <double>[200, 120, 145].obs;
   RxList<double> imageHeights = <double>[0.25, 0.35, 0.32].obs;
 
   void goToNextPage() {

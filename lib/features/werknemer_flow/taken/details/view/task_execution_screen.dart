@@ -1,18 +1,21 @@
 import 'dart:io';
-import 'dart:math';
-
 import 'package:baxton/core/common/styles/global_text_style.dart';
 import 'package:baxton/core/utils/constants/colors.dart';
 import 'package:baxton/core/utils/constants/icon_path.dart';
 import 'package:baxton/features/werknemer_flow/taken/details/controller/task_execution_controller.dart';
+import 'package:baxton/features/werknemer_flow/taken/details/view/task_execution_screen_with_client_review.dart';
 import 'package:baxton/features/werknemer_flow/taken/details/view/widget/checklist_item_widget.dart';
 import 'package:baxton/features/werknemer_flow/werknemer_home/set_price/controller/client_info_controller.dart';
+import 'package:baxton/features/werknemer_flow/werknemer_home/set_price/model/set_price_task_model.dart';
 import 'package:baxton/features/werknemer_flow/werknemer_home/set_price/views/widget/client_info_card.dart';
+import 'package:baxton/features/werknemer_flow/werknemer_home/set_price/views/widget/task_info_section.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class TaskExecutionScreen extends StatelessWidget {
+  final SetPriceTaskModel setPriceTask;
+
   final TextEditingController _textController = TextEditingController();
   final TaskExecutionController taskExecutionController = Get.put(
     TaskExecutionController(),
@@ -24,7 +27,7 @@ class TaskExecutionScreen extends StatelessWidget {
   late final String dateStr;
   late final String timeStr;
 
-  TaskExecutionScreen({super.key}) {
+  TaskExecutionScreen({super.key, required this.setPriceTask}) {
     dateTime =
         clientInfoController.clientInfo.isNotEmpty
             ? clientInfoController.clientInfo.first.dateTime
@@ -33,8 +36,6 @@ class TaskExecutionScreen extends StatelessWidget {
     dateStr = DateFormat('dd/MM/yyyy').format(dateTime);
     timeStr = DateFormat('HH:mm').format(dateTime);
   }
-
-  TaskExecutionScreen.namedConstructor({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +65,8 @@ class TaskExecutionScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            TaskInfoCard(setPriceInfoScreentask: setPriceTask),
+            const SizedBox(height: 16),
             // Client Information
             Container(
               width: double.infinity,
@@ -153,6 +156,7 @@ class TaskExecutionScreen extends StatelessWidget {
                 ),
               ),
             ),
+            SizedBox(height: 10),
 
             // Show list of added work items
             Obx(
@@ -252,7 +256,7 @@ class TaskExecutionScreen extends StatelessWidget {
             ),
             const SizedBox(height: 30),
 
-            // Checklist Button
+            // Checklist button label
             Text(
               "TaakChecklist",
               style: getTextStyle(
@@ -262,9 +266,25 @@ class TaskExecutionScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
+
+            // Checklist Button
             ElevatedButton(
               onPressed: () => showDialogChecklist(context),
-              child: const Text('Checklist +'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryBlue,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(51),
+                ),
+                side: BorderSide(color: AppColors.secondaryBlue),
+              ),
+              child: const Text(
+                'Checklist +',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.primaryWhite,
+                ),
+              ),
             ),
             const SizedBox(height: 20),
 
@@ -290,146 +310,317 @@ class TaskExecutionScreen extends StatelessWidget {
             SizedBox(height: 40),
 
             // Camera
-
-            // Camera Section UI with two image inputs side by side
-            Row(
+            // Upload photos BEFORE start your work
+            Text(
+              "Upload foto's voordat je aan je werk begint",
+              style: getTextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: AppColors.primaryBlack,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Column(
               children: [
-                // First Image Box: "Maak foto na afloop"
-                Expanded(
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                        onTap: taskExecutionController.captureImageAfter,
-                        // Camera container
-                        child: Container(
-                          width: 173,
-                          height: 70,
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          decoration: BoxDecoration(
-                            color: AppColors.secondaryBlue,
-                            border: Border.all(color: AppColors.primaryBlue),
-                            borderRadius: BorderRadius.circular(12),
+                GestureDetector(
+                  onTap: taskExecutionController.captureImageBefore,
+                  // Camera container
+                  child: Container(
+                    width: double.infinity,
+                    height: 70,
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(
+                      color: AppColors.secondaryBlue,
+                      border: Border.all(color: AppColors.primaryBlue),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      children: [
+                        Image.asset(IconPath.camera),
+                        const SizedBox(height: 12),
+                        Text(
+                          "Voor Photo",
+                          style: getTextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.primaryBlue,
                           ),
-                          child: Column(
-                            children: [
-                              Image.asset(IconPath.camera),
-                              const SizedBox(height: 12),
-                              Text(
-                                "Maak foto na afloop",
-                                style: getTextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.primaryBlue,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
+                          textAlign: TextAlign.center,
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      // photo container
-                      Obx(
-                        () => Container(
-                          height: 150,
-                          decoration: BoxDecoration(
-                            color: AppColors.primaryGrey,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          alignment: Alignment.center,
-                          child:
-                              taskExecutionController
-                                      .capturedImagePathAfter
-                                      .value
-                                      .isNotEmpty
-                                  ? Image.file(
-                                    File(
-                                      taskExecutionController
-                                          .capturedImagePathAfter
-                                          .value,
-                                    ),
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                  )
-                                  : Image.asset(IconPath.photoUpload),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
+                const SizedBox(height: 8),
+                Obx(() {
+                  if (taskExecutionController.uploadedPhotos.isEmpty) {
+                    return Container(
+                      height: 150,
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryGrey,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      alignment: Alignment.center,
+                      child: Image.asset(IconPath.photoUpload),
+                    );
+                  }
 
-                const SizedBox(width: 12),
-
-                // Second Image Box: "Na foto"
-                Expanded(
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                        onTap: taskExecutionController.captureImageBefore,
-                        // camera Container
-                        child: Container(
-                          width: 173,
-                          height: 70,
-                          padding: const EdgeInsets.symmetric(vertical: 10),
+                  // If grid view is enabled
+                  if (taskExecutionController.showAllPhotos.value) {
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: taskExecutionController.uploadedPhotos.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing: 12,
+                            childAspectRatio: 0.9,
+                          ),
+                      itemBuilder: (_, index) {
+                        final item =
+                            taskExecutionController.uploadedPhotos[index];
+                        return Container(
                           decoration: BoxDecoration(
-                            color: AppColors.secondaryBlue,
-                            border: Border.all(color: AppColors.primaryBlue),
                             borderRadius: BorderRadius.circular(12),
+                            color: AppColors.primaryGrey,
                           ),
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              Image.asset(IconPath.camera),
-                              SizedBox(height: 4),
-
-                              Text(
-                                "Na foto",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.primaryBlue,
+                              Expanded(
+                                child: ClipRRect(
+                                  borderRadius: const BorderRadius.vertical(
+                                    top: Radius.circular(12),
+                                  ),
+                                  child: Image.file(
+                                    File(item['path']!),
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
-                                textAlign: TextAlign.center,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(6),
+                                child: Text(
+                                  item['description'] ?? '',
+                                  style: getTextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColors.primaryBlack,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ],
                           ),
+                        );
+                      },
+                    );
+                  }
+
+                  // Show only the latest image if grid view is off
+                  final latest = taskExecutionController.uploadedPhotos.last;
+                  return Column(
+                    children: [
+                      Container(
+                        height: 150,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: AppColors.primaryGrey,
+                        ),
+                        child: Image.file(
+                          File(latest['path']!),
+                          fit: BoxFit.cover,
+                          width: double.infinity,
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      // photo Container
-                      Obx(
-                        () => Container(
-                          height: 150,
-                          decoration: BoxDecoration(
-                            color: AppColors.primaryGrey,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          alignment: Alignment.center,
-                          child:
-                              taskExecutionController
-                                      .capturedImagePathBefore
-                                      .value
-                                      .isNotEmpty
-                                  ? Image.file(
-                                    File(
-                                      taskExecutionController
-                                          .capturedImagePathBefore
-                                          .value,
-                                    ),
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                  )
-                                  : Image.asset(IconPath.photoUpload),
+                      const SizedBox(height: 6),
+                      Text(
+                        latest['description'] ?? '',
+                        style: getTextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.primaryBlack,
                         ),
+                        textAlign: TextAlign.center,
                       ),
                     ],
+                  );
+                }),
+
+                TextButton(
+                  onPressed: taskExecutionController.toggleShowAllPhotos,
+                  child: Text(
+                    "Bekijk alle foto's",
+                    style: getTextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.primaryGold,
+                    ),
                   ),
                 ),
               ],
             ),
 
-            SizedBox(height: 30),
+            const SizedBox(height: 40),
+
+            // Upload photos AFTER completed your work
+            Text(
+              "Upload foto's nadat je je werk hebt voltooid",
+              style: getTextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: AppColors.primaryBlack,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Column(
+              children: [
+                GestureDetector(
+                  onTap: taskExecutionController.captureImageAfter,
+                  child: Container(
+                    width: double.infinity,
+                    height: 70,
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(
+                      color: AppColors.secondaryBlue,
+                      border: Border.all(color: AppColors.primaryBlue),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      children: [
+                        Image.asset(IconPath.camera),
+                        const SizedBox(height: 4),
+                        Text(
+                          "Na foto",
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.primaryBlue,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Obx(() {
+                  if (taskExecutionController.uploadedPhotosAfter.isEmpty) {
+                    return Container(
+                      height: 150,
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryGrey,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      alignment: Alignment.center,
+                      child: Image.asset(IconPath.photoUpload),
+                    );
+                  }
+
+                  if (taskExecutionController.showAllPhotosAfter.value) {
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount:
+                          taskExecutionController.uploadedPhotosAfter.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing: 12,
+                            childAspectRatio: 0.9,
+                          ),
+                      itemBuilder: (_, index) {
+                        final item =
+                            taskExecutionController.uploadedPhotosAfter[index];
+                        return Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: AppColors.primaryGrey,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Expanded(
+                                child: ClipRRect(
+                                  borderRadius: const BorderRadius.vertical(
+                                    top: Radius.circular(12),
+                                  ),
+                                  child: Image.file(
+                                    File(item['path']!),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(6),
+                                child: Text(
+                                  item['description'] ?? '',
+                                  style: getTextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColors.primaryBlack,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  }
+
+                  final latest =
+                      taskExecutionController.uploadedPhotosAfter.last;
+                  return Column(
+                    children: [
+                      Container(
+                        height: 150,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: AppColors.primaryGrey,
+                        ),
+                        child: Image.file(
+                          File(latest['path']!),
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        latest['description'] ?? '',
+                        style: getTextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.primaryBlack,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  );
+                }),
+                TextButton(
+                  onPressed: taskExecutionController.toggleShowAllPhotosAfter,
+                  child: Text(
+                    "Bekijk alle foto's",
+                    style: getTextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.primaryGold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+            SizedBox(height: 40),
 
             Text(
               "Handtekening van de klant",
@@ -442,11 +633,11 @@ class TaskExecutionScreen extends StatelessWidget {
             const SizedBox(height: 20),
             SizedBox(
               height: 44,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 14),
-                  backgroundColor: AppColors.secondaryWhite,
-                  side: const BorderSide(color: AppColors.formFieldBorderColor),
+              child: OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  backgroundColor: AppColors.secondaryBlue,
+                  side: const BorderSide(color: AppColors.primaryBlue),
 
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(27),
@@ -457,12 +648,13 @@ class TaskExecutionScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Image.asset(IconPath.pen),
+                    //SizedBox(width: 4),
                     Text(
                       "Vraag om de handtekening van de klant",
                       style: getTextStyle(
-                        fontSize: 16,
+                        fontSize: 15,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.secondaryBlack,
+                        color: AppColors.primaryBlue,
                       ),
                     ),
                   ],
@@ -515,7 +707,11 @@ class TaskExecutionScreen extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      // Handle second button press
+                      Get.to(
+                        () => TaskExecutionScreenWithClientReview(
+                          setPriceTask: setPriceTask,
+                        ),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.symmetric(
@@ -532,7 +728,14 @@ class TaskExecutionScreen extends StatelessWidget {
                       ),
                     ),
 
-                    child: Text('Taak voltooien'),
+                    child: Text(
+                      'Taak voltooien',
+                      style: getTextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.primaryWhite,
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -548,31 +751,57 @@ class TaskExecutionScreen extends StatelessWidget {
   void showDialogWork(BuildContext context) {
     final nameController = TextEditingController();
     final priceController = TextEditingController();
-
     Get.dialog(
-      AlertDialog(
-        title: const Text(
-          'Prijs instellen',
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-            color: AppColors.secondaryBlack,
-          ),
-        ),
+      Dialog(
         backgroundColor: AppColors.primaryWhite,
-        content: SizedBox(
+        insetPadding: const EdgeInsets.all(16),
+        child: Container(
           width: double.infinity,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: AppColors.primaryWhite,
+            borderRadius: BorderRadius.circular(12),
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(
+                'Prijs instellen',
+                style: getTextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.secondaryBlack,
+                ),
+              ),
+              const SizedBox(height: 20),
               Row(
                 children: [
                   Expanded(
                     child: SizedBox(
                       height: 41,
-                      child: TextField(
+                      child: TextFormField(
                         controller: nameController,
-                        decoration: const InputDecoration(hintText: 'Dient'),
+                        decoration: const InputDecoration(
+                          hintText: 'Dient',
+
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(12.0),
+                            ),
+                            borderSide: BorderSide(
+                              color: AppColors.formFieldBorderColor,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(12.0),
+                            ),
+                            borderSide: BorderSide(
+                              color: AppColors.formFieldBorderColor,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -580,9 +809,27 @@ class TaskExecutionScreen extends StatelessWidget {
                   Expanded(
                     child: SizedBox(
                       height: 41,
-                      child: TextField(
+                      child: TextFormField(
                         controller: priceController,
-                        decoration: const InputDecoration(hintText: '0.00'),
+                        decoration: const InputDecoration(
+                          hintText: '0.00',
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(12.0),
+                            ),
+                            borderSide: BorderSide(
+                              color: AppColors.formFieldBorderColor,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(12.0),
+                            ),
+                            borderSide: BorderSide(
+                              color: AppColors.formFieldBorderColor,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -594,7 +841,6 @@ class TaskExecutionScreen extends StatelessWidget {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryBlue,
-
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(51),
                     ),
@@ -606,7 +852,14 @@ class TaskExecutionScreen extends StatelessWidget {
                     );
                     Get.back();
                   },
-                  child: const Text('Wijzigingen opslaan'),
+                  child: Text(
+                    'Wijzigingen opslaan',
+                    style: getTextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.primaryBlack,
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -621,24 +874,74 @@ class TaskExecutionScreen extends StatelessWidget {
     final taskController = TextEditingController();
 
     Get.dialog(
-      AlertDialog(
-        title: const Text('Checklist Toevoegen'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: taskController,
-              decoration: const InputDecoration(hintText: 'Checklist item'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                taskExecutionController.addCheckItem(taskController.text);
-                Get.back();
-              },
-              child: const Text('Toevoegen'),
-            ),
-          ],
+      Dialog(
+        backgroundColor: AppColors.primaryWhite,
+        insetPadding: EdgeInsets.symmetric(horizontal: 16),
+        child: SizedBox(
+          width: MediaQuery.of(Get.context!).size.width, // Full width
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  'Taak',
+                  style: getTextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.primaryBlack,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: TextFormField(
+                  maxLines: 3,
+                  controller: taskController,
+                  decoration: const InputDecoration(
+                    //hintText: 'Checklist item',
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                      borderSide: BorderSide(color: AppColors.secondaryWhite),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                      borderSide: BorderSide(color: AppColors.secondaryWhite),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      taskExecutionController.addCheckItem(taskController.text);
+                      Get.back();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primaryBlue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(51),
+                      ),
+                    ),
+                    child: Text(
+                      'Toevoegen',
+                      style: getTextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.primaryBlack,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
         ),
       ),
     );

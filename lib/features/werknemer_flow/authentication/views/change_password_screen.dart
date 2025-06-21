@@ -2,7 +2,6 @@ import 'package:baxton/core/common/styles/global_text_style.dart';
 import 'package:baxton/core/common/widgets/auth_custom_textfield.dart';
 import 'package:baxton/core/common/widgets/custom_continue_button.dart';
 import 'package:baxton/core/utils/constants/colors.dart';
-import 'package:baxton/core/utils/constants/icon_path.dart';
 import 'package:baxton/features/werknemer_flow/authentication/controllers/change_password_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,7 +16,7 @@ class ChangePassword extends StatelessWidget {
       ChangePasswordController(),
     );
 
-    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -38,7 +37,7 @@ class ChangePassword extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
           child: Form(
-            key: _formKey,
+            key: formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -70,7 +69,7 @@ class ChangePassword extends StatelessWidget {
                         controller.isPasswordVisible.value
                             ? Icons.visibility
                             : Icons.visibility_off,
-                            color: Color(0xff37B874),
+                        color: Color(0xff37B874),
                       ),
                       onPressed: controller.togglePasswordVisibility,
                     ),
@@ -111,7 +110,7 @@ class ChangePassword extends StatelessWidget {
                         controller.isPasswordVisible.value
                             ? Icons.visibility
                             : Icons.visibility_off,
-                            color: Color(0xff37B874),
+                        color: Color(0xff37B874),
                       ),
                       onPressed: controller.togglePasswordVisibility,
                     ),

@@ -19,7 +19,7 @@ class ServicePaymentInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 12),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),

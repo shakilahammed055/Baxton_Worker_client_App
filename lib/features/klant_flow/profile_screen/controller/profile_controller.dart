@@ -1,10 +1,12 @@
 import 'dart:io';
+import 'package:baxton/features/klant_flow/authentication/screens/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:baxton/features/klant_flow/authentication/auth_service/auth_service.dart'; // Make sure to import your AuthService
 
-class ProfileController extends GetxController{
-
+class ProfileController extends GetxController {
   final TextEditingController fullNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController experiecnceController = TextEditingController();
@@ -13,17 +15,28 @@ class ProfileController extends GetxController{
   final TextEditingController confidenceController = TextEditingController();
   final TextEditingController currentplanController = TextEditingController();
 
-
-
-
-
-
   var isEditing = false.obs;
   var isSaving = false.obs;
   final logoUrl = ''.obs;
   var selectedImagePath = ''.obs;
   var isEnable = false.obs;
 
+  final ImagePicker _imagePicker = ImagePicker();
+
+  // Method to log the user out
+  Future<void> logout() async {
+    EasyLoading.show(status: 'Logging out...');
+    try {
+      await AuthService.clearAuthData();
+
+      Get.offAll(() => LoginScreen());
+    } catch (e) {
+      EasyLoading.showError("An error occurred while logging out");
+      debugPrint("Logout Error: $e");
+    } finally {
+      EasyLoading.dismiss();
+    }
+  }
 
   void saveProfile() {
     // Logic for saving the profile (e.g., updating a database or API call)
@@ -31,13 +44,10 @@ class ProfileController extends GetxController{
     isEditing.value = false; // Turn off editing mode
   }
 
-
   void toggleEdit() {
     isEnable.value = !isEnable.value;
     isSaving.value = false;
   }
-
-  final ImagePicker _imagePicker = ImagePicker();
 
   Future<void> pickImage(ImageSource source) async {
     try {

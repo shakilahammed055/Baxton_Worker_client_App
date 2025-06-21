@@ -11,7 +11,7 @@ import 'package:baxton/features/werknemer_flow/taken/mijn_taken/views/widgets/co
 import 'package:baxton/features/werknemer_flow/taken/mijn_taken/views/widgets/show_dates.dart';
 import 'package:baxton/features/werknemer_flow/taken/mijn_taken/views/widgets/upcoming_task_card.dart';
 import 'package:baxton/features/werknemer_flow/werknemer_home/Huis/controller/employee_home_controller.dart';
-import 'package:baxton/features/werknemer_flow/werknemer_home/Huis/view/widget/confirmed_task_card.dart';
+import 'package:baxton/features/werknemer_flow/werknemer_home/Huis/view/widget/all_task_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -197,22 +197,12 @@ class MyTaskScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                // ...employeeHomeController.confirmedTasks.map(
-                //   (task) => ConfirmedTaskCard(employyesConfirmedTask: task),
-                // ),
-                // ...employeeHomeController.paymentPendingTasks.map(
-                //   (task) => ConfirmedTaskCard(
-                //     employyesConfirmedTask: task,
-                //     isStartEnabled: false, // Disabled
-                //   ),
-                // ),
+                // Payment Pending Task Card Called here,
                 ...employeeHomeController.paymentPendingTasks
                     .take(3)
                     .map(
-                      (task) => ConfirmedTaskCard(
-                        employyesConfirmedTask: task,
-                        isStartEnabled: false, // Disabled
-                      ),
+                      (myPaymentPendingTasks) =>
+                          AllTaskCard(allTask: myPaymentPendingTasks),
                     ),
 
                 SizedBox(height: 20),
@@ -255,23 +245,11 @@ class MyTaskScreen extends StatelessWidget {
                 ),
 
                 // Confirmed Task Card Called here,
-                //that widget is employee home screen's widget
-                // ...employeeHomeController.confirmedTasks.map(
-                //   (task) => ConfirmedTaskCard(employyesConfirmedTask: task),
-                // ),
-                // ...employeeHomeController.confirmedTasks.map(
-                //   (task) => ConfirmedTaskCard(
-                //     employyesConfirmedTask: task,
-                //     isStartEnabled: true, // Always enabled
-                //   ),
-                // ),
                 ...employeeHomeController.confirmedTasks
                     .take(3)
                     .map(
-                      (task) => ConfirmedTaskCard(
-                        employyesConfirmedTask: task,
-                        isStartEnabled: true, // Enabled
-                      ),
+                      (myConfirmedTask) =>
+                          AllTaskCard(allTask: myConfirmedTask),
                     ),
 
                 SizedBox(height: 20),

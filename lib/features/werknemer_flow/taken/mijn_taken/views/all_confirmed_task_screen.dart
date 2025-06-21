@@ -2,7 +2,7 @@ import 'package:baxton/core/common/styles/global_text_style.dart';
 import 'package:baxton/core/utils/constants/colors.dart';
 import 'package:baxton/core/utils/constants/icon_path.dart';
 import 'package:baxton/features/werknemer_flow/werknemer_home/Huis/controller/employee_home_controller.dart';
-import 'package:baxton/features/werknemer_flow/werknemer_home/Huis/view/widget/confirmed_task_card.dart';
+import 'package:baxton/features/werknemer_flow/werknemer_home/Huis/view/widget/all_task_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -36,10 +36,7 @@ class AllConfirmedTasksScreen extends StatelessWidget {
         child: ListView.builder(
           itemCount: controller.confirmedTasks.length,
           itemBuilder: (context, index) {
-            return ConfirmedTaskCard(
-              employyesConfirmedTask: controller.confirmedTasks[index],
-              isStartEnabled: true,
-            );
+            return AllTaskCard(allTask: controller.confirmedTasks[index]);
           },
         ),
       ),

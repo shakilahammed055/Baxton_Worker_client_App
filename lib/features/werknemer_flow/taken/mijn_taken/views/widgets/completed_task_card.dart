@@ -65,9 +65,10 @@ class CompletedTaskCard extends StatelessWidget {
             // Confirmed Price
             Row(
               children: [
+                // Price Label
                 Container(
-                  height: 29,
-                  width: 63,
+                  height: 34,
+                  width: 69,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 10,
                     vertical: 4,
@@ -91,20 +92,26 @@ class CompletedTaskCard extends StatelessWidget {
             ),
             const SizedBox(height: 4),
 
-            // Date, Time and Start-Task Button
+            // Date, Time and view-details Button
             Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
-                  // date
-                  "${employeesCompletedTask.dateTime.day}/${employeesCompletedTask.dateTime.month}/${employeesCompletedTask.dateTime.year}"
-                  // time
-                  "${employeesCompletedTask.dateTime.hour.toString().padLeft(2, '0')}:${employeesCompletedTask.dateTime.minute.toString().padLeft(2, '0')} AM",
-                  style: getTextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.secondaryBlack,
-                  ),
+                Column(
+                  children: [
+                    Text(
+                      // date and time with space in between
+                      "${employeesCompletedTask.dateTime.day}/${employeesCompletedTask.dateTime.month}/${employeesCompletedTask.dateTime.year}   "
+                      "${employeesCompletedTask.dateTime.hour.toString().padLeft(2, '0')}:${employeesCompletedTask.dateTime.minute.toString().padLeft(2, '0')} AM",
+                      style: getTextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.secondaryBlack,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                  ],
                 ),
+
                 Spacer(),
 
                 // start-task button
@@ -121,7 +128,7 @@ class CompletedTaskCard extends StatelessWidget {
                       ),
                       padding: EdgeInsets.symmetric(vertical: 10),
                     ),
-                    child: const Text('bekijk details'),
+                    child: const Text('Bekijk details'),
                   ),
                 ),
               ],

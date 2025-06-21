@@ -14,6 +14,7 @@ class IconPath {
   static const String arrowBack = "assets/icons/arrow_back.png";
   static const String arrowDown = "assets/icons/down_arrow.png";
   static const String arrowDown3 = "assets/icons/arrow_down_3.png";
+  static const String arrowDown4 = "assets/icons/arrow_down_4.png";
 
   static const String showPassword = "assets/icons/show_password.png";
   static const String hand = "assets/icons/hand.png";
@@ -24,6 +25,9 @@ class IconPath {
   static const String photoUpload = "assets/icons/photo_upload.png";
   static const String camera = "assets/icons/camera.png";
   static const String pen = "assets/icons/pen.png";
+  static const String downloadIcon = "assets/icons/download_icon.png";
+  static const String shareIcon = "assets/icons/share_icon.png";
+  static const String starIcon = "assets/icons/star_icon.png";
 
   //
   static const String userprofile = 'assets/icons/userprofile.png';

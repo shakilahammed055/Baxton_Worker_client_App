@@ -11,7 +11,7 @@ import 'package:baxton/features/Admin_flow/admin_home/screens/navbar.dart';
 import 'package:baxton/features/Admin_flow/betalingsbeheer/controller/betalingsbeheer_controller.dart';
 import 'package:baxton/features/Admin_flow/betalingsbeheer/widgets/filter_dialog.dart';
 import 'package:baxton/features/Admin_flow/betalingsbeheer/widgets/invoice_card.dart';
-import 'package:baxton/features/Admin_flow/taakbeheer/task_manager/widgets/star_card_1.dart';
+import 'package:baxton/features/Admin_flow/taakbeheer/task_manager/views/widgets/star_card_1.dart';
 
 class BetalingsbeheerScreen extends StatelessWidget {
   BetalingsbeheerScreen({super.key});

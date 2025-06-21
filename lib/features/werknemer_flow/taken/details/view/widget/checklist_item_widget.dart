@@ -1,37 +1,3 @@
-// import 'package:baxton/core/utils/constants/colors.dart';
-// import 'package:baxton/features/werknemer_flow/taken/details/model/task_checklist_item.dart';
-// import 'package:flutter/material.dart';
-
-// class ChecklistItemWidget extends StatelessWidget {
-//   final TaskCheckItem item;
-//   final ValueChanged<bool?> onChanged;
-
-//   const ChecklistItemWidget({
-//     required this.item,
-//     required this.onChanged,
-//     super.key,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       decoration: BoxDecoration(
-//         color: AppColors.secondaryGold,
-//         border: Border.all(color: AppColors.primaryGold),
-//         borderRadius: BorderRadius.circular(8),
-//       ),
-//       margin: const EdgeInsets.symmetric(vertical: 4),
-//       padding: const EdgeInsets.all(8),
-//       child: CheckboxListTile(
-//         value: item.isChecked,
-//         onChanged: onChanged,
-//         title: Text(item.title),
-//         controlAffinity: ListTileControlAffinity.leading,
-//       ),
-//     );
-//   }
-// }
-
 import 'package:baxton/core/utils/constants/colors.dart';
 import 'package:baxton/features/werknemer_flow/taken/details/model/task_checklist_item.dart';
 import 'package:flutter/material.dart';
@@ -63,6 +29,10 @@ class ChecklistItemWidget extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 4),
       padding: const EdgeInsets.all(8),
       child: CheckboxListTile(
+        contentPadding: EdgeInsets.zero,
+
+        //dense: true,
+        visualDensity: VisualDensity.compact,
         value: item.isChecked,
         onChanged: onChanged,
         title: Text(item.title),

@@ -257,7 +257,9 @@ class ProfileScreen extends StatelessWidget {
                         Align(
                           alignment: Alignment.bottomLeft,
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              profileController.logout();
+                            },
                             child: Row(
                               children: [
                                 Image.asset(

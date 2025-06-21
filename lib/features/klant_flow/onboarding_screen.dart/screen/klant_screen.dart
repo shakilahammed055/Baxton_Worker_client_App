@@ -2,7 +2,7 @@ import 'package:baxton/core/common/styles/global_text_style.dart';
 import 'package:baxton/core/common/widgets/common_button.dart';
 import 'package:baxton/core/utils/constants/colors.dart';
 import 'package:baxton/core/utils/constants/image_path.dart';
-import 'package:baxton/features/klant_flow/authentication.dart/screens/login_screen.dart';
+import 'package:baxton/features/klant_flow/authentication/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

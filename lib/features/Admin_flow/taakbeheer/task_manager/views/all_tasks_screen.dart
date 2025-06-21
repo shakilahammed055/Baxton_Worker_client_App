@@ -3,7 +3,7 @@ import 'package:baxton/core/utils/constants/colors.dart';
 import 'package:baxton/core/utils/constants/icon_path.dart';
 import 'package:baxton/features/Admin_flow/admin_home/screens/navbar.dart';
 import 'package:baxton/features/Admin_flow/taakbeheer/task_manager/controller/all_task_controller.dart';
-import 'package:baxton/features/Admin_flow/taakbeheer/task_manager/widgets/all_tasks_card.dart';
+import 'package:baxton/features/Admin_flow/taakbeheer/task_manager/views/widgets/all_tasks_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

@@ -5,7 +5,6 @@ import 'package:baxton/core/utils/constants/colors.dart';
 import 'package:baxton/features/werknemer_flow/authentication/controllers/forget_password_controller.dart';
 import 'package:baxton/features/werknemer_flow/authentication/views/forget_password_otp_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
 class ForgetPasswordScreen extends StatelessWidget {
@@ -26,7 +25,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                   style: getTextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xff333333),
+                    color: AppColors.primaryBlack,
                   ),
                 ),
                 const SizedBox(height: 60),
@@ -34,13 +33,13 @@ class ForgetPasswordScreen extends StatelessWidget {
                   "Voer uw e-mailadres of telefoonnummer in voor de code.",
                   textAlign: TextAlign.center,
                   style: getTextStyle(
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.w400,
-                    color: const Color(0xFF5F5F5F),
+                    color: AppColors.secondaryBlack,
                     lineHeight: 12,
                   ),
                 ),
-                const SizedBox(height: 18),
+                const SizedBox(height: 20),
                 Obx(
                   () => GestureDetector(
                     onTap: () {
@@ -82,7 +81,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                       style: getTextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
-                        color: const Color(0xFF333333),
+                        color: AppColors.primaryBlack,
                       ),
                     ),
                   ),
@@ -96,11 +95,11 @@ class ForgetPasswordScreen extends StatelessWidget {
                             : controller.phoneController,
                     text:
                         controller.toggleValue.value == 0
-                            ? "Enter your Email"
+                            ? "Voer uw e-mail in"
                             : "Enter your phone number",
                   ),
                 ),
-                const SizedBox(height: 60),
+                const SizedBox(height: 40),
                 CustomContinueButton(
                   onTap: () {
                     // final email = controller.emailController.text.trim();

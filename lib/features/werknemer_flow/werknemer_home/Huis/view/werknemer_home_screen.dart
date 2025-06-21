@@ -2,9 +2,9 @@ import 'package:baxton/core/common/styles/global_text_style.dart';
 import 'package:baxton/core/utils/constants/colors.dart';
 import 'package:baxton/core/utils/constants/icon_path.dart';
 import 'package:baxton/features/werknemer_flow/werknemer_home/Huis/controller/employee_home_controller.dart';
-import 'package:baxton/features/werknemer_flow/werknemer_home/Huis/view/widget/confirmed_task_card.dart';
-import 'package:baxton/features/werknemer_flow/werknemer_home/service_request_form/view/service_request_form_screen.dart';
-import 'package:baxton/features/werknemer_flow/werknemer_home/set_price/views/set_price_screen.dart';
+import 'package:baxton/features/werknemer_flow/werknemer_home/Huis/view/widget/all_task_card.dart';
+import 'package:baxton/features/werknemer_flow/werknemer_home/service_request_form/views/service_request_form_screen.dart';
+import 'package:baxton/features/werknemer_flow/werknemer_home/set_price/views/set_the_price__task_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -177,14 +177,16 @@ class WerknemerHomeScreen extends StatelessWidget {
                   //Price Set Button
                   GestureDetector(
                     onTap: () {
-                      Get.to(() => PriceSetScreen());
+                      Get.to(() => SetThePriceTaskScreen());
                     },
                     child: Container(
                       height: 75,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 16,
-                      ),
+                      // padding: EdgeInsets.symmetric(
+                      //   horizontal: 12,
+                      //   vertical: 14,
+                      // ),
+                      padding: const EdgeInsets.fromLTRB(16, 18, 30, 14),
+
                       //margin: EdgeInsets.symmetric(horizontal: 8),
                       decoration: BoxDecoration(
                         color: Color(0xffFF3B30).withValues(alpha: 0.1),
@@ -207,7 +209,7 @@ class WerknemerHomeScreen extends StatelessWidget {
                                 ),
                                 textAlign: TextAlign.center,
                               ),
-                              SizedBox(height: 8),
+                              SizedBox(height: 4),
                               Text(
                                 'prijzen ingesteld!',
 
@@ -216,12 +218,12 @@ class WerknemerHomeScreen extends StatelessWidget {
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.primaryRed,
                                 ),
-                                textAlign: TextAlign.center,
+                                textAlign: TextAlign.end,
                               ),
                             ],
                           ),
-                          const SizedBox(width: 10),
 
+                          const SizedBox(width: 6),
                           Image.asset(IconPath.arrowRight),
                         ],
                       ),
@@ -240,9 +242,9 @@ class WerknemerHomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
 
-                  // ...employeeHomeController.confirmedTasks.map(
-                  //   (task) => ConfirmedTaskCard(employyesConfirmedTask: task),
-                  // ),
+                  ...employeeHomeController.confirmedTasks.map(
+                    (task) => AllTaskCard(allTask: task),
+                  ),
                 ],
               ),
             ),

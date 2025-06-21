@@ -21,6 +21,15 @@ class BetalingsbeheerDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: GestureDetector(
+          onTap: () => Get.back(),
+          child: Row(
+            children: [
+              const SizedBox(width: 16),
+              Image.asset(IconPath.arrowBack),
+            ],
+          ),
+        ),
         centerTitle: true,
         title: Text(
           "Betalingsbeheer",
@@ -753,6 +762,231 @@ class BetalingsbeheerDetailsScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 30),
+
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Row for "Toegewezen aan" & "Expertise"
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Assigned To Dropdown button
+                              Text(
+                                'Toegewezen aan',
+                                style: getTextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.primaryBlack,
+                                ),
+                              ),
+                              const SizedBox(height: 14),
+                              Obx(
+                                () => SizedBox(
+                                  width: 173,
+                                  height: 44,
+
+                                  child: DropdownButtonFormField<String>(
+                                    dropdownColor: AppColors.primaryWhite,
+                                    icon: Image.asset(IconPath.arrowDown4),
+                                    value:
+                                        betalingsbeheerController
+                                            .assignedTo
+                                            .value,
+                                    items:
+                                        betalingsbeheerController.assignees
+                                            .map(
+                                              (name) => DropdownMenuItem(
+                                                value: name,
+                                                child: Text(name),
+                                              ),
+                                            )
+                                            .toList(),
+                                    onChanged:
+                                        (value) =>
+                                            betalingsbeheerController
+                                                .assignedTo
+                                                .value = value!,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                        vertical: 10,
+                                        horizontal: 12,
+                                      ),
+                                      filled: true,
+                                      fillColor: AppColors.primaryWhite,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                        borderSide: BorderSide(
+                                          color: AppColors.secondaryWhite,
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                        borderSide: BorderSide(
+                                          color: AppColors.secondaryWhite,
+                                        ),
+                                      ),
+                                    ),
+                                    style: TextStyle(
+                                      color: AppColors.primaryGold,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+
+                        // Expertise Container
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Expertise',
+                                style: getTextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.primaryBlack,
+                                ),
+                              ),
+                              const SizedBox(height: 14),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.secondaryGold,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  betalingsbeheerController.expertise,
+                                  style: TextStyle(
+                                    color: AppColors.primaryGold,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // Task Status
+                    Text(
+                      'Taakstatus',
+                      style: getTextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.primaryBlack,
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                    Obx(
+                      () => DropdownButtonFormField<String>(
+                        dropdownColor: AppColors.primaryWhite,
+                        icon: Image.asset(IconPath.arrowDown4),
+                        value: betalingsbeheerController.status.value,
+                        items:
+                            betalingsbeheerController.statusOptions
+                                .map(
+                                  (status) => DropdownMenuItem(
+                                    value: status,
+                                    child: Text(
+                                      status,
+                                      style: TextStyle(
+                                        color: AppColors.primaryGold,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                        onChanged:
+                            (value) =>
+                                betalingsbeheerController.status.value = value!,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: AppColors.primaryWhite,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: AppColors.secondaryWhite,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: AppColors.secondaryWhite,
+                            ),
+                          ),
+                        ),
+
+                        style: TextStyle(
+                          color: AppColors.primaryGold,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // Task Amount
+                    Text(
+                      'Taakbedrag',
+                      style: getTextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.primaryBlack,
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                    Obx(
+                      () => TextFormField(
+                        initialValue: betalingsbeheerController.amount.value,
+                        readOnly: true,
+
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: AppColors.primaryWhite,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: AppColors.secondaryWhite,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: AppColors.secondaryWhite,
+                            ),
+                          ),
+                        ),
+                        style: TextStyle(
+                          color: AppColors.primaryGold,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
               CustomContinueButton(
                 onTap: () {},
                 title: "Wijzigingen opsaan",

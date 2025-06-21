@@ -1,9 +1,5 @@
 // lib/features/Admin_flow/betalingsbeheer/model/invoice_model.dart
-enum PaymentStatus {
-  pending,
-  confirmed,
-  overdue,
-}
+enum PaymentStatus { pending, confirmed, overdue }
 
 class Invoice {
   final String invoiceNumber;
@@ -38,3 +34,17 @@ class Invoice {
 //     required this.unassigned,
 //   });
 // }
+
+class TaskModel {
+  String assignedTo;
+  String expertise;
+  String status;
+  String amount;
+
+  TaskModel({
+    required this.assignedTo,
+    required this.expertise,
+    required this.status,
+    required this.amount,
+  });
+}

@@ -2,9 +2,7 @@ import 'package:baxton/core/common/styles/global_text_style.dart';
 import 'package:baxton/core/utils/constants/colors.dart';
 import 'package:baxton/core/utils/constants/icon_path.dart';
 import 'package:baxton/features/werknemer_flow/taken/mijn_taken/model/upcoming_task_model.dart';
-import 'package:baxton/features/werknemer_flow/werknemer_home/set_price/views/set_price_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class UpcomingTaskCard extends StatelessWidget {
   final UpcomingTaskModel upcomingTask;
@@ -72,27 +70,39 @@ class UpcomingTaskCard extends StatelessWidget {
             ),
             const SizedBox(height: 12),
 
+            // Date, Time and Set Price Button
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 //Date
-                Text(
-                  "${upcomingTask.date}",
-                  style: getTextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.secondaryBlack,
-                  ),
+                Column(
+                  children: [
+                    Text(
+                      "${upcomingTask.date}",
+                      style: getTextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.secondaryBlack,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                  ],
                 ),
 
                 //Time
-                Text(
-                  "${upcomingTask.time}",
-                  style: getTextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.secondaryBlack,
-                  ),
+                Column(
+                  children: [
+                    Text(
+                      "${upcomingTask.time}",
+                      style: getTextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.secondaryBlack,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                  ],
                 ),
 
                 // Set Price Button
@@ -101,7 +111,7 @@ class UpcomingTaskCard extends StatelessWidget {
                   height: 44,
                   child: ElevatedButton(
                     onPressed: () {
-                      Get.to(() => PriceSetScreen());
+                      //Get.to(() => PriceSetScreen());
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primaryBlue,
@@ -114,7 +124,7 @@ class UpcomingTaskCard extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      "Prijs instellen",
+                      "Stel Prijs In",
                       style: getTextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,

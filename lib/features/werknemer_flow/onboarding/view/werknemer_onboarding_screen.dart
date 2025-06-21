@@ -176,7 +176,7 @@ class WOnbScreen extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: screenHeight * 0.02),
+                  SizedBox(height: screenHeight * 0.04),
 
                   // Page Indicator
                   Row(
@@ -184,7 +184,7 @@ class WOnbScreen extends StatelessWidget {
                     children: List.generate(
                       wOnbController.wOnbPages.length,
                       (index) => Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
+                        margin: const EdgeInsets.symmetric(horizontal: 3),
                         width:
                             wOnbController.currentPage.value == index ? 8 : 7,
                         height:
@@ -204,7 +204,7 @@ class WOnbScreen extends StatelessWidget {
 
               // Button at bottom
               Padding(
-                padding: EdgeInsets.only(bottom: screenHeight * 0.06),
+                padding: EdgeInsets.only(bottom: screenHeight * 0.10),
                 child: SizedBox(
                   height: 44,
                   width: double.infinity,

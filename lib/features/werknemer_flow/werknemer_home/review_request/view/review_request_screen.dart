@@ -65,73 +65,119 @@ class ReviewRequestScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 16),
-
                 // labelBox([
                 //   Row(
                 //     crossAxisAlignment: CrossAxisAlignment.start,
                 //     children: [
-                //       // Left side: Invoice Number
+                //       // Left side: Invoice Number (label above, value below)
                 //       Expanded(
                 //         flex: 1,
-                //         child: richText("Invoice Number:", data.invoiceNumber),
+                //         child: Column(
+                //           crossAxisAlignment: CrossAxisAlignment.start,
+                //           children: [
+                //             Text(
+                //               "Invoice Number:",
+                //               style: TextStyle(fontWeight: FontWeight.bold),
+                //             ),
+                //             SizedBox(height: 4),
+                //             Text(data.invoiceNumber),
+                //           ],
+                //         ),
                 //       ),
-                //       // Right side: Date Issued and Due Date
+                //       // Right side: Date Issued and Due Date (already in column format)
                 //       Expanded(
                 //         flex: 1,
                 //         child: Column(
                 //           crossAxisAlignment: CrossAxisAlignment.end,
                 //           children: [
-                //             richText("Date Issued:", data.issuedDate),
+                //             Text(
+                //               "Date Issued:",
+                //               style: TextStyle(fontWeight: FontWeight.bold),
+                //             ),
+                //             SizedBox(height: 4),
+                //             Text(data.issuedDate),
                 //             SizedBox(height: 8),
-                //             richText("Due Date:", data.dueDate),
+                //             Text(
+                //               "Due Date:",
+                //               style: TextStyle(fontWeight: FontWeight.bold),
+                //             ),
+                //             SizedBox(height: 4),
+                //             Text(data.dueDate),
                 //           ],
                 //         ),
                 //       ),
                 //     ],
                 //   ),
                 // ]),
+
+                // Invoice Number, Date Issued, and Due Date
                 labelBox([
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Left side: Invoice Number (label above, value below)
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Invoice Number:",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(height: 4),
-                            Text(data.invoiceNumber),
-                          ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        // Left side: Invoice Number (label above, value below)
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Invoice Number:",
+                                style: getTextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.secondaryBlack,
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Text(data.invoiceNumber),
+                            ],
+                          ),
                         ),
-                      ),
-                      // Right side: Date Issued and Due Date (already in column format)
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              "Date Issued:",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(height: 4),
-                            Text(data.issuedDate),
-                            SizedBox(height: 8),
-                            Text(
-                              "Due Date:",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(height: 4),
-                            Text(data.dueDate),
-                          ],
+                        // Right side: Date Issued and Due Date (each in a separate row)
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    "Date Issued: ",
+                                    style: getTextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.secondaryBlack,
+                                    ),
+                                  ),
+                                  SizedBox(width: 4),
+                                  Text(data.issuedDate),
+                                ],
+                              ),
+                              SizedBox(height: 2),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    "Due Date: ",
+                                    style: getTextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.secondaryBlack,
+                                    ),
+                                  ),
+                                  SizedBox(width: 4),
+                                  Text(data.dueDate),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ]),
 

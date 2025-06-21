@@ -7,4 +7,6 @@ class ImagePath {
   static const String after = 'assets/images/after.png';
   static const String signature = 'assets/images/signature.png';
   static const String card = 'assets/images/card.png';
+  static const String customerSignature =
+      'assets/images/customer_signature.png';
 }
