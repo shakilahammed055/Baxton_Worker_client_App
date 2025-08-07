@@ -42,7 +42,7 @@ class TaakdetailsFinalScreen extends StatelessWidget {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(9),
+                  padding: EdgeInsets.all(9),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -61,7 +61,7 @@ class TaakdetailsFinalScreen extends StatelessWidget {
                               'Mold Treatment',
                               textAlign: TextAlign.center,
                               style: getTextStyle(
-                                color: const Color(0xFF333333),
+                                color: Color(0xFF333333),
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -70,7 +70,7 @@ class TaakdetailsFinalScreen extends StatelessWidget {
                               'Neem de tijd om het dak grondig te inspecteren op eventuele schade. Kijk goed naar de shingles en zorg ervoor dat ze stevig vastzitten. Controleer ook of er geen scheuren of losse delen zijn die problemen kunnen veroorzaken. Vergeet niet om de randen en hoeken extra aandacht te geven, want daar ontstaan vaak de meeste problemen. Een goed onderhouden dak is essentieel voor de bescherming van je huis!',
                               textAlign: TextAlign.center,
                               style: getTextStyle(
-                                color: const Color(0xFF666666),
+                                color: Color(0xFF666666),
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
                                 letterSpacing: -0.28,
@@ -100,7 +100,7 @@ class TaakdetailsFinalScreen extends StatelessWidget {
                                 '11:00 Am',
                                 textAlign: TextAlign.center,
                                 style: getTextStyle(
-                                  color: const Color(0xFF666666),
+                                  color: Color(0xFF666666),
                                   fontSize: 12,
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -120,7 +120,7 @@ class TaakdetailsFinalScreen extends StatelessWidget {
                               Text(
                                 'New York',
                                 style: getTextStyle(
-                                  color: const Color(0xFF666666),
+                                  color: Color(0xFF666666),
                                   fontSize: 12,
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -142,7 +142,7 @@ class TaakdetailsFinalScreen extends StatelessWidget {
                     child: Text(
                       'Taakchecklist',
                       style: TextStyle(
-                        color: const Color(0xFF333333),
+                        color: Color(0xFF333333),
                         fontSize: 18,
                         fontFamily: 'Roboto',
                         fontWeight: FontWeight.w600,
@@ -158,17 +158,17 @@ class TaakdetailsFinalScreen extends StatelessWidget {
                         height: 60,
                         clipBehavior: Clip.antiAlias,
                         decoration: ShapeDecoration(
-                          color: const Color(0xFFFBF6E6),
+                          color: Color(0xFFFBF6E6),
                           shape: RoundedRectangleBorder(
                             side: BorderSide(
                               width: 1,
-                              color: const Color(0xFFD9A300),
+                              color: Color(0xFFD9A300),
                             ),
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(8.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             spacing: 12,
@@ -182,7 +182,7 @@ class TaakdetailsFinalScreen extends StatelessWidget {
                                 'Inspecteer het dak op zichtbare schade',
                                 textAlign: TextAlign.center,
                                 style: getTextStyle(
-                                  color: const Color(0xFF333333),
+                                  color: Color(0xFF333333),
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -196,17 +196,17 @@ class TaakdetailsFinalScreen extends StatelessWidget {
                         height: 60,
                         clipBehavior: Clip.antiAlias,
                         decoration: ShapeDecoration(
-                          color: const Color(0xFFFBF6E6),
+                          color: Color(0xFFFBF6E6),
                           shape: RoundedRectangleBorder(
                             side: BorderSide(
                               width: 1,
-                              color: const Color(0xFFD9A300),
+                              color: Color(0xFFD9A300),
                             ),
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(8.0),
                           child: Row(
                             spacing: 12,
                             children: [
@@ -219,7 +219,7 @@ class TaakdetailsFinalScreen extends StatelessWidget {
                                 'Zoek naar schimmel of watervlekken',
                                 textAlign: TextAlign.center,
                                 style: getTextStyle(
-                                  color: const Color(0xFF333333),
+                                  color: Color(0xFF333333),
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -233,17 +233,17 @@ class TaakdetailsFinalScreen extends StatelessWidget {
                         height: 60,
                         clipBehavior: Clip.antiAlias,
                         decoration: ShapeDecoration(
-                          color: const Color(0xFFFBF6E6),
+                          color: Color(0xFFFBF6E6),
                           shape: RoundedRectangleBorder(
                             side: BorderSide(
                               width: 1,
-                              color: const Color(0xFFD9A300),
+                              color: Color(0xFFD9A300),
                             ),
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(8.0),
                           child: Row(
                             spacing: 12,
                             children: [
@@ -256,7 +256,7 @@ class TaakdetailsFinalScreen extends StatelessWidget {
                                 'Maak fotos van eventuele schade',
                                 textAlign: TextAlign.center,
                                 style: getTextStyle(
-                                  color: const Color(0xFF333333),
+                                  color: Color(0xFF333333),
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -270,17 +270,17 @@ class TaakdetailsFinalScreen extends StatelessWidget {
                         height: 60,
                         clipBehavior: Clip.antiAlias,
                         decoration: ShapeDecoration(
-                          color: const Color(0xFFFBF6E6),
+                          color: Color(0xFFFBF6E6),
                           shape: RoundedRectangleBorder(
                             side: BorderSide(
                               width: 1,
-                              color: const Color(0xFFD9A300),
+                              color: Color(0xFFD9A300),
                             ),
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(8.0),
                           child: Row(
                             spacing: 12,
                             children: [
@@ -293,7 +293,7 @@ class TaakdetailsFinalScreen extends StatelessWidget {
                                 'Rapporteer aan de administratie',
                                 textAlign: TextAlign.center,
                                 style: getTextStyle(
-                                  color: const Color(0xFF333333),
+                                  color: Color(0xFF333333),
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -307,17 +307,17 @@ class TaakdetailsFinalScreen extends StatelessWidget {
                         height: 60,
                         clipBehavior: Clip.antiAlias,
                         decoration: ShapeDecoration(
-                          color: const Color(0xFFFBF6E6),
+                          color: Color(0xFFFBF6E6),
                           shape: RoundedRectangleBorder(
                             side: BorderSide(
                               width: 1,
-                              color: const Color(0xFFD9A300),
+                              color: Color(0xFFD9A300),
                             ),
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(8.0),
                           child: Row(
                             spacing: 24,
                             children: [
@@ -330,7 +330,7 @@ class TaakdetailsFinalScreen extends StatelessWidget {
                                 'Vraag om handtekening van de klant',
                                 textAlign: TextAlign.center,
                                 style: getTextStyle(
-                                  color: const Color(0xFF333333),
+                                  color: Color(0xFF333333),
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -475,18 +475,12 @@ class TaakdetailsFinalScreen extends StatelessWidget {
                 child: Container(
                   width: double.infinity,
                   height: 44,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 10,
-                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
 
                   decoration: ShapeDecoration(
                     color: AppColors.buttonPrimary,
                     shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                        width: 1,
-                        color: const Color(0xFF1E90FF),
-                      ),
+                      side: BorderSide(width: 1, color: Color(0xFF1E90FF)),
                       borderRadius: BorderRadius.circular(62),
                     ),
                   ),
@@ -522,17 +516,11 @@ class TaakdetailsFinalScreen extends StatelessWidget {
                 child: Container(
                   width: double.infinity,
                   height: 44,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 10,
-                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
 
                   decoration: ShapeDecoration(
                     shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                        width: 1,
-                        color: const Color(0xFF1E90FF),
-                      ),
+                      side: BorderSide(width: 1, color: Color(0xFF1E90FF)),
                       borderRadius: BorderRadius.circular(62),
                     ),
                   ),

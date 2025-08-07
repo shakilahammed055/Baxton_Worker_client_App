@@ -157,7 +157,7 @@ class BerichtSinglePageChat extends StatelessWidget {
                                 SizedBox(width: 10),
                                 IntrinsicWidth(
                                   child: Container(
-                                    padding: const EdgeInsets.all(10),
+                                    padding: EdgeInsets.all(10),
                                     constraints: BoxConstraints(
                                       maxWidth: Get.width * 0.6,
                                     ),

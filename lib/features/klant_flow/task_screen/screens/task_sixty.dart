@@ -73,29 +73,6 @@ class TaskSixty extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 0),
                     ),
                     SizedBox(height: 20),
-                    // Buttons to update progress for demo purposes
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   children: [
-                    //     ElevatedButton(
-                    //       onPressed: () {
-                    //         taskController.updateProgress(
-                    //           taskController.progress.value - 0.1,
-                    //         );
-                    //       },
-                    //       child: Text('Decrease'),
-                    //     ),
-                    //     SizedBox(width: 20),
-                    //     ElevatedButton(
-                    //       onPressed: () {
-                    //         taskController.updateProgress(
-                    //           taskController.progress.value + 0.1,
-                    //         );
-                    //       },
-                    //       child: Text('Increase'),
-                    //     ),
-                    //   ],
-                    // ),
                   ],
                 ),
               ),

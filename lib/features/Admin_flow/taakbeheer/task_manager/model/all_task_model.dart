@@ -15,3 +15,5 @@ class Task {
 }
 
 enum TaskStatus { bezig, voltooid, teLaat, nietToegewezen }
+
+

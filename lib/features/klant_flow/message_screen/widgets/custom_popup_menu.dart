@@ -10,7 +10,7 @@ class ChatCustomPopUpMenui extends StatelessWidget {
     return PopupMenuTheme(
       data: PopupMenuThemeData(
         color:
-             AppColors.popUpBackground,
+             Colors.white,
       ),
       child: PopupMenuButton<String>(
         onSelected: (value) {

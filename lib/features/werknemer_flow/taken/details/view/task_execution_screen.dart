@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:baxton/core/common/styles/global_text_style.dart';
 import 'package:baxton/core/utils/constants/colors.dart';
 import 'package:baxton/core/utils/constants/icon_path.dart';
+import 'package:baxton/features/klant_flow/task_screen/controller/signature_controller.dart';
 import 'package:baxton/features/werknemer_flow/taken/details/controller/task_execution_controller.dart';
 import 'package:baxton/features/werknemer_flow/taken/details/view/task_execution_screen_with_client_review.dart';
 import 'package:baxton/features/werknemer_flow/taken/details/view/widget/checklist_item_widget.dart';
@@ -22,6 +24,8 @@ class TaskExecutionScreen extends StatelessWidget {
   );
   final ClientInfoController clientInfoController =
       Get.find<ClientInfoController>();
+  final SharedSignatureController controller =
+      Get.find<SharedSignatureController>();
 
   late final DateTime dateTime;
   late final String dateStr;
@@ -631,6 +635,8 @@ class TaskExecutionScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
+
+            // Signature Request Button
             SizedBox(
               height: 44,
               child: OutlinedButton(
@@ -661,6 +667,23 @@ class TaskExecutionScreen extends StatelessWidget {
                 ),
               ),
             ),
+            Center(
+              child: Obx(() {
+                if (controller.signatureBase64.value.isEmpty) {
+                  return const Text("No signature available yet.");
+                } else {
+                  final image = base64Decode(controller.signatureBase64.value);
+                  return Column(
+                    children: [
+                      const Text("Received Signature:"),
+                      const SizedBox(height: 10),
+                      Image.memory(image, height: 200),
+                    ],
+                  );
+                }
+              }),
+            ),
+
             const SizedBox(height: 30),
             Text(
               "Note",

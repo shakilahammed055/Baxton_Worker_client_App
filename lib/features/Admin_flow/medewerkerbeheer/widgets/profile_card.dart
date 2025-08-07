@@ -1,3 +1,6 @@
+import 'package:baxton/core/common/styles/global_text_style.dart';
+import 'package:baxton/core/utils/constants/colors.dart';
+import 'package:baxton/core/utils/constants/icon_path.dart';
 import 'package:flutter/material.dart';
 
 class ProfileCard extends StatelessWidget {
@@ -6,7 +9,8 @@ class ProfileCard extends StatelessWidget {
   final String designation;
   final VoidCallback onTap;
 
-  ProfileCard({
+  const ProfileCard({
+    super.key,
     required this.imagePath,
     required this.name,
     required this.designation,
@@ -32,27 +36,58 @@ class ProfileCard extends StatelessWidget {
                 Row(
                   children: [
                     CircleAvatar(
-                      child: Image.asset(imagePath, height: 48, width: 48),
+                      radius: 24,
+                      child: ClipOval(
+                        child: imagePath.startsWith('http')
+                            ? Image.network(
+                                imagePath,
+                                height: 48,
+                                width: 48,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    Image.asset(
+                                  IconPath.profilepic,
+                                  height: 48,
+                                  width: 48,
+                                  fit: BoxFit.cover,
+                                ),
+                                loadingBuilder: (context, child, loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return const CircularProgressIndicator();
+                                },
+                              )
+                            : Image.asset(
+                                imagePath,
+                                height: 48,
+                                width: 48,
+                                fit: BoxFit.cover,
+                              ),
+                      ),
                     ),
-                    SizedBox(width: 7),
+                    const SizedBox(width: 7),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           name,
-                          style: TextStyle(
+                          style: getTextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: Colors.black,
+                            color: AppColors.textPrimary,
                           ),
                         ),
-                        SizedBox(height: 4),
-                        Text(
-                          designation,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.amber,
+                        const SizedBox(height: 10),
+                        SizedBox(
+                          width: 200,
+                          child: Text(
+                            designation,
+                            style: getTextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.primaryGold,
+                              lineHeight: 12,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],
@@ -66,16 +101,19 @@ class ProfileCard extends StatelessWidget {
                     width: 36,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: Color(0xffE9F4FF),
+                      color: const Color(0xffE9F4FF),
                     ),
-                    child: Icon(Icons.arrow_right_alt, color: Colors.blue),
+                    child: const Icon(
+                      Icons.arrow_right_alt,
+                      color: Colors.blue,
+                    ),
                   ),
                 ),
               ],
             ),
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
       ],
     );
   }

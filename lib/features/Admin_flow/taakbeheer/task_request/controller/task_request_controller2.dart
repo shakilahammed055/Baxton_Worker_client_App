@@ -1,5 +1,6 @@
 import 'package:baxton/features/Admin_flow/taakbeheer/task_request/model/task_request_basic_model.dart';
 import 'package:baxton/features/Admin_flow/taakbeheer/task_request/model/task_request_detail_model.dart';
+
 import 'package:get/get.dart';
 
 class TaskRequestViewAllController extends GetxController {
@@ -127,4 +128,6 @@ class TaskRequestViewAllController extends GetxController {
           detail.timeAgo == basic.timeAgo,
     );
   }
+
+  
 }

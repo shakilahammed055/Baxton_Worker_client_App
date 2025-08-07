@@ -22,6 +22,7 @@ class KChnagePasswordScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Color(0xffFAFAFA),
         automaticallyImplyLeading: false,
         centerTitle: true,
         forceMaterialTransparency: true,

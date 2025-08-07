@@ -1,31 +1,47 @@
+import 'package:baxton/features/Admin_flow/admin_home/model/home_data_model.dart';
 import 'package:flutter/material.dart';
 
 class TaskOverviewChart extends StatelessWidget {
+  final TaskStatistics taskStatistics;
+
+  const TaskOverviewChart({super.key, required this.taskStatistics});
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: 180,
       height: 180,
-      child: CustomPaint(painter: PieChartPainter()),
+      child: CustomPaint(
+        painter: PieChartPainter(taskStatistics: taskStatistics),
+      ),
     );
   }
 }
 
-// Custom Painter for Pie Chart
 class PieChartPainter extends CustomPainter {
+  final TaskStatistics taskStatistics;
+
+  PieChartPainter({required this.taskStatistics});
+
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()..style = PaintingStyle.fill;
 
-    double total = 45 + 25 + 15 + 10 + 5;
+    double total = taskStatistics.totalTaskRequests.toDouble() +
+        taskStatistics.totalAssignedTasks.toDouble() +
+        taskStatistics.totalConfirmedTasks.toDouble() +
+        taskStatistics.totalCompletedTasks.toDouble() +
+        taskStatistics.totalLateWork.toDouble();
 
-    double angle1 = (45 / total) * 2 * 3.14159265359;
-    double angle2 = (25 / total) * 2 * 3.14159265359;
-    double angle3 = (15 / total) * 2 * 3.14159265359;
-    double angle4 = (10 / total) * 2 * 3.14159265359;
-    double angle5 = (5 / total) * 2 * 3.14159265359;
+    if (total == 0) total = 1; // Prevent division by zero
 
-    paint.color = Color(0xff62B2FD);
+    double angle1 = (taskStatistics.totalAssignedTasks / total) * 2 * 3.14159265359;
+    double angle2 = (taskStatistics.totalConfirmedTasks / total) * 2 * 3.14159265359;
+    double angle3 = (taskStatistics.totalCompletedTasks / total) * 2 * 3.14159265359;
+    double angle4 = (taskStatistics.totalLateWork / total) * 2 * 3.14159265359;
+    double angle5 = (taskStatistics.totalTaskRequests / total) * 2 * 3.14159265359;
+
+    paint.color = const Color(0xff62B2FD);
     canvas.drawArc(
       Rect.fromCircle(
         center: Offset(size.width / 2, size.height / 2),
@@ -37,7 +53,7 @@ class PieChartPainter extends CustomPainter {
       paint,
     );
 
-    paint.color = Colors.green;
+    paint.color = const Color(0xff9BDFC4);
     canvas.drawArc(
       Rect.fromCircle(
         center: Offset(size.width / 2, size.height / 2),
@@ -49,7 +65,7 @@ class PieChartPainter extends CustomPainter {
       paint,
     );
 
-    paint.color = Colors.pink;
+    paint.color = const Color(0xffF99BAB);
     canvas.drawArc(
       Rect.fromCircle(
         center: Offset(size.width / 2, size.height / 2),
@@ -61,7 +77,7 @@ class PieChartPainter extends CustomPainter {
       paint,
     );
 
-    paint.color = Colors.purple;
+    paint.color = const Color(0xff9F97F7);
     canvas.drawArc(
       Rect.fromCircle(
         center: Offset(size.width / 2, size.height / 2),
@@ -73,7 +89,7 @@ class PieChartPainter extends CustomPainter {
       paint,
     );
 
-    paint.color = Colors.orange;
+    paint.color = const Color(0xffFFB44F);
     canvas.drawArc(
       Rect.fromCircle(
         center: Offset(size.width / 2, size.height / 2),
@@ -87,7 +103,5 @@ class PieChartPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
-  }
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }

@@ -20,6 +20,7 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Color(0xffFAFAFA),
         automaticallyImplyLeading: false,
         centerTitle: true,
         forceMaterialTransparency: true,
@@ -100,8 +101,9 @@ class LoginScreen extends StatelessWidget {
                 }),
                 SizedBox(height: 32),
                 CustomContinueButton(
-                  onTap: () {
-                    loginController.login();
+                  onTap: ()async {
+                    // print("=======> ksakdjfdlk");
+                    await loginController.login();
                   },
                   textColor: Colors.white,
                   title: "Inloggen",

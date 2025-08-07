@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'package:baxton/core/common/styles/global_text_style.dart';
 import 'package:baxton/core/utils/constants/colors.dart';
 import 'package:baxton/core/utils/constants/icon_path.dart';
@@ -13,27 +15,32 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class TaskManagerScreen extends StatelessWidget {
-  // Create a GlobalKey for the Scaffold
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  // Controller Instances
-  final TaskOverviewController taskOverviewController = Get.put(
-    TaskOverviewController(),
-  );
-  final TaskRequestController taskRequestController = Get.put(
-    TaskRequestController(),
-  );
-
-  TaskManagerScreen({super.key});
+  TaskManagerScreen({super.key}) {
+    // Initialize controllers only if not already registered
+    if (!Get.isRegistered<TaskOverviewController>()) {
+      Get.put(TaskOverviewController());
+      debugPrint('TaskOverviewController initialized in TaskManagerScreen');
+    }
+    if (!Get.isRegistered<TaskRequestController>()) {
+      Get.put(TaskRequestController());
+      debugPrint('TaskRequestController initialized in TaskManagerScreen');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final taskOverviewController = Get.find<TaskOverviewController>();
+    final taskRequestController = Get.find<TaskRequestController>();
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: AppColors.containerColor,
       key: _scaffoldKey,
-      drawer: Navbar(),
+      drawer: const Navbar(),
       appBar: AppBar(
-        title: Text("Taakbeheer"),
+        title: const Text("Taakbeheer"),
         titleSpacing: 0,
         leading: IconButton(
           icon: Image.asset(IconPath.notes),
@@ -42,83 +49,161 @@ class TaskManagerScreen extends StatelessWidget {
           },
         ),
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Taakoverzicht",
-              style: getTextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-                color: AppColors.textPrimary,
-              ),
+      body: Obx(() {
+        // Handle loading and error states
+        if (taskOverviewController.isLoading.value ||
+            taskRequestController.isLoading.value) {
+          // return const Center(child: CircularProgressIndicator());
+          return const Center(child: Text('Loading'));
+        }
+        if (taskOverviewController.errorMessage.value.isNotEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  taskOverviewController.errorMessage.value,
+                  style: const TextStyle(color: Colors.red),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () {
+                    taskOverviewController.fetchStats();
+                  },
+                  child: const Text("Retry"),
+                ),
+              ],
             ),
-            SizedBox(height: 16),
+          );
+        }
+        if (taskRequestController.errorMessage.value.isNotEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  taskRequestController.errorMessage.value,
+                  style: const TextStyle(color: Colors.red),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () {
+                    taskRequestController.fetchServiceRequests();
+                  },
+                  child: const Text("Retry"),
+                ),
+              ],
+            ),
+          );
+        }
 
-            // Calling StatCard Widgets
-            Obx(() {
-              final stats = taskOverviewController.stats.value;
-              final screenWidth = MediaQuery.of(context).size.width;
+        return SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Taakoverzicht",
+                style: getTextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              const SizedBox(height: 16),
 
-              return Wrap(
+              // StatCard Widgets
+              Wrap(
                 spacing: 12,
                 runSpacing: 12,
                 children: [
-                  StatCard(
-                    iconPath: IconPath.assignedTask,
-                    title: "Toegewezen taken",
-                    count: stats.assigned,
-                    countTextStyle: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.primaryBlue,
-                    ),
+                  Wrap(
+                    spacing: 12, // Horizontal space between cards
+                    runSpacing: 12, // Vertical space between rows
+                    children: [
+                      // StatCard for "Toegewezen taken"
+                      FractionallySizedBox(
+                        widthFactor:
+                            0.48, // Set the width to 48% of the parent width
+                        child: StatCard(
+                          iconPath: IconPath.assignedTask,
+                          title: "Toegewezen taken",
+                          count: taskOverviewController.stats.value.assigned,
+                          countTextStyle: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primaryBlue,
+                          ),
+                        ),
+                      ),
+
+                      // StatCard for "In uitvoering"
+                      FractionallySizedBox(
+                        widthFactor:
+                            0.48, // Set the width to 48% of the parent width
+                        child: StatCard(
+                          iconPath: IconPath.inProgress,
+                          title: "In uitvoering",
+                          count: taskOverviewController.stats.value.inProgress,
+                          countTextStyle: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primaryGreen,
+                          ),
+                        ),
+                      ),
+
+                      // StatCard for "Voltooid"
+                      FractionallySizedBox(
+                        widthFactor:
+                            0.48, // Set the width to 48% of the parent width
+                        child: StatCard(
+                          iconPath: IconPath.completed,
+                          title: "Voltooid",
+                          count: taskOverviewController.stats.value.completed,
+                          countTextStyle: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primaryBlack,
+                          ),
+                        ),
+                      ),
+
+                      // StatCard for "Te laat"
+                      FractionallySizedBox(
+                        widthFactor:
+                            0.48, // Set the width to 48% of the parent width
+                        child: StatCard(
+                          iconPath: IconPath.tooLate,
+                          title: "Te laat",
+                          count: taskOverviewController.stats.value.overdue,
+                          countTextStyle: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.secondaryRed,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  StatCard(
-                    iconPath: IconPath.inProgress,
-                    title: "In uitvoering",
-                    count: stats.inProgress,
-                    countTextStyle: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.primaryGreen,
-                    ),
-                  ),
-                  StatCard(
-                    iconPath: IconPath.completed,
-                    title: "Voltooid",
-                    count: stats.completed,
-                    countTextStyle: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.primaryBlack,
-                    ),
-                  ),
-                  StatCard(
-                    iconPath: IconPath.tooLate,
-                    title: "Te laat",
-                    count: stats.overdue,
-                    countTextStyle: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.secondaryRed,
-                    ),
-                  ),
+
                   GestureDetector(
                     onTap: () {
                       Get.to(() => AllTasksScreen());
                     },
                     child: StatCard(
                       iconPath: IconPath.totalNumberOfTasks,
-                      title: "Totaal aantal takennnn",
-                      count: stats.total,
-                      width:
-                          screenWidth -
-                          36, // Adjusted for 18px padding on both sides
+                      title: "Totaal aantal taken",
+                      count:
+                          taskOverviewController.stats.value.assigned +
+                          taskOverviewController.stats.value.inProgress +
+                          taskOverviewController.stats.value.completed +
+                          taskOverviewController.stats.value.overdue +
+                          taskOverviewController.stats.value.unassigned,
+                      width: screenWidth - 36,
                       crossAxisAlignment: CrossAxisAlignment.center,
-
                       countTextStyle: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w600,
@@ -127,30 +212,28 @@ class TaskManagerScreen extends StatelessWidget {
                     ),
                   ),
                 ],
-              );
-            }),
+              ),
 
-            SizedBox(height: 30),
+              const SizedBox(height: 30),
 
-            // Unassigned Tasks Button
-            Obx(
-              () => SizedBox(
+              // Unassigned Tasks Button
+              SizedBox(
                 height: 54,
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(() => TaskRequestListView());
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.secondaryBlue,
                     foregroundColor: AppColors.primaryBlack,
-                    side: BorderSide(color: Colors.blue),
+                    side: const BorderSide(color: Colors.blue),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(32),
                     ),
-                    padding: EdgeInsets.symmetric(vertical: 8),
+                    padding: const EdgeInsets.symmetric(vertical: 8),
                   ),
-
                   child: Row(
-                    //mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       CircleAvatar(
@@ -159,104 +242,99 @@ class TaskManagerScreen extends StatelessWidget {
                           "${taskOverviewController.stats.value.unassigned}",
                           style: getTextStyle(
                             fontWeight: FontWeight.w600,
-
                             fontSize: 16,
                             color: AppColors.primaryBlue,
                           ),
                         ),
                       ),
-                      SizedBox(width: 20),
-                      Text("Niet-toegewezen taken"),
-                      SizedBox(width: 40),
+                      const SizedBox(width: 20),
+                      const Text("Niet-toegewezen taken"),
+                      const SizedBox(width: 40),
                       Image.asset(IconPath.arrowRight2),
                     ],
                   ),
                 ),
               ),
-            ),
 
-            SizedBox(height: 12),
+              const SizedBox(height: 12),
 
-            // Create New task Button
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Get.to(() => CreateNewTaskScreen());
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                  minimumSize: Size(double.infinity, 48),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(32),
+              // Create New Task Button
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Get.to(() => CreateNewTaskScreen());
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
+                    minimumSize: const Size(double.infinity, 48),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(32),
+                    ),
+                  ),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Nieuwe taak aanmaken"),
+                      SizedBox(width: 8),
+                      Icon(Icons.add),
+                    ],
                   ),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Nieuwe taak aanmaken"),
-                    SizedBox(width: 8),
-                    Icon(Icons.add),
-                  ],
-                ),
               ),
-            ),
 
-            SizedBox(height: 24),
-            Column(
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      "Taakverzoeken",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
+              const SizedBox(height: 24),
 
-                Align(
-                  alignment: Alignment.topRight,
-                  child: TextButton(
-                    onPressed: () {
-                      Get.to(() => TaskRequestListView());
-                    },
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          "Bekijk alles ",
-                          style: getTextStyle(
-                            color: AppColors.primaryGold,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
+              // Task Requests Section
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Taakverzoeken",
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
                         ),
-                        const SizedBox(width: 4),
-                        Image.asset(IconPath.arrowRight3),
-                      ],
-                    ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Get.to(() => TaskRequestListView());
+                        },
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "Bekijk alles ",
+                              style: getTextStyle(
+                                color: AppColors.primaryGold,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            Image.asset(IconPath.arrowRight3),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
 
-            // Calling Task_Request_Card Widgets
-            Obx(
-              () => Column(
-                children:
-                    // ignore: invalid_use_of_protected_member
-                    taskRequestController.taskRequests.value
-                        .map((req) => TaskRequestCard(req: req))
-                        .toList(),
+                  // Task Request Cards
+                  Column(
+                    children:
+                        taskRequestController.taskRequests.value
+                            .map((req) => TaskRequestCard(req: req))
+                            .toList(),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
-      ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }

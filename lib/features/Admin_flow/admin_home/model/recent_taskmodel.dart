@@ -30,7 +30,7 @@ final List<RecentTask> recentTasks = [
     workerName: "Albert Flores",
     timeAgo: "2h ago",
     status: "In Behandeling",
-    statusColor: const Color(0xffE9F4FF),
+    statusColor: Color(0xffE9F4FF),
     statusTextColor: AppColors.buttonPrimary,
   ),
   RecentTask(
@@ -39,7 +39,7 @@ final List<RecentTask> recentTasks = [
     workerName: "John Doe",
     timeAgo: "5h ago",
     status: "Toegewezen",
-    statusColor: const Color(0xffE9F4FF),
+    statusColor: Color(0xffE9F4FF),
     statusTextColor: AppColors.buttonPrimary,
   ),
   RecentTask(

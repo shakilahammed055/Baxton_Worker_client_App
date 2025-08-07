@@ -10,6 +10,7 @@ class CustomButton extends StatelessWidget {
     this.textStyle,
     required this.onPress,
     this.textcolor = Colors.yellowAccent,
+    SizedBox? child,
   });
   final Color textcolor;
   final String title;

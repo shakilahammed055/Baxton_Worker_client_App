@@ -1,4 +1,3 @@
-// models/service_model.dart
 class Service {
   final String title;
   final String location;

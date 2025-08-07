@@ -1,7 +1,6 @@
 import 'package:baxton/core/common/widgets/custom_continue_button.dart';
 import 'package:baxton/core/utils/constants/colors.dart';
 import 'package:baxton/features/klant_flow/authentication/controller/k_forget_password_controller.dart';
-import 'package:baxton/features/werknemer_flow/authentication/views/change_password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';

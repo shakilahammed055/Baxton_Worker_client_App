@@ -65,51 +65,6 @@ class ReviewRequestScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 16),
-                // labelBox([
-                //   Row(
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     children: [
-                //       // Left side: Invoice Number (label above, value below)
-                //       Expanded(
-                //         flex: 1,
-                //         child: Column(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             Text(
-                //               "Invoice Number:",
-                //               style: TextStyle(fontWeight: FontWeight.bold),
-                //             ),
-                //             SizedBox(height: 4),
-                //             Text(data.invoiceNumber),
-                //           ],
-                //         ),
-                //       ),
-                //       // Right side: Date Issued and Due Date (already in column format)
-                //       Expanded(
-                //         flex: 1,
-                //         child: Column(
-                //           crossAxisAlignment: CrossAxisAlignment.end,
-                //           children: [
-                //             Text(
-                //               "Date Issued:",
-                //               style: TextStyle(fontWeight: FontWeight.bold),
-                //             ),
-                //             SizedBox(height: 4),
-                //             Text(data.issuedDate),
-                //             SizedBox(height: 8),
-                //             Text(
-                //               "Due Date:",
-                //               style: TextStyle(fontWeight: FontWeight.bold),
-                //             ),
-                //             SizedBox(height: 4),
-                //             Text(data.dueDate),
-                //           ],
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ]),
-
                 // Invoice Number, Date Issued, and Due Date
                 labelBox([
                   Padding(

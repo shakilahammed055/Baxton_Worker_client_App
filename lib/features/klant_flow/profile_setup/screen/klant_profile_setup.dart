@@ -11,6 +11,7 @@ class KlantProfileSetup extends StatelessWidget {
   final KlantProfileController klantProfileController = Get.put(
     KlantProfileController(),
   );
+
   Widget _buildProfileImage() {
     if (klantProfileController.selectedImagePath.value.isNotEmpty) {
       return CircleAvatar(
@@ -19,11 +20,9 @@ class KlantProfileSetup extends StatelessWidget {
           File(klantProfileController.selectedImagePath.value),
         ),
       );
-      // } else if (klantProfileController.logoUrl.value.isNotEmpty) {
     } else if (klantProfileController.selectedImagePath.value.isNotEmpty) {
       return CircleAvatar(
         radius: 80,
-        // backgroundImage: NetworkImage(klantProfileController.logoUrl.value),
         backgroundImage: NetworkImage(
           klantProfileController.selectedImagePath.value,
         ),
@@ -37,8 +36,6 @@ class KlantProfileSetup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // GetX Controller binding
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -107,12 +104,6 @@ class KlantProfileSetup extends StatelessWidget {
                 label: 'Naam',
                 controller: klantProfileController.name,
               ),
-              // SizedBox(height: 12),
-              // _buildTextField(
-              //   label: 'Telefoonnummer',
-              //   controller: klantProfileController.phoneNumber,
-              // ),
-
               SizedBox(height: 12),
               _buildTextField(
                 label: 'Locatie',
@@ -125,13 +116,6 @@ class KlantProfileSetup extends StatelessWidget {
                 label: 'Doorgaan',
                 onPressed: klantProfileController.onSubmit,
               ),
-              
-              // SizedBox(height: 16),
-              // _buildActionButton(
-              //   label: 'Overslaan',
-              //   onPressed: klantProfileController.onSkip,
-              //   isOutline: true,
-              // ),
             ],
           ),
         ),

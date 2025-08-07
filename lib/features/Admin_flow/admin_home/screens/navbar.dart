@@ -1,20 +1,16 @@
 import 'package:baxton/core/common/styles/global_text_style.dart';
 import 'package:baxton/core/utils/constants/colors.dart';
 import 'package:baxton/core/utils/constants/icon_path.dart';
-import 'package:baxton/features/Admin_flow/Bericht/screens/chat_page.dart';
 
 import 'package:baxton/features/Admin_flow/betalingsbeheer/screen/betalingsbeheer_screen.dart';
 
 import 'package:baxton/features/Admin_flow/admin_home/screens/admin_home_screens.dart';
 import 'package:baxton/features/Admin_flow/instellingen/settings/view/settings_screen.dart';
 import 'package:baxton/features/Admin_flow/medewerkerbeheer/views/medewerkerbeheer_screen.dart';
-
-import 'package:baxton/features/Admin_flow/meldingen/view/notification_screen.dart';
-
 import 'package:baxton/features/Admin_flow/taakbeheer/task_manager/views/task_manager_screen.dart';
-
 import 'package:baxton/features/Admin_flow/rapporten/screen/rapporten_screen.dart';
-
+import 'package:baxton/features/klant_flow/message_screen/screens/chat_page.dart';
+import 'package:baxton/features/klant_flow/notification/screens/notification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -108,7 +104,7 @@ class Navbar extends StatelessWidget {
             title: "Bericht",
             iconPath: [IconPath.activatebericht, IconPath.deactivatebericht],
             onTapCallback: () {
-              Get.to(BerichtMessageScreen());
+              Get.to(MessageScreen());
             },
           ),
           buildListTile(
@@ -120,6 +116,7 @@ class Navbar extends StatelessWidget {
               IconPath.deactivatemeldingen,
             ],
             onTapCallback: () {
+              // Get.to(NotificationScreen());
               Get.to(NotificationScreen());
             },
           ),

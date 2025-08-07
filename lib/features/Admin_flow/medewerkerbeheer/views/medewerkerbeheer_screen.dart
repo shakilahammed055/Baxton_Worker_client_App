@@ -1,3 +1,4 @@
+// ignore_for_file: use_build_context_synchronously
 import 'package:baxton/core/common/styles/global_text_style.dart';
 import 'package:baxton/core/common/widgets/custom_search_field.dart';
 import 'package:baxton/core/utils/constants/colors.dart';
@@ -9,11 +10,10 @@ import 'package:baxton/features/Admin_flow/medewerkerbeheer/widgets/profile_card
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-// ignore: must_be_immutable
 class MedewerkerbeheerScreen extends StatelessWidget {
   MedewerkerbeheerScreen({super.key});
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  MedewerkerbeheerController medewerkerbeheerController = Get.put(
+  final MedewerkerbeheerController medewerkerbeheerController = Get.put(
     MedewerkerbeheerController(),
   );
 
@@ -81,14 +81,14 @@ class MedewerkerbeheerScreen extends StatelessWidget {
                                 ),
                               ),
                               Spacer(),
-                              Text(
-                                "15",
-                                style: getTextStyle(
-                                  color: Color(0xff62B2FD),
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
+                              Obx(() => Text(
+                                    "${medewerkerbeheerController.employees.where((e) => e.user != null).length}",
+                                    style: getTextStyle(
+                                      color: Color(0xff62B2FD),
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  )),
                             ],
                           ),
                         ),
@@ -122,14 +122,14 @@ class MedewerkerbeheerScreen extends StatelessWidget {
                                 ),
                               ),
                               Spacer(),
-                              Text(
-                                "15",
-                                style: getTextStyle(
-                                  color: AppColors.primaryGold,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
+                              Obx(() => Text(
+                                    "${medewerkerbeheerController.employees.where((e) => e.user == null).length}",
+                                    style: getTextStyle(
+                                      color: AppColors.primaryGold,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  )),
                             ],
                           ),
                         ),
@@ -164,14 +164,14 @@ class MedewerkerbeheerScreen extends StatelessWidget {
                           ),
                         ),
                         Spacer(),
-                        Text(
-                          "15",
-                          style: getTextStyle(
-                            color: Color(0xff33DB2A),
-                            fontSize: 24,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                        Obx(() => Text(
+                              "${medewerkerbeheerController.employees.length}",
+                              style: getTextStyle(
+                                color: Color(0xff33DB2A),
+                                fontSize: 24,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            )),
                       ],
                     ),
                   ),
@@ -183,8 +183,7 @@ class MedewerkerbeheerScreen extends StatelessWidget {
                       child: SizedBox(
                         child: CustomSearchTextField(
                           hintText: "",
-                          controller:
-                              medewerkerbeheerController.searchController,
+                          controller: medewerkerbeheerController.searchController,
                           prefixIcon: Icon(
                             Icons.search,
                             size: 18,
@@ -218,8 +217,7 @@ class MedewerkerbeheerScreen extends StatelessWidget {
                                   padding: const EdgeInsets.all(16.0),
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Filter",
@@ -235,37 +233,27 @@ class MedewerkerbeheerScreen extends StatelessWidget {
                                         decoration: const InputDecoration(
                                           border: OutlineInputBorder(),
                                         ),
-                                        items:
-                                            ['New York', 'Canada', 'USA']
-                                                .map(
-                                                  (skill) => DropdownMenuItem(
-                                                    value: skill,
-                                                    child: Text(
-                                                      skill,
-                                                      style: getTextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color:
-                                                            AppColors
-                                                                .primaryGold,
-                                                      ),
-                                                    ),
+                                        items: ['New York', 'Canada', 'USA', 'Dhaka', 'Test']
+                                            .map(
+                                              (location) => DropdownMenuItem(
+                                                value: location,
+                                                child: Text(
+                                                  location,
+                                                  style: getTextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: AppColors.primaryGold,
                                                   ),
-                                                )
-                                                .toList(),
+                                                ),
+                                              ),
+                                            )
+                                            .toList(),
                                         onChanged: (value) {
                                           if (value != null) {
-                                            medewerkerbeheerController
-                                                .setSelectedLocation(value);
+                                            medewerkerbeheerController.setSelectedLocation(value);
                                           }
-
-                                          if (medewerkerbeheerController
-                                                      .selectedLocation !=
-                                                  null &&
-                                              medewerkerbeheerController
-                                                      .selectedExpertise !=
-                                                  null) {
+                                          if (medewerkerbeheerController.selectedLocation != null &&
+                                              medewerkerbeheerController.selectedExpertise != null) {
                                             Navigator.pop(context);
                                           }
                                         },
@@ -285,48 +273,35 @@ class MedewerkerbeheerScreen extends StatelessWidget {
                                         decoration: const InputDecoration(
                                           border: OutlineInputBorder(),
                                         ),
-                                        items:
-                                            [
-                                                  'Specialist Schimmelremediëring',
-                                                  'Specialist Woninginspecties',
-                                                  'Vochtbeheersing Technicus',
-                                                  'Specialist Pleisterwerken',
-                                                  'Schilder',
-                                                  'Nicotinevlekken Verwijdering Technicus',
-                                                  'Nooddienst Technicus',
-                                                ]
-                                                .map(
-                                                  (skill) => DropdownMenuItem(
-                                                    value: skill,
-                                                    child: Text(
-                                                      skill,
-                                                      style: getTextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color:
-                                                            AppColors
-                                                                .primaryGold,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )
-                                                .toList(),
+                                        items: [
+                                          'Specialist Schimmelremediëring',
+                                          'Specialist Woninginspecties',
+                                          'Vochtbeheersing Technicus',
+                                          'Specialist Pleisterwerken',
+                                          'Schilder',
+                                          'Nicotinevlekken Verwijdering Technicus',
+                                          'Nooddienst Technicus',
+                                          'Schimmel Inspecties Behandelingen',
+                                        ].map(
+                                          (skill) => DropdownMenuItem(
+                                            value: skill,
+                                            child: Text(
+                                              skill,
+                                              style: getTextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: AppColors.primaryGold,
+                                              ),
+                                            ),
+                                          ),
+                                        ).toList(),
                                         onChanged: (value) {
                                           if (value != null) {
-                                            medewerkerbeheerController
-                                                .setSelectedExpertise(value);
+                                            medewerkerbeheerController.setSelectedExpertise(value);
                                           }
-                                          // Check if both selections are made
-                                          if (medewerkerbeheerController
-                                                      .selectedLocation !=
-                                                  null &&
-                                              medewerkerbeheerController
-                                                      .selectedExpertise !=
-                                                  null) {
-                                            Navigator.pop(
-                                              context,
-                                            ); // Close the dialog
+                                          if (medewerkerbeheerController.selectedLocation != null &&
+                                              medewerkerbeheerController.selectedExpertise != null) {
+                                            Navigator.pop(context);
                                           }
                                         },
                                         hint: Text(
@@ -356,33 +331,30 @@ class MedewerkerbeheerScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 20),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: medewerkerbeheerController.profiles.length,
-                  itemBuilder: (context, index) {
-                    return ProfileCard(
-                      imagePath:
-                          medewerkerbeheerController
-                              .profiles[index]['imagePath']!,
-                      name: medewerkerbeheerController.profiles[index]['name']!,
-                      designation:
-                          medewerkerbeheerController
-                              .profiles[index]['designation']!,
-                      onTap: () {
-                        // debugPrint(
-                        //   "Tapped on ${medewerkerbeheerController.profiles[index]['name']}",
-                        // );
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MedewerkerGegevens(),
-                          ),
+                Obx(() => ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: medewerkerbeheerController.filteredEmployees.length, // Use filteredEmployees
+                      itemBuilder: (context, index) {
+                        final employee = medewerkerbeheerController.filteredEmployees[index];
+                        return ProfileCard(
+                          imagePath: employee.profilePic?.url ?? IconPath.profilepic,
+                          name: employee.user?.name ?? employee.userName ?? "Unknown",
+                          designation: employee.workerSpecialist?.name ?? 'Geen specialisatie',
+                          onTap: () async {
+                            final workerDetails = await medewerkerbeheerController.fetchWorkerDetails(employee.id);
+                            if (workerDetails != null) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MedewerkerGegevens(workerDetails: workerDetails),
+                                ),
+                              );
+                            }
+                          },
                         );
                       },
-                    );
-                  },
-                ),
+                    )),
               ],
             ),
           ),

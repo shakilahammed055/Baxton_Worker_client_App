@@ -14,7 +14,7 @@ import 'package:get/get.dart';
 
 class SinglePageChat extends StatelessWidget {
   final Map<String, dynamic> chat;
-
+  // final conversetionID;
   SinglePageChat({super.key, required this.chat});
   final darkcontroller = Get.put(ProfileController());
 
@@ -37,10 +37,10 @@ class SinglePageChat extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             color: AppColors.textWhite,
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(30.0),
-              bottomRight: Radius.circular(30.0),
-            ),
+            // borderRadius: BorderRadius.only(
+            //   bottomLeft: Radius.circular(30.0),
+            //   bottomRight: Radius.circular(30.0),
+            // ),
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.only(
@@ -297,6 +297,7 @@ class SinglePageChat extends StatelessWidget {
                     child: CustomSingleTextfield(
                       focusNode: focusNode,
                       controller: controller,
+                      textColor: AppColors.textPrimary,
                     ),
                   ),
                 ],

@@ -3,21 +3,29 @@ import 'package:baxton/core/common/widgets/custom_button.dart';
 import 'package:baxton/core/utils/constants/colors.dart';
 import 'package:baxton/core/utils/constants/icon_path.dart';
 import 'package:baxton/features/Admin_flow/medewerkerbeheer/controller/medewerkerbeheer_controller.dart';
+import 'package:baxton/features/Admin_flow/medewerkerbeheer/models/worker_details_model.dart';
 import 'package:baxton/features/Admin_flow/medewerkerbeheer/widgets/task_card.dart';
+import 'package:baxton/features/Admin_flow/taakbeheer/task_request/view/task_request_view_all_screen.dart';
+import 'package:baxton/features/klant_flow/message_screen/screens/chat_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class MedewerkerGegevens extends StatelessWidget {
-  MedewerkerGegevens({super.key});
-  final MedewerkerbeheerController medewerkerbeheerController = Get.put(
-    MedewerkerbeheerController(),
-  );
+  final Workerdetails workerDetails;
+  MedewerkerGegevens({super.key, required this.workerDetails});
+
+  final MedewerkerbeheerController medewerkerbeheerController =
+      Get.find<MedewerkerbeheerController>();
 
   @override
   Widget build(BuildContext context) {
+    final data = workerDetails.data;
+
     return Scaffold(
       backgroundColor: Color(0xffF4F4F4),
       appBar: AppBar(
+        backgroundColor: Color(0xffF4F4F4),
         leading: Padding(
           padding: const EdgeInsets.all(12),
           child: GestureDetector(
@@ -44,62 +52,50 @@ class MedewerkerGegevens extends StatelessWidget {
             color: AppColors.textPrimary,
           ),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: GestureDetector(
-              onTap: () {
-                showMenu(
-                  context: context,
-                  position: RelativeRect.fromLTRB(100.0, 70.0, 0.0, 0.0),
-                  color: AppColors.textWhite,
-                  items: <PopupMenuEntry<String>>[
-                    PopupMenuItem<String>(
-                      value: 'Profiel bewerken',
-                      child: Text(
-                        'Profiel bewerken',
-                        style: getTextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.primaryGold,
-                        ),
-                      ),
-                    ),
-                    PopupMenuItem<String>(
-                      value: 'Status wijzigen',
-                      child: Text(
-                        'Status wijzigen',
-                        style: getTextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.primaryGold,
-                        ),
-                      ),
-                    ),
-                    PopupMenuItem<String>(
-                      value: 'Profiel opschorten',
-                      child: Text(
-                        'Profiel opschorten',
-                        style: getTextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.primaryGold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ).then((value) {
-                  if (value != null) {
-                    medewerkerbeheerController.setPosition(value);
-                  }
-                });
-              },
-              child: Image.asset(IconPath.menu, height: 16, width: 4),
-            ),
-          ),
-        ],
+        // actions: [
+        //   Padding(
+        //     padding: const EdgeInsets.all(10),
+        //     child: GestureDetector(
+        //       onTap: () {
+        //         showMenu(
+        //           context: context,
+        //           position: RelativeRect.fromLTRB(100.0, 70.0, 0.0, 0.0),
+        //           color: AppColors.textWhite,
+        //           items: <PopupMenuEntry<String>>[
+        //             PopupMenuItem<String>(
+        //               value: 'Status wijzigen',
+        //               child: Text(
+        //                 'Status wijzigen',
+        //                 style: getTextStyle(
+        //                   fontSize: 16,
+        //                   fontWeight: FontWeight.w500,
+        //                   color: AppColors.primaryGold,
+        //                 ),
+        //               ),
+        //             ),
+        //             PopupMenuItem<String>(
+        //               value: 'Profiel opschorten',
+        //               child: Text(
+        //                 'Profiel opschorten',
+        //                 style: getTextStyle(
+        //                   fontSize: 16,
+        //                   fontWeight: FontWeight.w500,
+        //                   color: AppColors.primaryGold,
+        //                 ),
+        //               ),
+        //             ),
+        //           ],
+        //         ).then((value) {
+        //           if (value != null) {
+        //             medewerkerbeheerController.setPosition(value);
+        //           }
+        //         });
+        //       },
+        //       child: Image.asset(IconPath.menu, height: 16, width: 4),
+        //     ),
+        //   ),
+        // ],
       ),
-
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(10),
@@ -108,12 +104,16 @@ class MedewerkerGegevens extends StatelessWidget {
               Align(
                 alignment: Alignment.center,
                 child: CircleAvatar(
-                  child: Image.asset(IconPath.employe, height: 250, width: 250),
+                  radius: 60,
+                  backgroundImage:
+                      data.profilePic != null && data.profilePic!.url.isNotEmpty
+                          ? NetworkImage(data.profilePic!.url)
+                          : AssetImage(IconPath.employe) as ImageProvider,
                 ),
               ),
               SizedBox(height: 15),
               Text(
-                "Dianne Russell",
+                data.userName,
                 style: getTextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.w600,
@@ -122,7 +122,7 @@ class MedewerkerGegevens extends StatelessWidget {
               ),
               SizedBox(height: 5),
               Text(
-                "Id: 123456789",
+                "Id: ${data.workerId}",
                 style: getTextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -132,7 +132,9 @@ class MedewerkerGegevens extends StatelessWidget {
               SizedBox(height: 20),
               CustomButton(
                 title: "Taak Toewijzen",
-                onPress: () {},
+                onPress: () {
+                  Get.to(TaskRequestListView());
+                },
                 borderColor: Colors.transparent,
                 backgroundColor: AppColors.buttonPrimary,
                 textcolor: Colors.white,
@@ -140,7 +142,9 @@ class MedewerkerGegevens extends StatelessWidget {
               SizedBox(height: 20),
               CustomButton(
                 title: "Bericht",
-                onPress: () {},
+                onPress: () {
+                  Get.to(MessageScreen());
+                },
                 borderColor: AppColors.buttonPrimary,
                 backgroundColor: Colors.transparent,
                 textcolor: AppColors.buttonPrimary,
@@ -169,7 +173,9 @@ class MedewerkerGegevens extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "Dakspecialist",
+                            data.workerSpecialist != null
+                                ? data.workerSpecialist!.name
+                                : "Geen expertise",
                             style: getTextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -191,7 +197,7 @@ class MedewerkerGegevens extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "+001 234 567",
+                            data.user.phone,
                             style: getTextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -212,12 +218,19 @@ class MedewerkerGegevens extends StatelessWidget {
                               color: AppColors.textThird,
                             ),
                           ),
-                          Text(
-                            "example123@gmail.com",
-                            style: getTextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.buttonPrimary,
+                          SizedBox(
+                            width: 250,
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                data.user.email,
+                                style: getTextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.buttonPrimary,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ),
                         ],
@@ -235,7 +248,7 @@ class MedewerkerGegevens extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "123 Hoofdstraat, Stadsville",
+                            "${data.location}, ${data.assignedService.isNotEmpty ? data.assignedService.first.city : 'Geen stad'}",
                             style: getTextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -257,7 +270,11 @@ class MedewerkerGegevens extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "10 januari 2022",
+                            data.assignedService.isNotEmpty
+                                ? DateFormat(
+                                  'dd MMMM yyyy',
+                                ).format(data.assignedService.first.createdAt)
+                                : "Onbekend",
                             style: getTextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -270,7 +287,6 @@ class MedewerkerGegevens extends StatelessWidget {
                   ),
                 ),
               ),
-
               SizedBox(height: 20),
               Row(
                 children: [
@@ -286,7 +302,7 @@ class MedewerkerGegevens extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "30",
+                            "${data.totalAssigned}",
                             style: getTextStyle(
                               color: Color(0xff33DB2A),
                               fontSize: 24,
@@ -319,7 +335,7 @@ class MedewerkerGegevens extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "30",
+                            "${data.totalCompleted}",
                             style: getTextStyle(
                               color: Color(0xffD9A300),
                               fontSize: 24,
@@ -328,7 +344,7 @@ class MedewerkerGegevens extends StatelessWidget {
                           ),
                           SizedBox(height: 10),
                           Text(
-                            "Totaal Taak",
+                            "Voltooid",
                             style: getTextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
@@ -352,7 +368,7 @@ class MedewerkerGegevens extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "25",
+                            "${data.totalPending}",
                             style: getTextStyle(
                               color: AppColors.textThird,
                               fontSize: 24,
@@ -361,7 +377,7 @@ class MedewerkerGegevens extends StatelessWidget {
                           ),
                           SizedBox(height: 10),
                           Text(
-                            "Totaal Taak",
+                            "In Afwachting",
                             style: getTextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
@@ -408,7 +424,7 @@ class MedewerkerGegevens extends StatelessWidget {
                       Align(
                         alignment: Alignment.center,
                         child: Text(
-                          "4.5/5",
+                          "${data.averageRating}/5",
                           style: getTextStyle(
                             color: AppColors.textPrimary,
                             fontSize: 16,
@@ -429,40 +445,49 @@ class MedewerkerGegevens extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Container(
-                  height: 48,
-                  width: 48,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(width: 1, color: Color(0xffF3E2B0)),
-                  ),
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: Image.asset(IconPath.filter, height: 24, width: 24),
-                  ),
-                ),
-              ),
-
+              // Align(
+              //   alignment: Alignment.centerRight,
+              //   child: Container(
+              //     height: 48,
+              //     width: 48,
+              //     decoration: BoxDecoration(
+              //       borderRadius: BorderRadius.circular(12),
+              //       border: Border.all(width: 1, color: Color(0xffF3E2B0)),
+              //     ),
+              //     child: IconButton(
+              //       onPressed: () {},
+              //       icon: Image.asset(IconPath.filter, height: 24, width: 24),
+              //     ),
+              //   ),
+              // ),
               SizedBox(height: 15),
-              ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: medewerkerbeheerController.tasks.length,
-                separatorBuilder:
-                    (context, index) => const SizedBox(height: 12),
-                itemBuilder: (context, index) {
-                  final task = medewerkerbeheerController.tasks[index];
-                  return TaskCard(
-                    title: task.title,
-                    userName: task.userName,
-                    date: task.date,
-                    status: task.status,
-                    statusColor: task.statusColor,
-                    statusTextColor: task.statusTextColor,
-                  );
-                },
+              Obx(
+                () => ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: medewerkerbeheerController.tasks.length,
+                  separatorBuilder:
+                      (context, index) => const SizedBox(height: 12),
+                  itemBuilder: (context, index) {
+                    final task = medewerkerbeheerController.tasks[index];
+                    return TaskCard(
+                      title: task.problemDescription,
+                      userName: task.name,
+                      date: DateFormat(
+                        'dd MMMM, yyyy',
+                      ).format(task.preferredDate),
+                      status: task.status,
+                      statusColor:
+                          task.status.toLowerCase() == 'in afwachting'
+                              ? Color(0xffE9F4FF)
+                              : Color(0xffEBEBEB),
+                      statusTextColor:
+                          task.status.toLowerCase() == 'in afwachting'
+                              ? Color(0xff1E90FF)
+                              : AppColors.textPrimary,
+                    );
+                  },
+                ),
               ),
             ],
           ),

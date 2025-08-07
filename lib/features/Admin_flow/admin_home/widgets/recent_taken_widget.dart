@@ -39,12 +39,16 @@ class RecentTaskItem extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  taskName,
-                  style: getTextStyle(
-                    color: AppColors.textPrimary,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
+                SizedBox(
+                  width: 165,
+                  child: Text(
+                    taskName,
+                    style: getTextStyle(
+                      color: AppColors.textPrimary,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 Row(
@@ -54,12 +58,16 @@ class RecentTaskItem extends StatelessWidget {
                       size: 17,
                       color: AppColors.buttonPrimary,
                     ),
-                    Text(
-                      location,
-                      style: getTextStyle(
-                        color: AppColors.textSecondary,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
+                    SizedBox(
+                      width: 132,
+                      child: Text(
+                        location,
+                        style: getTextStyle(
+                          color: AppColors.textSecondary,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
@@ -72,18 +80,19 @@ class RecentTaskItem extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Image.asset(
-                      IconPath.worker,
-                      height: 17.5,
-                      width: 17.5,
-                    ),
+                    Image.asset(IconPath.worker, height: 17.5, width: 17.5),
                     const SizedBox(width: 3),
-                    Text(
-                      workerName,
-                      style: getTextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.textThird,
+                    SizedBox(
+                      width: 100,
+                      child: Text(
+                        workerName,
+                        style: getTextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.textThird,
+                          lineHeight: 11,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     const SizedBox(width: 20),

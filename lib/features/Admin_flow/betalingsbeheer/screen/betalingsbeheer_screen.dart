@@ -1,5 +1,3 @@
-// lib/features/Admin_flow/betalingsbeheer/screens/betalingsbeheer_screen.dart
-import 'package:baxton/features/Admin_flow/betalingsbeheer/model/invoice_model.dart';
 import 'package:baxton/features/Admin_flow/betalingsbeheer/screen/betalingsbeheer_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,10 +21,13 @@ class BetalingsbeheerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    controller.fetchInvoiceOverview();
     return Scaffold(
+      backgroundColor: Color(0xffFAFAFA),
       key: _scaffoldKey,
       drawer: const Navbar(),
       appBar: AppBar(
+        backgroundColor: Color(0xffFAFAFA),
         titleSpacing: 0,
         leading: IconButton(
           icon: Image.asset(IconPath.notes),
@@ -63,49 +64,73 @@ class BetalingsbeheerScreen extends StatelessWidget {
                   spacing: 12,
                   runSpacing: 12,
                   children: [
-                    StatCard1(
-                      iconPath: IconPath.cashalert,
-                      title: "Totaalbedrag ontvangen",
-                      count: dollar.assigned,
-                      countTextStyle: getTextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff62B2FD),
+                    // StatCard1 for "Totaalbedrag ontvangen"
+                    FractionallySizedBox(
+                      widthFactor:
+                          0.48, // Set the width to 48% of the parent width
+                      child: StatCard1(
+                        iconPath: IconPath.cashalert,
+                        title: "Totaalbedrag ontvangen",
+                        count: dollar.assigned,
+                        countTextStyle: getTextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xff62B2FD),
+                        ),
                       ),
                     ),
-                    StatCard1(
-                      iconPath: IconPath.moneyaccount,
-                      title: "In afwachting van betalingen",
-                      count: dollar.inProgress,
-                      countTextStyle: getTextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff33DB2A),
+
+                    // StatCard1 for "In afwachting van betalingen"
+                    FractionallySizedBox(
+                      widthFactor:
+                          0.48, // Set the width to 48% of the parent width
+                      child: StatCard1(
+                        iconPath: IconPath.moneyaccount,
+                        title: "In afwachting van betalingen",
+                        count: dollar.inProgress,
+                        countTextStyle: getTextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xff33DB2A),
+                        ),
                       ),
                     ),
-                    StatCard1(
-                      iconPath: IconPath.clockred,
-                      title: "Achterstallige betalingen",
-                      count: dollar.completed,
-                      countTextStyle: getTextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xffDB2A2D),
+
+                    // StatCard1 for "Achterstallige betalingen"
+                    FractionallySizedBox(
+                      widthFactor:
+                          0.48, // Set the width to 48% of the parent width
+                      child: StatCard1(
+                        iconPath: IconPath.clockred,
+                        title: "Achterstallige betalingen",
+                        count: dollar.overdue,
+                        countTextStyle: getTextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xffDB2A2D),
+                        ),
                       ),
                     ),
-                    StatCard1(
-                      iconPath: IconPath.timeralert,
-                      title: "Bevestigde betalingen",
-                      count: dollar.overdue,
-                      countTextStyle: getTextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff1E90FF),
+
+                    // StatCard1 for "Bevestigde betalingen"
+                    FractionallySizedBox(
+                      widthFactor:
+                          0.48, // Set the width to 48% of the parent width
+                      child: StatCard1(
+                        iconPath: IconPath.timeralert,
+                        title: "Bevestigde betalingen",
+                        count: dollar.completed,
+                        countTextStyle: getTextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xff1E90FF),
+                        ),
                       ),
                     ),
                   ],
                 );
               }),
+
               const SizedBox(height: 48),
               Row(
                 children: [
@@ -144,76 +169,37 @@ class BetalingsbeheerScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 20),
-              Obx(
-                () => Column(
-                  children:
-                      controller.invoices
-                          .map(
-                            (invoice) => InvoiceCard(
-                              invoice: invoice,
-                              onDetailsPressed: () {
-                                // _showInvoiceDetails(context, invoice);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder:
-                                        (context) =>
-                                            BetalingsbeheerDetailsScreen(),
-                                  ),
-                                );
-                              },
-                            ),
-                          )
-                          .toList(),
-                ),
-              ),
+              Obx(() {
+                if (controller.invoices.isEmpty) {
+                  return const Center(child: Text('Geen facturen beschikbaar'));
+                }
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: controller.invoices.length,
+                  itemBuilder: (context, index) {
+                    final invoice = controller.invoices[index];
+                    return InvoiceCard(
+                      invoice: invoice,
+                      onDetailsPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (context) => BetalingsbeheerDetailsScreen(
+                                  invoiceId: invoice.id!,
+                                ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                );
+              }),
             ],
           ),
         ),
       ),
     );
-  }
-
-  // ignore: unused_element
-  void _showInvoiceDetails(BuildContext context, Invoice invoice) {
-    showDialog(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            title: Text('Factuur ${invoice.invoiceNumber}'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Klant: ${invoice.customerName}'),
-                const SizedBox(height: 8),
-                Text('Taak: ${invoice.taskName}'),
-                const SizedBox(height: 8),
-                Text('Bedrag: ${invoice.amount}'),
-                const SizedBox(height: 8),
-                Text('Datum: ${invoice.date}'),
-                const SizedBox(height: 8),
-                Text('Status: ${_getStatusText(invoice.status)}'),
-              ],
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Sluiten'),
-              ),
-            ],
-          ),
-    );
-  }
-
-  String _getStatusText(PaymentStatus status) {
-    switch (status) {
-      case PaymentStatus.pending:
-        return 'In afwachting';
-      case PaymentStatus.confirmed:
-        return 'Bevestigd';
-      case PaymentStatus.overdue:
-        return 'Achterstallig';
-    }
   }
 }

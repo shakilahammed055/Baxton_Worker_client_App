@@ -1,26 +1,28 @@
+import 'package:baxton/features/Admin_flow/admin_home/model/home_data_model.dart';
 import 'package:baxton/features/Admin_flow/admin_home/widgets/task_overview_chart.dart';
 import 'package:baxton/features/Admin_flow/admin_home/widgets/task_status_widget.dart';
 import 'package:flutter/material.dart';
 
-// ignore: camel_case_types
-class piechartwidget extends StatelessWidget {
-  const piechartwidget({super.key});
+class PieChartWidget extends StatelessWidget {
+  final TaskStatistics taskStatistics;
+
+  const PieChartWidget({super.key, required this.taskStatistics});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 362,
+      height: 380,
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: Color(0xffFFFFFF),
-        border: Border.all(width: 1, color: Color(0xffE1E7EC)),
+        color: const Color(0xffFFFFFF),
+        border: Border.all(width: 1, color: const Color(0xffE1E7EC)),
       ),
-      padding: EdgeInsets.all(15),
+      padding: const EdgeInsets.all(15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             "Taak Overzicht",
             style: TextStyle(
               fontSize: 16,
@@ -28,45 +30,48 @@ class piechartwidget extends StatelessWidget {
               color: Color(0xff666666),
             ),
           ),
-          SizedBox(height: 11),
-          Align(alignment: Alignment.center, child: TaskOverviewChart()),
-          SizedBox(height: 28),
+          const SizedBox(height: 11),
+          Align(
+            alignment: Alignment.center,
+            child: TaskOverviewChart(taskStatistics: taskStatistics),
+          ),
+          const SizedBox(height: 28),
           Row(
             children: [
               TaskStatusRow(
-                color: Color(0xff62B2FD),
+                color: const Color(0xff62B2FD),
                 label: "Toegewezen Taken",
-                data: "15",
+                data: taskStatistics.totalAssignedTasks.toString(),
               ),
-              SizedBox(width: 15),
+              const SizedBox(width: 15),
               TaskStatusRow(
-                color: Color(0xff9BDFC4),
+                color: const Color(0xff9BDFC4),
                 label: "In Behandeling",
-                data: "25",
+                data: taskStatistics.totalAssignedTasks.toString(),
               ),
             ],
           ),
-          SizedBox(height: 13),
+          const SizedBox(height: 13),
           Row(
             children: [
               TaskStatusRow(
-                color: Color(0xffF99BAB),
+                color: const Color(0xffF99BAB),
                 label: "Voltooide Taak",
-                data: "15",
+                data: taskStatistics.totalCompletedTasks.toString(),
               ),
-              SizedBox(width: 15),
+              const SizedBox(width: 15),
               TaskStatusRow(
-                color: Color(0xff9F97F7),
+                color: const Color(0xff9F97F7),
                 label: "Te Laat Taken",
-                data: "10",
+                data: taskStatistics.totalLateWork.toString(),
               ),
             ],
           ),
-          SizedBox(height: 13),
+          const SizedBox(height: 13),
           TaskStatusRow(
-            color: Color(0xffFFB44F),
+            color: const Color(0xffFFB44F),
             label: "Niet-Toegewezen Taken",
-            data: "5",
+            data: taskStatistics.totalUnAssignedTask.toString(),
           ),
         ],
       ),

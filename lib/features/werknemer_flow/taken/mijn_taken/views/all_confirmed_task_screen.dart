@@ -1,13 +1,14 @@
 import 'package:baxton/core/common/styles/global_text_style.dart';
 import 'package:baxton/core/utils/constants/colors.dart';
 import 'package:baxton/core/utils/constants/icon_path.dart';
-import 'package:baxton/features/werknemer_flow/werknemer_home/Huis/controller/employee_home_controller.dart';
-import 'package:baxton/features/werknemer_flow/werknemer_home/Huis/view/widget/all_task_card.dart';
+import 'package:baxton/features/werknemer_flow/taken/mijn_taken/controllers/confirm_task_controller.dart';
+import 'package:baxton/features/werknemer_flow/taken/mijn_taken/views/widgets/complete_task_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AllConfirmedTasksScreen extends StatelessWidget {
-  final EmployeeHomeController controller = Get.find<EmployeeHomeController>();
+  final ConfirmedTaskController controller =
+      Get.find<ConfirmedTaskController>();
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class AllConfirmedTasksScreen extends StatelessWidget {
         child: ListView.builder(
           itemCount: controller.confirmedTasks.length,
           itemBuilder: (context, index) {
-            return AllTaskCard(allTask: controller.confirmedTasks[index]);
+            return CompleteTaskCard(task: controller.confirmedTasks[index]);
           },
         ),
       ),

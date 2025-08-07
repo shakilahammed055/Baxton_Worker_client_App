@@ -3,16 +3,19 @@ import 'package:baxton/core/common/widgets/custom_continue_button.dart';
 import 'package:baxton/core/utils/constants/colors.dart';
 import 'package:baxton/core/utils/constants/icon_path.dart';
 import 'package:baxton/core/utils/constants/image_path.dart';
+import 'package:baxton/features/klant_flow/task_screen/controller/signature_controller.dart';
 import 'package:baxton/features/klant_flow/task_screen/controller/task_controller.dart';
 import 'package:baxton/features/klant_flow/task_screen/screens/taakdetails_final.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/instance_manager.dart';
+import 'package:get/get.dart';
+import 'package:signature/signature.dart';
 
 // ignore: must_be_immutable
 class TaakdetailsScreen extends StatelessWidget {
   TaakdetailsScreen({super.key});
   TaskController taskController = Get.put(TaskController());
+  final SharedSignatureController sharedSignatureController =
+      Get.find<SharedSignatureController>();
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +43,12 @@ class TaakdetailsScreen extends StatelessWidget {
                 decoration: ShapeDecoration(
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
-                    side: BorderSide(width: 1, color: const Color(0xFFEBEBEB)),
+                    side: BorderSide(width: 1, color: Color(0xFFEBEBEB)),
                     borderRadius: BorderRadius.circular(16),
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(9),
+                  padding: EdgeInsets.all(9),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -64,7 +67,7 @@ class TaakdetailsScreen extends StatelessWidget {
                               'Mold Treatment',
                               textAlign: TextAlign.center,
                               style: getTextStyle(
-                                color: const Color(0xFF333333),
+                                color: Color(0xFF333333),
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -73,7 +76,7 @@ class TaakdetailsScreen extends StatelessWidget {
                               'Neem de tijd om het dak grondig te inspecteren op eventuele schade. Kijk goed naar de shingles en zorg ervoor dat ze stevig vastzitten. Controleer ook of er geen scheuren of losse delen zijn die problemen kunnen veroorzaken. Vergeet niet om de randen en hoeken extra aandacht te geven, want daar ontstaan vaak de meeste problemen. Een goed onderhouden dak is essentieel voor de bescherming van je huis!',
                               textAlign: TextAlign.center,
                               style: getTextStyle(
-                                color: const Color(0xFF666666),
+                                color: Color(0xFF666666),
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
                                 letterSpacing: -0.28,
@@ -103,7 +106,7 @@ class TaakdetailsScreen extends StatelessWidget {
                                 '11:00 Am',
                                 textAlign: TextAlign.center,
                                 style: getTextStyle(
-                                  color: const Color(0xFF666666),
+                                  color: Color(0xFF666666),
                                   fontSize: 12,
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -123,7 +126,7 @@ class TaakdetailsScreen extends StatelessWidget {
                               Text(
                                 'New York',
                                 style: getTextStyle(
-                                  color: const Color(0xFF666666),
+                                  color: Color(0xFF666666),
                                   fontSize: 12,
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -145,7 +148,7 @@ class TaakdetailsScreen extends StatelessWidget {
                     child: Text(
                       'Taakchecklist',
                       style: TextStyle(
-                        color: const Color(0xFF333333),
+                        color: Color(0xFF333333),
                         fontSize: 18,
                         fontFamily: 'Roboto',
                         fontWeight: FontWeight.w600,
@@ -161,17 +164,17 @@ class TaakdetailsScreen extends StatelessWidget {
                         height: 60,
                         clipBehavior: Clip.antiAlias,
                         decoration: ShapeDecoration(
-                          color: const Color(0xFFFBF6E6),
+                          color: Color(0xFFFBF6E6),
                           shape: RoundedRectangleBorder(
                             side: BorderSide(
                               width: 1,
-                              color: const Color(0xFFD9A300),
+                              color: Color(0xFFD9A300),
                             ),
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(8.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             spacing: 12,
@@ -185,7 +188,7 @@ class TaakdetailsScreen extends StatelessWidget {
                                 'Inspecteer het dak op zichtbare schade',
                                 textAlign: TextAlign.center,
                                 style: getTextStyle(
-                                  color: const Color(0xFF333333),
+                                  color: Color(0xFF333333),
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -199,17 +202,17 @@ class TaakdetailsScreen extends StatelessWidget {
                         height: 60,
                         clipBehavior: Clip.antiAlias,
                         decoration: ShapeDecoration(
-                          color: const Color(0xFFFBF6E6),
+                          color: Color(0xFFFBF6E6),
                           shape: RoundedRectangleBorder(
                             side: BorderSide(
                               width: 1,
-                              color: const Color(0xFFD9A300),
+                              color: Color(0xFFD9A300),
                             ),
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(8.0),
                           child: Row(
                             spacing: 12,
                             children: [
@@ -222,7 +225,7 @@ class TaakdetailsScreen extends StatelessWidget {
                                 'Zoek naar schimmel of watervlekken',
                                 textAlign: TextAlign.center,
                                 style: getTextStyle(
-                                  color: const Color(0xFF333333),
+                                  color: Color(0xFF333333),
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -236,17 +239,17 @@ class TaakdetailsScreen extends StatelessWidget {
                         height: 60,
                         clipBehavior: Clip.antiAlias,
                         decoration: ShapeDecoration(
-                          color: const Color(0xFFFBF6E6),
+                          color: Color(0xFFFBF6E6),
                           shape: RoundedRectangleBorder(
                             side: BorderSide(
                               width: 1,
-                              color: const Color(0xFFD9A300),
+                              color: Color(0xFFD9A300),
                             ),
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(8.0),
                           child: Row(
                             spacing: 12,
                             children: [
@@ -259,7 +262,7 @@ class TaakdetailsScreen extends StatelessWidget {
                                 'Maak fotos van eventuele schade',
                                 textAlign: TextAlign.center,
                                 style: getTextStyle(
-                                  color: const Color(0xFF333333),
+                                  color: Color(0xFF333333),
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -273,17 +276,17 @@ class TaakdetailsScreen extends StatelessWidget {
                         height: 60,
                         clipBehavior: Clip.antiAlias,
                         decoration: ShapeDecoration(
-                          color: const Color(0xFFFBF6E6),
+                          color: Color(0xFFFBF6E6),
                           shape: RoundedRectangleBorder(
                             side: BorderSide(
                               width: 1,
-                              color: const Color(0xFFD9A300),
+                              color: Color(0xFFD9A300),
                             ),
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(8.0),
                           child: Row(
                             spacing: 12,
                             children: [
@@ -296,7 +299,7 @@ class TaakdetailsScreen extends StatelessWidget {
                                 'Rapporteer aan de administratie',
                                 textAlign: TextAlign.center,
                                 style: getTextStyle(
-                                  color: const Color(0xFF333333),
+                                  color: Color(0xFF333333),
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -310,17 +313,17 @@ class TaakdetailsScreen extends StatelessWidget {
                         height: 60,
                         clipBehavior: Clip.antiAlias,
                         decoration: ShapeDecoration(
-                          color: const Color(0xFFFBF6E6),
+                          color: Color(0xFFFBF6E6),
                           shape: RoundedRectangleBorder(
                             side: BorderSide(
                               width: 1,
-                              color: const Color(0xFFD9A300),
+                              color: Color(0xFFD9A300),
                             ),
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(8.0),
                           child: Row(
                             spacing: 24,
                             children: [
@@ -333,7 +336,7 @@ class TaakdetailsScreen extends StatelessWidget {
                                 'Vraag om handtekening van de klant',
                                 textAlign: TextAlign.center,
                                 style: getTextStyle(
-                                  color: const Color(0xFF333333),
+                                  color: Color(0xFF333333),
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -393,14 +396,36 @@ class TaakdetailsScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 12),
+              Text("Draw your signature below:"),
+              SizedBox(height: 10),
               Container(
-                height: 190,
-                width: double.infinity,
+                height: 200,
                 decoration: BoxDecoration(
-                  color: Color(0xff000000).withValues(alpha: .2),
-                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.grey),
+                ),
+                child: Signature(
+                  controller: sharedSignatureController.signaturePadController,
+                  backgroundColor: Colors.white,
                 ),
               ),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  ElevatedButton(
+                    onPressed: sharedSignatureController.saveSignature,
+                    child: const Text("Save"),
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: sharedSignatureController.clearSignature,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                    ),
+                    child: const Text("Clear"),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
               SizedBox(height: 40),
               Align(
                 alignment: Alignment.centerLeft,

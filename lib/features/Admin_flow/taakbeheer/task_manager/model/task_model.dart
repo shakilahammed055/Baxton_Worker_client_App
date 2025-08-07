@@ -3,7 +3,7 @@ class TaskStats {
   final int inProgress;
   final int completed;
   final int overdue;
-  int unassigned;
+  final int unassigned;
 
   TaskStats({
     required this.assigned,
@@ -17,9 +17,15 @@ class TaskStats {
 }
 
 class TaskRequest {
+  final String id;
   final String title;
   final String user;
   final String timeAgo;
 
-  TaskRequest({required this.title, required this.user, required this.timeAgo});
+  TaskRequest({
+    required this.id,
+    required this.title,
+    required this.user,
+    required this.timeAgo,
+  });
 }

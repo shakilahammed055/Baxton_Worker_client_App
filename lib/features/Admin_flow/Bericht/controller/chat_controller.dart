@@ -1,6 +1,10 @@
-
+import 'dart:io';
 import 'package:baxton/core/utils/constants/icon_path.dart';
+import 'package:baxton/features/klant_flow/authentication/auth_service/auth_service.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:web_socket_channel/io.dart';
 
 class BerichtChatController extends GetxController {
   final List<Map<String, String>> chats = [
@@ -75,4 +79,68 @@ class BerichtChatController extends GetxController {
       "isOnline": false.toString(),
     },
   ];
+
+  late IOWebSocketChannel channel;
+  final RxList<String> messages = <String>[].obs;
+  final RxBool isConnected = false.obs;
+  @override
+  void onInit() {
+    super.onInit();
+    connectWebSocket();
+  }
+
+  Future<String> _getFcmToken() async {
+    final firebaseMessaging = FirebaseMessaging.instance;
+    final fCMToken = await firebaseMessaging.getToken();
+    debugPrint('FCM Token: $fCMToken');
+    return fCMToken ?? '';
+  }
+
+
+  Future<void> connectWebSocket() async {
+    debugPrint('Starting connectWebSocket function');
+    try {
+      debugPrint('Attempting to get FCM token');
+      final fcmToken = await _getFcmToken();
+      debugPrint('FCM token retrieved: $fcmToken');
+      debugPrint('Attempting to get auth token');
+      final token = await AuthService.getToken();
+      debugPrint('Auth token retrieved: $token');
+
+      String baseUrl = 'wss://freepik.softvenceomega.com/ts/weak_up';
+      debugPrint('Base WebSocket URL: $baseUrl');
+
+      final urlWithToken = '$baseUrl?fcm_token=$fcmToken';
+      debugPrint('WebSocket URL with FCM token: $urlWithToken');
+
+      final headers = {HttpHeaders.authorizationHeader: 'Bearer $token'};
+      debugPrint('Headers prepared: $headers');
+
+      debugPrint('Attempting WebSocket connection');
+      final socket = await WebSocket.connect(urlWithToken, headers: headers);
+      debugPrint('WebSocket connected successfully');
+
+      channel = IOWebSocketChannel(socket);
+      debugPrint('IOWebSocketChannel initialized');
+
+      isConnected.value = true;
+      debugPrint('isConnected set to true');
+
+      debugPrint('Setting up stream listener');
+    } catch (e) {
+      debugPrint('Failed to connect to WebSocket: $e');
+    }
+    debugPrint('connectWebSocket function completed');
+  }
+
+  void closeSocket() {
+    channel.sink.close();
+    isConnected.value = false;
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+    closeSocket();
+  }
 }

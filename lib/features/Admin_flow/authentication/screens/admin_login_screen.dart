@@ -5,7 +5,7 @@ import 'package:baxton/core/common/widgets/auth_custom_textfield.dart';
 import 'package:baxton/core/common/widgets/custom_continue_button.dart';
 import 'package:baxton/core/utils/constants/colors.dart';
 import 'package:baxton/features/Admin_flow/authentication/controller/admin_login_controller.dart';
-import 'package:baxton/features/Admin_flow/admin_home/screens/admin_home_screens.dart';
+import 'package:baxton/features/Admin_flow/authentication/screens/admin_forget_password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,9 +17,10 @@ class AdminLoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xffFAFAFA),
       appBar: AppBar(
         //automaticallyImplyLeading: false,
+        backgroundColor: Color(0xffFAFAFA),
         centerTitle: true,
         forceMaterialTransparency: true,
         title: Text(
@@ -84,30 +85,49 @@ class AdminLoginScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 16),
-                Obx(() {
-                  return SizedBox(
-                    height: 50,
-                    child: AuthCustomTextField(
-                      onChanged: (value) {
-                        adminloginController.validateFrom();
-                      },
-                      text: 'Voer uw wachtwoord in',
-                      controller: adminloginController.passwordControler,
-                      obscureText: adminloginController.isPasswordVisible.value,
-                      borderColor: AppColors.borderColor,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Incorrect email or password';
-                        }
-                        return null;
-                      },
+                
+                Obx(
+                  () => AuthCustomTextField(
+                    text: 'Voer uw wachtwoord in',
+                    controller: adminloginController.passwordController,
+                    obscureText:
+                        adminloginController.isPasswordVisible.value
+                            ? false
+                            : true,
+                    onChanged: (value) {
+                      adminloginController.onPasswordChanged(value);
+                      adminloginController.validateForm();
+                    },
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        adminloginController.isPasswordFieldEmpty.value
+                            ? Icons
+                                .visibility_outlined // field empty → show normal visibility icon
+                            : (!adminloginController.isPasswordVisible.value
+                                ? Icons
+                                    .visibility_off_outlined // field not empty and visible → show off icon
+                                : Icons
+                                    .visibility_outlined // field not empty and hidden → show normal
+                                    ),
+                        color: Color(0xff37B874),
+                      ),
+                      onPressed: adminloginController.togglePasswordVisibility,
                     ),
-                  );
-                }),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Wachtwoord is vereist';
+                      }
+                      if (value.length < 8) {
+                        return 'Wachtwoord moet minimaal 8 tekens lang zijn';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
                 SizedBox(height: 32),
                 CustomContinueButton(
                   onTap: () {
-                    Get.to(AdminHomeScreen());
+                    adminloginController.login();
                   },
                   textColor: Colors.white,
                   title: "Inloggen",
@@ -118,7 +138,7 @@ class AdminLoginScreen extends StatelessWidget {
                   alignment: Alignment.center,
                   child: GestureDetector(
                     onTap: () {
-                      // Get.to(ForgetPasswordScreen());
+                      Get.to(AdminForgetPasswordScreen());
                     },
                     child: Text(
                       'Wachtwoord vergeten?',

@@ -82,14 +82,7 @@ class EmployeeInfoScreen extends StatelessWidget {
                 child: const Text("Bericht"),
               ),
             ),
-            //OutlinedButton(onPressed: () {}, child: const Text("Bericht")),
             const SizedBox(height: 12),
-
-            // _infoRow("Expertise", e.expertise ?? "-"),
-            // _infoRow("Telefoonnummer", e.phone ?? '—'),
-            // _infoRow("E-mail", e.email ?? "-"),
-            // _infoRow("Locatie", e.location ?? "-"),
-            // _infoRow("Toegevoegd", e.joinDate ?? "-"),
             Container(
               padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -116,56 +109,7 @@ class EmployeeInfoScreen extends StatelessWidget {
             ),
 
             SizedBox(height: 20),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: [
-            //     Container(
-            //       padding: EdgeInsets.all(12),
-            //       decoration: BoxDecoration(
-            //         color: Colors.white,
-            //         borderRadius: BorderRadius.circular(12),
-            //         boxShadow: [
-            //           BoxShadow(
-            //             color: Colors.grey.withOpacity(0.2),
-            //             blurRadius: 6,
-            //             offset: Offset(0, 3),
-            //           ),
-            //         ],
-            //       ),
-            //       child: _countBox("Totaal", e.totalTasks.toString()),
-            //     ),
-            //     Container(
-            //       padding: EdgeInsets.all(12),
-            //       decoration: BoxDecoration(
-            //         color: Colors.white,
-            //         borderRadius: BorderRadius.circular(12),
-            //         boxShadow: [
-            //           BoxShadow(
-            //             color: Colors.grey.withOpacity(0.2),
-            //             blurRadius: 6,
-            //             offset: Offset(0, 3),
-            //           ),
-            //         ],
-            //       ),
-            //       child: _countBox("In Afwachting", e.pendingTasks.toString()),
-            //     ),
-            //     Container(
-            //       padding: EdgeInsets.all(12),
-            //       decoration: BoxDecoration(
-            //         color: Colors.white,
-            //         borderRadius: BorderRadius.circular(12),
-            //         boxShadow: [
-            //           BoxShadow(
-            //             color: Colors.grey.withOpacity(0.2),
-            //             blurRadius: 6,
-            //             offset: Offset(0, 3),
-            //           ),
-            //         ],
-            //       ),
-            //       child: _countBox("Voltooid", e.completedTasks.toString()),
-            //     ),
-            //   ],
-            // ),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

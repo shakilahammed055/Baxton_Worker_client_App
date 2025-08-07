@@ -6,7 +6,7 @@ class AuthService {
   static const _tokenKey = 'token';
   static const _userIdKey = 'id';
   static const _role =
-      'roles'; // This will store the roles as a comma-separated string
+      'UserType'; // This will store the roles as a comma-separated string
   static const _isProfileCreated = 'isProfileCreated';
   static const _profileId = 'profileId';
 

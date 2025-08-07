@@ -1,17 +1,16 @@
 import 'package:baxton/core/common/styles/global_text_style.dart';
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
 class AuthCustomTextField extends StatelessWidget {
-  TextEditingController controller;
-  String text;
-  Widget? suffixIcon;
-  VoidCallback? onTap;
-  bool? obscureText;
-  String? Function(String?)? validator;
+  final TextEditingController controller;
+  final String text;
+  final Widget? suffixIcon;
+  final VoidCallback? onTap;
+  final bool? obscureText;
+  final String? Function(String?)? validator;
   final ValueChanged<String>? onChanged;
-  Color? borderColor;
-  double? borderRadius;
+  final Color? borderColor;
+  final double? borderRadius;
 
   AuthCustomTextField({
     super.key,

@@ -23,7 +23,6 @@ class UserManagementScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Add New User Button --> Nieuwe gebruiker toevoegen
             SizedBox(
               width: double.infinity,
               height: 48,
@@ -42,7 +41,7 @@ class UserManagementScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: const [
                     Text('Nieuwe gebruiker toevoegen'),
-                    SizedBox(width: 8), // spacing between text and icon
+                    SizedBox(width: 8),
                     Icon(Icons.add),
                   ],
                 ),
@@ -56,8 +55,10 @@ class UserManagementScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: TextField(
+                      onChanged: (value) {
+                        userManagementController.updateSearch(value);
+                      },
                       decoration: InputDecoration(
-                        // hintText: 'Zoek...',
                         isDense: true,
                         contentPadding: EdgeInsets.symmetric(
                           vertical: 8.0,
@@ -76,22 +77,31 @@ class UserManagementScreen extends StatelessWidget {
                   ),
                   SizedBox(width: 8),
                   IconButton(
-                    icon: Image.asset(IconPath.filter),
+                    icon: Image.asset(IconPath.filter, height: 28, width: 28),
                     onPressed: () {},
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             Expanded(
-              child: Obx(
-                () => ListView.builder(
-                  itemCount: userManagementController.users.length,
-                  itemBuilder:
-                      (context, index) =>
-                          UserTile(user: userManagementController.users[index]),
-                ),
-              ),
+              child: Obx(() {
+                if (userManagementController.isLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                final users = userManagementController.filteredUsers;
+                if (userManagementController.users.isEmpty) {
+                  return const Center(child: Text('Geen gebruikers gevonden.'));
+                }
+
+                return ListView.builder(
+                  itemCount: users.length,
+                  itemBuilder: (context, index) {
+                    final user = users[index];
+                    return UserTile(user: user);
+                  },
+                );
+              }),
             ),
           ],
         ),

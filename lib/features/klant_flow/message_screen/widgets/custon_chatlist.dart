@@ -26,7 +26,24 @@ class CustomChatList extends StatelessWidget {
       leading: CircleAvatar(
         backgroundColor: Colors.transparent,
         radius: 24,
-        child: Image.asset(imagePath, width: 48, height: 48, fit: BoxFit.cover),
+        child: ClipOval(
+          child: Image.network(
+            imagePath,
+            width: 48,
+            height: 48,
+            fit: BoxFit.cover,
+            errorBuilder:
+                (context, error, stackTrace) => Icon(Icons.person, size: 48),
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+              return SizedBox(
+                width: 48,
+                height: 48,
+                child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+              );
+            },
+          ),
+        ),
       ),
       title: Text(
         name,

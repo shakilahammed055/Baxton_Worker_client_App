@@ -16,8 +16,4 @@ class TaskController extends GetxController {
     }
   }
   final RxInt selectedValue = 5.obs;
-
-
-
-  
 }

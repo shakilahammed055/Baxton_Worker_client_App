@@ -1,32 +1,40 @@
 import 'package:baxton/core/utils/constants/colors.dart';
 import 'package:baxton/core/utils/constants/icon_path.dart';
+import 'package:baxton/features/klant_flow/message_screen/screens/chat_page.dart';
 
 import 'package:baxton/features/werknemer_flow/bottom_navigation_bar/controller/bottom_navbar_controller.dart';
-import 'package:baxton/features/werknemer_flow/chatting/screens/chat_screen.dart';
 
 import 'package:baxton/features/werknemer_flow/taken/mijn_taken/views/mijn_task_screen.dart';
-import 'package:baxton/features/werknemer_flow/profile_setting/views/profile_setting_screen.dart';
+import 'package:baxton/features/werknemer_flow/profile/views/profile_screen.dart';
 import 'package:baxton/features/werknemer_flow/werknemer_home/Huis/view/werknemer_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 // ignore: must_be_immutable
-class BottomNavbar extends StatelessWidget {
-  BottomNavbar({super.key});
+class WorkerBottomNavbar extends StatelessWidget {
+  WorkerBottomNavbar({super.key});
   final BottomNavbarController controller = Get.put(BottomNavbarController());
-  final List<Widget> pages = [
-    WerknemerHomeScreen(),
-    MyTaskScreen(),
-    ChatScreen(),
-    ProfileScreen(),
-  ];
+  Widget _getPage(int index) {
+    switch (index) {
+      case 0:
+        return WerknemerHomeScreen();
+      case 1:
+        return MyTaskScreen();
+      case 2:
+        return MessageScreen();
+      case 3:
+        return ProfileScreen();
+      default:
+        return WerknemerHomeScreen();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
       extendBody: true,
-      body: Obx(() => pages[controller.currentIndex.value]),
+      body: Obx(() => _getPage(controller.currentIndex.value)),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           boxShadow: [

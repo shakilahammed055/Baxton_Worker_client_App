@@ -1,22 +1,25 @@
-import 'dart:io';
 import 'package:baxton/core/common/styles/global_text_style.dart';
 import 'package:baxton/core/common/widgets/auth_custom_textfield.dart';
 import 'package:baxton/core/common/widgets/custom_button.dart';
 import 'package:baxton/core/utils/constants/colors.dart';
 import 'package:baxton/features/klant_flow/authentication/controller/signup_controller.dart';
 import 'package:baxton/features/klant_flow/authentication/screens/login_screen.dart';
-import 'package:baxton/features/klant_flow/bottom_navigationbar/screens/bottom_navigation_ber.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_intl_phone_field/flutter_intl_phone_field.dart';
 import 'package:get/get.dart';
 
 // ignore: must_be_immutable
 class SignupScreen extends StatelessWidget {
   SignupScreen({super.key});
   SignupController singupController = Get.put(SignupController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffFAFAFA),
       appBar: AppBar(
+        backgroundColor: Color(0xffFAFAFA),
         centerTitle: true,
         automaticallyImplyLeading: false,
         forceMaterialTransparency: true,
@@ -48,7 +51,7 @@ class SignupScreen extends StatelessWidget {
               AuthCustomTextField(
                 text: 'Voer uw naam in',
                 onChanged: (value) {
-                  singupController.validateFrom();
+                  singupController.validateForm();
                 },
                 controller: singupController.nameController,
                 validator: (value) {
@@ -68,21 +71,58 @@ class SignupScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 12),
-              AuthCustomTextField(
-                controller: singupController.phoneController1,
-                text: 'Voer uw telefoonnummer in',
-                onChanged: (value) {
-                  singupController.validateFrom();
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Voer uw telefoonnummer in e.g:+8801234567891';
-                  }
-                  RegExp phoneRegex = RegExp(r'^\+8801[3-9][0-9]{8}$');
-                  if (!phoneRegex.hasMatch(value)) {
-                    return 'Ongeldig telefoonnummerformaat. Gebruik +8801XXXXXXXXX';
-                  }
-                  return null;
+              // Phone Number
+              IntlPhoneField(
+                controller: singupController.phoneController,
+                initialCountryCode: 'US',
+                dropdownIcon: Icon(
+                  CupertinoIcons.chevron_down,
+                  color: AppColors.primaryWhite,
+                  size: 16,
+                ),
+                dropdownIconPosition: IconPosition.trailing,
+                decoration: InputDecoration(
+                  hintText: 'Voer uw telefoonnummer in',
+                  hintStyle: getTextStyle(
+                    color: Color(0xFF898989),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  filled: true,
+                  counterText: "",
+                  fillColor: AppColors.primaryWhite,
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 0,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(64),
+                    borderSide: BorderSide(color: AppColors.primaryBlack),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(64),
+                    borderSide: BorderSide(color: AppColors.primaryBlack),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(64),
+                    borderSide: BorderSide(color: AppColors.primaryBlack),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(64),
+                    borderSide: BorderSide(color: Colors.red),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(64),
+                    borderSide: BorderSide(color: Colors.red),
+                  ),
+                ),
+                flagsButtonPadding: EdgeInsets.zero,
+                flagsButtonMargin: EdgeInsets.only(left: 16, right: 0),
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                onChanged: (phone) {
+                  // Use `.value` to update the RxString
+                  singupController.phoneNumberWithCode.value = phone.completeNumber;
+                  singupController.validateForm();  // Validate form after phone number change.
                 },
               ),
               SizedBox(height: 16),
@@ -96,10 +136,10 @@ class SignupScreen extends StatelessWidget {
               ),
               SizedBox(height: 12),
               AuthCustomTextField(
-                controller: singupController.emailController1,
+                controller: singupController.emailController,
                 text: 'Voer uw e-mail in',
                 onChanged: (value) {
-                  singupController.validateFrom();
+                  singupController.validateForm();
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -128,16 +168,20 @@ class SignupScreen extends StatelessWidget {
               Obx(
                 () => AuthCustomTextField(
                   text: 'Voer uw wachtwoord in',
-                  onChanged: (value) {
-                    singupController.validateFrom();
-                  },
                   controller: singupController.passwordController,
-                  obscureText: singupController.isPasswordVisible.value,
+                  obscureText:
+                      singupController.isPasswordVisible.value ? false : true,
+                  onChanged: (value) {
+                    singupController.onPasswordChanged(value);
+                    singupController.validateForm();
+                  },
                   suffixIcon: IconButton(
                     icon: Icon(
-                      singupController.isPasswordVisible.value
-                          ? Icons.visibility_off_outlined
-                          : Icons.visibility_outlined,
+                      singupController.isPasswordFieldEmpty.value
+                          ? Icons.visibility_outlined
+                          : (!singupController.isPasswordVisible.value
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined),
                       color: Color(0xff37B874),
                     ),
                     onPressed: singupController.togglePasswordVisibility,
@@ -165,27 +209,34 @@ class SignupScreen extends StatelessWidget {
               SizedBox(height: 12),
               Obx(
                 () => AuthCustomTextField(
-                  controller: singupController.retypepasswordController,
                   text: 'Voer uw wachtwoord in',
+                  controller: singupController.confirmedPasswordController,
+                  obscureText:
+                      singupController.isConfirmedPasswordVisible.value
+                          ? false
+                          : true,
                   onChanged: (value) {
-                    singupController.validateFrom();
+                    singupController.onConfirmedPasswordChanged(value);
+                    singupController.validateForm();
                   },
-                  obscureText: singupController.isPasswordVisible1.value,
                   suffixIcon: IconButton(
                     icon: Icon(
-                      singupController.isPasswordVisible1.value
-                          ? Icons.visibility_off_outlined
-                          : Icons.visibility_outlined,
+                      singupController.isConfirmedPasswordFieldEmpty.value
+                          ? Icons.visibility_outlined
+                          : (!singupController.isConfirmedPasswordVisible.value
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined),
                       color: Color(0xff37B874),
                     ),
-                    onPressed: singupController.togglePasswordVisibility1,
+                    onPressed:
+                        singupController.toggleConfirmedPasswordVisibility,
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Bevestig uw wachtwoord';
+                      return 'Wachtwoord is vereist';
                     }
-                    if (value != singupController.passwordController.text) {
-                      return 'Wachtwoorden komen niet overeen';
+                    if (value.length < 8) {
+                      return 'Wachtwoord moet minimaal 8 tekens lang zijn';
                     }
                     return null;
                   },
@@ -196,19 +247,17 @@ class SignupScreen extends StatelessWidget {
                 () => CustomButton(
                   title: 'Aanmelden',
                   textcolor: Colors.white,
-                  onPress: singupController.isFromValid.value ? () {
-                    singupController.registerUser();
-                  } : null,
+                  onPress: singupController.isFromValid.value
+                      ? () {
+                          singupController.registerUser();
+                        }
+                      : null,
                   backgroundColor: AppColors.buttonPrimary,
                   borderColor: Color(0xFFEBF8F1),
                 ),
               ),
               SizedBox(height: 28),
               SizedBox(height: 32),
-              if (Platform.isAndroid || Platform.isIOS) ...[],
-              SizedBox(height: 16),
-              if (Platform.isIOS) ...[],
-              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

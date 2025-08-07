@@ -1,3 +1,4 @@
+import 'package:baxton/core/utils/constants/icon_path.dart';
 import 'package:flutter/material.dart';
 
 class ReviewCard extends StatelessWidget {
@@ -26,7 +27,7 @@ class ReviewCard extends StatelessWidget {
         return Image.asset('assets/icons/halfstar.png', height: 12, width: 12);
       } else {
         return Image.asset(
-          'assets/icons/star_empty.png',
+          IconPath.halfstar,
           height: 12,
           width: 12,
         );
@@ -41,11 +42,22 @@ class ReviewCard extends StatelessWidget {
         border: Border.all(width: 1, color: Color(0xffEBEBEB)),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: EdgeInsets.all(10),
         child: Row(
           children: [
             Column(
-              children: [Image.asset(profileImage, height: 32, width: 32)],
+              children: [
+                profileImage.startsWith('http')
+                    ? Image.network(
+                        profileImage,
+                        height: 32,
+                        width: 32,
+                        errorBuilder: (context, error, stackTrace) =>
+                            Image.asset('assets/icons/profilepic.png',
+                                height: 32, width: 32),
+                      )
+                    : Image.asset(profileImage, height: 32, width: 32),
+              ],
             ),
             SizedBox(width: 5),
             Column(

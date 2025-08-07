@@ -27,10 +27,7 @@ class GrothWidget extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: Colors.white,
-          border: Border.all(
-            width: 1,
-            color: Color(0xffEBEBEB),
-          )
+          border: Border.all(width: 1, color: Color(0xffEBEBEB)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,8 +70,8 @@ class GrothWidget extends StatelessWidget {
                   //   style: TextStyle(color: Colors.green),
                   // ),
                   Container(
-                    height: 24,
-                    width: 63,
+                    height: 20,
+                    // width: 63,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(38),
                       color: Color(0xff33DB2A).withValues(alpha: 0.2),
@@ -83,7 +80,7 @@ class GrothWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "5.34",
+                          '${growth!.value.toStringAsFixed(1)}%',
                           style: getTextStyle(
                             color: Color(0xff2ABA22),
                             fontSize: 12,

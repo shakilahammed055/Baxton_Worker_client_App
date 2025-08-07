@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 
 // ignore: camel_case_types
 class gridview extends StatelessWidget {
-  const gridview({
-    super.key,
-    required this.rapportenController,
-  });
+  const gridview({super.key, required this.rapportenController});
 
   final RapportenController rapportenController;
 
@@ -16,52 +13,52 @@ class gridview extends StatelessWidget {
     return Column(
       children: [
         Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: GrothWidget(
-            title: 'Taak Voltooid',
-            value: rapportenController.tasksCompleted,
-            growth: rapportenController.revenueGrowth,
-            isRevenue: false,
-            showGrowth: true,
-          ),
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: GrothWidget(
+                title: 'Taak Voltooid',
+                value: rapportenController.tasksCompleted,
+                growth: rapportenController.revenueGrowth,
+                isRevenue: false,
+                showGrowth: true,
+              ),
+            ),
+            SizedBox(width: 16),
+            Expanded(
+              child: GrothWidget(
+                title: 'Taak In Afwachting',
+                value: rapportenController.tasksPending,
+                growth: rapportenController.revenueGrowth,
+                isRevenue: false,
+                showGrowth: false,
+              ),
+            ),
+          ],
         ),
-        SizedBox(width: 16),
-        Expanded(
-          child: GrothWidget(
-            title: 'Taak In Afwachting',
-            value: rapportenController.tasksPending,
-            growth: rapportenController.revenueGrowth,
-            isRevenue: false,
-            showGrowth: false,
-          ),
+        SizedBox(height: 14),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: GrothWidget(
+                title: 'Totaal Aantal Werknemers',
+                value: rapportenController.totalEmployees,
+                isRevenue: false,
+              ),
+            ),
+            SizedBox(width: 16),
+            Expanded(
+              child: GrothWidget(
+                title: 'Omzet',
+                value: rapportenController.revenue,
+                growth: rapportenController.revenueGrowth,
+                isRevenue: true,
+                showGrowth: true,
+              ),
+            ),
+          ],
         ),
-      ],
-    ),
-    SizedBox(height: 16),
-    Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: GrothWidget(
-            title: 'Totaal Aantal Werknemers',
-            value: rapportenController.totalEmployees,
-            isRevenue: false,
-          ),
-        ),
-        SizedBox(width: 16),
-        Expanded(
-          child: GrothWidget(
-            title: 'Omzet',
-            value: rapportenController.revenue,
-            growth: rapportenController.revenueGrowth,
-            isRevenue: true,
-            showGrowth: true,
-          ),
-        ),
-      ],
-    ),
       ],
     );
   }

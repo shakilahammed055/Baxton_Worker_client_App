@@ -1,4 +1,5 @@
 import 'package:baxton/core/utils/constants/icon_path.dart';
+import 'package:baxton/features/werknemer_flow/taken/mijn_taken/views/set_price_task_details.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:baxton/core/common/styles/global_text_style.dart';
@@ -27,7 +28,7 @@ class AllUpcomingTaskScreen extends StatelessWidget {
         ),
         backgroundColor: Colors.transparent,
         title: Text(
-          "Alle Aankomende Taken",
+          "Stel de Prijzen In",
           style: getTextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w600,
@@ -56,7 +57,15 @@ class AllUpcomingTaskScreen extends StatelessWidget {
           return ListView.builder(
             itemCount: upcomingTaskController.upcomingTasks.length,
             itemBuilder: (context, index) {
+              final task = upcomingTaskController.upcomingTasks[index];
               return UpcomingTaskCard(
+                onPressed: () {
+                  upcomingTaskController.fetchTaskDetails(task.id);
+                  Get.to(
+                    SetPriceTaskDetails(),
+                    transition: Transition.leftToRight,
+                  );
+                },
                 upcomingTask: upcomingTaskController.upcomingTasks[index],
               );
             },

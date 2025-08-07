@@ -1,9 +1,9 @@
 import 'package:baxton/core/utils/constants/icon_path.dart';
+import 'package:baxton/features/werknemer_flow/taken/mijn_taken/views/widgets/complete_task_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:baxton/features/werknemer_flow/taken/mijn_taken/controllers/completed_task_controller.dart';
-import 'package:baxton/features/werknemer_flow/taken/mijn_taken/views/widgets/completed_task_card.dart';
 import 'package:baxton/core/utils/constants/colors.dart';
 import 'package:baxton/core/common/styles/global_text_style.dart';
 
@@ -39,7 +39,7 @@ class AllCompletedTasksScreen extends StatelessWidget {
       ),
       backgroundColor: AppColors.containerColor,
       body: Obx(() {
-        final tasks = completedTaskController.completedTasks;
+        final tasks = completedTaskController.completeTasks;
 
         if (tasks.isEmpty) {
           return Center(
@@ -58,7 +58,9 @@ class AllCompletedTasksScreen extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           itemCount: tasks.length,
           itemBuilder: (context, index) {
-            return CompletedTaskCard(employeesCompletedTask: tasks[index]);
+            return CompleteTaskCard(
+              task: completedTaskController.completeTasks[index],
+            );
           },
         );
       }),

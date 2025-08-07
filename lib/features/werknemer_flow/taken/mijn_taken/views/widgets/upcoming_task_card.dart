@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 
 class UpcomingTaskCard extends StatelessWidget {
   final UpcomingTaskModel upcomingTask;
+  final VoidCallback? onPressed;
 
-  UpcomingTaskCard({super.key, required this.upcomingTask});
+  UpcomingTaskCard({super.key, required this.upcomingTask, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +80,7 @@ class UpcomingTaskCard extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      "${upcomingTask.date}",
+                      upcomingTask.date,
                       style: getTextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
@@ -94,7 +95,7 @@ class UpcomingTaskCard extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      "${upcomingTask.time}",
+                      upcomingTask.time,
                       style: getTextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
@@ -110,9 +111,7 @@ class UpcomingTaskCard extends StatelessWidget {
                   width: 146,
                   height: 44,
                   child: ElevatedButton(
-                    onPressed: () {
-                      //Get.to(() => PriceSetScreen());
-                    },
+                    onPressed: onPressed,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primaryBlue,
                       shape: RoundedRectangleBorder(

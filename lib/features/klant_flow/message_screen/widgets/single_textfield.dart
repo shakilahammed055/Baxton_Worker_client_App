@@ -10,11 +10,12 @@ class CustomSingleTextfield extends StatelessWidget {
     super.key,
     required this.focusNode,
     required this.controller,
+    this.textColor = AppColors.textWhite,
   });
 
   final FocusNode focusNode;
   final SinglePageChatController controller;
-
+  final Color? textColor;
   @override
   Widget build(BuildContext context) {
     return TextField(
@@ -30,7 +31,7 @@ class CustomSingleTextfield extends StatelessWidget {
       style: getTextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w500,
-        color: AppColors.textWhite,
+        color: textColor ?? AppColors.textWhite,
       ),
       decoration: InputDecoration(
         hintText: "Type Message",
@@ -40,7 +41,6 @@ class CustomSingleTextfield extends StatelessWidget {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide.none,
-          
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
@@ -50,7 +50,7 @@ class CustomSingleTextfield extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide.none,
         ),
-        fillColor: AppColors.textWhite ,
+        fillColor: AppColors.textWhite,
         filled: true,
         suffixIcon: Obx(
           () => GestureDetector(

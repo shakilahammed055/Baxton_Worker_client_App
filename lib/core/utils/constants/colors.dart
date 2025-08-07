@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:flutter/material.dart';
 
 class AppColors {
@@ -62,4 +64,6 @@ class AppColors {
 
   static const Color progressBarBlue = Color(0xff0043CE);
   static const Color progressbarGrey = Color(0xffE0E0E0);
+
+  static var disabledButtonColor;
 }

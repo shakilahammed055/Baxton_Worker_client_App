@@ -29,7 +29,7 @@ class CustomIconButton extends StatelessWidget {
     this.iconColor = Colors.white,
     this.borderColor,
     this.borderWidth = 0.0,
-    this.isPrefix = true, // Default to prefix icon
+    this.isPrefix = true,  // Default to prefix icon
   });
 
   @override

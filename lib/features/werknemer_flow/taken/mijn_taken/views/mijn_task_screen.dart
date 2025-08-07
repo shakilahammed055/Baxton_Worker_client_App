@@ -2,17 +2,22 @@ import 'package:baxton/core/common/styles/global_text_style.dart';
 import 'package:baxton/core/utils/constants/colors.dart';
 import 'package:baxton/core/utils/constants/icon_path.dart';
 import 'package:baxton/features/werknemer_flow/taken/mijn_taken/controllers/completed_task_controller.dart';
+import 'package:baxton/features/werknemer_flow/taken/mijn_taken/controllers/confirm_task_controller.dart';
+import 'package:baxton/features/werknemer_flow/taken/mijn_taken/controllers/payment_pending_task_controller.dart';
 import 'package:baxton/features/werknemer_flow/taken/mijn_taken/controllers/upcoming_task_controller.dart';
 import 'package:baxton/features/werknemer_flow/taken/mijn_taken/views/all_completed_task_screen.dart';
 import 'package:baxton/features/werknemer_flow/taken/mijn_taken/views/all_confirmed_task_screen.dart';
 import 'package:baxton/features/werknemer_flow/taken/mijn_taken/views/all_payment_pending_tasks_screen.dart';
 import 'package:baxton/features/werknemer_flow/taken/mijn_taken/views/all_upcoming_task_screen.dart';
-import 'package:baxton/features/werknemer_flow/taken/mijn_taken/views/widgets/completed_task_card.dart';
-import 'package:baxton/features/werknemer_flow/taken/mijn_taken/views/widgets/show_dates.dart';
+import 'package:baxton/features/werknemer_flow/taken/mijn_taken/views/complete_details_screen.dart';
+import 'package:baxton/features/werknemer_flow/taken/mijn_taken/views/set_price_task_details.dart';
+import 'package:baxton/features/werknemer_flow/taken/mijn_taken/views/widgets/complete_task_card.dart';
+import 'package:baxton/features/werknemer_flow/taken/mijn_taken/views/widgets/filter_dialog.dart';
 import 'package:baxton/features/werknemer_flow/taken/mijn_taken/views/widgets/upcoming_task_card.dart';
-import 'package:baxton/features/werknemer_flow/werknemer_home/Huis/controller/employee_home_controller.dart';
-import 'package:baxton/features/werknemer_flow/werknemer_home/Huis/view/widget/all_task_card.dart';
+import 'package:baxton/features/werknemer_flow/taken/mijn_taken/views/widgets/payment_all_task_card.dart';
+import 'package:baxton/features/werknemer_flow/taken/mijn_taken/views/worker_taskExecution_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class MyTaskScreen extends StatelessWidget {
@@ -23,8 +28,11 @@ class MyTaskScreen extends StatelessWidget {
     final UpcomingTaskController upcomingTaskController = Get.put(
       UpcomingTaskController(),
     );
-    final EmployeeHomeController employeeHomeController = Get.put(
-      EmployeeHomeController(),
+    final PaymentPendingTaskController paymentPendingController = Get.put(
+      PaymentPendingTaskController(),
+    );
+    final ConfirmedTaskController confirmedTaskController = Get.put(
+      ConfirmedTaskController(),
     );
 
     final CompletedTaskController completedTaskController = Get.put(
@@ -32,7 +40,11 @@ class MyTaskScreen extends StatelessWidget {
     );
 
     // Fetch tasks when the screen is initialized
-    upcomingTaskController.fetchUpcomingTasks();
+    upcomingTaskController.fetchNonSetPriceTasks();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      upcomingTaskController.fetchNonSetPriceTasks();
+      confirmedTaskController.loadConfirmedTasks();
+    });
 
     return Scaffold(
       backgroundColor: AppColors.containerColor,
@@ -56,11 +68,6 @@ class MyTaskScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Dates Section
-                ShowDates(),
-                SizedBox(height: 20),
-
-                // Search Box and Filter Option
                 Row(
                   children: [
                     // search
@@ -97,9 +104,11 @@ class MyTaskScreen extends StatelessWidget {
                     SizedBox(width: 8),
                     // filter
                     GestureDetector(
-                      onTap: () {
-                        // Handle tap here
-                      },
+                      onTap:
+                          () => showDialog(
+                            context: context,
+                            builder: (context) => FilterDialog(),
+                          ),
                       child: Container(
                         padding: EdgeInsets.all(14),
                         decoration: BoxDecoration(
@@ -116,219 +125,309 @@ class MyTaskScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 20),
-
-                // Set the Prices Section
-                Padding(
-                  padding: const EdgeInsets.only(left: 16.0, bottom: 20),
-                  child: Text(
-                    "Stel de Prijzen In",
-                    style: getTextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.primaryBlack,
-                    ),
-                  ),
-                ),
-
-                // Upcoming Tasks
-                Obx(() {
-                  if (upcomingTaskController.upcomingTasks.isEmpty) {
-                    return Center(
-                      child: Text(
-                        "Geen aankomende taken.",
-                        style: getTextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.primaryGreen,
-                        ),
-                      ),
-                    );
-                  }
-
-                  // Show only first 3 tasks
-                  final displayedTasks =
-                      upcomingTaskController.upcomingTasks.take(3).toList();
-
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: displayedTasks.length,
-                    itemBuilder: (context, index) {
-                      return UpcomingTaskCard(
-                        upcomingTask: displayedTasks[index],
-                      );
-                    },
-                  );
-                }),
-                SizedBox(height: 20),
-                Center(
-                  child: TextButton(
-                    onPressed: () {
-                      Get.to(() => AllUpcomingTaskScreen());
-                    },
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'Bekijk alles',
-                          style: getTextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.primaryGold,
-                          ),
-                        ),
-                        SizedBox(width: 8.0),
-                        Image.asset(IconPath.arrowRight6),
-                      ],
-                    ),
-                  ),
-                ),
+                _buildSteldePrijzenInView(upcomingTaskController),
                 SizedBox(height: 30),
-
-                // Showing Payment Incompleted Tasks
-                Padding(
-                  padding: const EdgeInsets.only(left: 16.0, bottom: 20),
-                  child: Text(
-                    "Betaling In Afwachting Taken",
-                    style: getTextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.primaryBlack,
-                    ),
-                  ),
-                ),
-                // Payment Pending Task Card Called here,
-                ...employeeHomeController.paymentPendingTasks
-                    .take(3)
-                    .map(
-                      (myPaymentPendingTasks) =>
-                          AllTaskCard(allTask: myPaymentPendingTasks),
-                    ),
-
+                _buildBetalingInAfwachtingView(paymentPendingController),
                 SizedBox(height: 20),
-
-                Center(
-                  child: TextButton(
-                    onPressed: () {
-                      Get.to(() => AllPaymentPendingTasksScreen());
-                    },
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'Bekijk alles',
-                          style: getTextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.primaryGold,
-                          ),
-                        ),
-                        SizedBox(width: 8.0),
-                        Image.asset(IconPath.arrowRight6),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 30),
-
-                // Showing Confirmed Tasks
-                Padding(
-                  padding: const EdgeInsets.only(left: 16.0, bottom: 20),
-                  child: Text(
-                    "Bevestigde Taken",
-                    style: getTextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.primaryBlack,
-                    ),
-                  ),
-                ),
-
-                // Confirmed Task Card Called here,
-                ...employeeHomeController.confirmedTasks
-                    .take(3)
-                    .map(
-                      (myConfirmedTask) =>
-                          AllTaskCard(allTask: myConfirmedTask),
-                    ),
-
-                SizedBox(height: 20),
-
-                Center(
-                  child: TextButton(
-                    onPressed: () {
-                      Get.to(() => AllConfirmedTasksScreen());
-                    },
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'Bekijk alles',
-                          style: getTextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.primaryGold,
-                          ),
-                        ),
-                        SizedBox(width: 8.0),
-                        Image.asset(IconPath.arrowRight6),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 30),
-
-                // Showing Completed Tasks
-                Padding(
-                  padding: const EdgeInsets.only(left: 16.0, bottom: 20),
-                  child: Text(
-                    "Voltooide Taken",
-                    style: getTextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.primaryBlack,
-                    ),
-                  ),
-                ),
-
-                // Completed Task Card Called here,
-                // ...completedTaskController.completedTasks.map(
-                //   (task) => CompletedTaskCard(employeesCompletedTask: task),
-                // ),
-                ...completedTaskController.completedTasks
-                    .take(3)
-                    .map(
-                      (task) => CompletedTaskCard(employeesCompletedTask: task),
-                    ),
-
-                SizedBox(height: 20),
-                Center(
-                  child: TextButton(
-                    onPressed: () {
-                      Get.to(() => AllCompletedTasksScreen());
-                    },
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'Bekijk alles',
-                          style: getTextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.primaryGold,
-                          ),
-                        ),
-                        SizedBox(width: 8.0),
-                        Image.asset(IconPath.arrowRight6),
-                      ],
-                    ),
-                  ),
-                ),
+                _buildBevestigdeTakenView(confirmedTaskController),
+                _buildCompleteListView(completedTaskController),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildCompleteListView(
+    CompletedTaskController completedTaskController,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Voltooide Taken",
+          style: getTextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
+            color: AppColors.primaryBlack,
+          ),
+        ),
+        SizedBox(height: 10.h),
+        Obx(() {
+          if (completedTaskController.completeTasks.isEmpty) {
+            return const Center(
+              child: Text('Geen bevestigde taken.'), // No confirmed tasks
+            );
+          }
+
+          return ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount:
+                completedTaskController.completeTasks.length >= 3
+                    ? 3
+                    : completedTaskController.completeTasks.length,
+            itemBuilder: (context, index) {
+              final task = completedTaskController.completeTasks[index];
+              return CompleteTaskCard(
+                task: task,
+                onPressed: () {
+                  debugPrint('completeTask id ${task.id}');
+                  Get.to(
+                    CompleteDetailsScreen(taskId: task.id),
+                    transition: Transition.leftToRight,
+                  );
+                },
+              );
+            },
+          );
+        }),
+
+        SizedBox(height: 20),
+        Center(
+          child: TextButton(
+            onPressed: () {
+              Get.to(() => AllCompletedTasksScreen());
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Bekijk alles',
+                  style: getTextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.primaryGold,
+                  ),
+                ),
+                SizedBox(width: 8.0),
+                Image.asset(IconPath.arrowRight6),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBevestigdeTakenView(
+    ConfirmedTaskController confirmedTaskController,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Bevestigde Taken",
+          style: getTextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
+            color: AppColors.primaryBlack,
+          ),
+        ),
+        SizedBox(height: 10.h),
+        Obx(() {
+          if (confirmedTaskController.confirmedTasks.isEmpty) {
+            return const Center(
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text('Geen bevestigde taken.'),
+              ), // No confirmed tasks
+            );
+          }
+
+          final displayedTasks =
+              confirmedTaskController.confirmedTasks.take(3).toList();
+
+          return ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: displayedTasks.length,
+            itemBuilder: (context, index) {
+              final task = displayedTasks[index];
+              return CompleteTaskCard(
+                task: task,
+                onPressed: () {
+                  debugPrint('confirmTask id ${task.id}');
+                  Get.to(
+                    WorkerTaskExecutionScreen(taskId: task.id),
+                    transition: Transition.leftToRight,
+                  );
+                },
+              );
+            },
+          );
+        }),
+
+        SizedBox(height: 20),
+
+        Center(
+          child: TextButton(
+            onPressed: () {
+              Get.to(() => AllConfirmedTasksScreen());
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Bekijk alles',
+                  style: getTextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.primaryGold,
+                  ),
+                ),
+                SizedBox(width: 8.0),
+                Image.asset(IconPath.arrowRight6),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: 30),
+      ],
+    );
+  }
+
+  Widget _buildBetalingInAfwachtingView(
+    PaymentPendingTaskController paymentPendingController,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Betaling In Afwachting Taken",
+          style: getTextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
+            color: AppColors.primaryBlack,
+          ),
+        ),
+
+        SizedBox(height: 10.h),
+        //------------------new----------------------
+        Obx(() {
+          if (paymentPendingController.paymentPendingTasks.isEmpty) {
+            return Center(child: Text('Geen betaling in afwachting.'));
+          }
+
+          final displayedTasks =
+              paymentPendingController.paymentPendingTasks.take(3).toList();
+
+          return ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: displayedTasks.length,
+            itemBuilder: (context, index) {
+              final task = displayedTasks[index];
+              return PaymentAllTaskCard(task: task);
+            },
+          );
+        }),
+        SizedBox(height: 20),
+
+        Center(
+          child: TextButton(
+            onPressed: () {
+              Get.to(() => AllPaymentPendingTasksScreen());
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Bekijk alles',
+                  style: getTextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.primaryGold,
+                  ),
+                ),
+                SizedBox(width: 8.0),
+                Image.asset(IconPath.arrowRight6),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSteldePrijzenInView(
+    UpcomingTaskController upcomingTaskController,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Stel de Prijzen In",
+          style: getTextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
+            color: AppColors.primaryBlack,
+          ),
+        ),
+        SizedBox(height: 10.h),
+        // Upcoming Tasks
+        Obx(() {
+          if (upcomingTaskController.upcomingTasks.isEmpty) {
+            return Center(
+              child: Text(
+                "Geen aankomende taken.",
+                style: getTextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+              ),
+            );
+          }
+
+          // Show only first 3 tasks
+          final displayedTasks =
+              upcomingTaskController.upcomingTasks.take(3).toList();
+          debugPrint('upcoming 3 list $displayedTasks');
+          debugPrint(upcomingTaskController.upcomingTasks.length.toString());
+
+          return ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: displayedTasks.length,
+            itemBuilder: (context, index) {
+              final task = upcomingTaskController.upcomingTasks[index];
+
+              return UpcomingTaskCard(
+                upcomingTask: displayedTasks[index],
+                onPressed: () {
+                  debugPrint('specific id ${task.id}');
+                  upcomingTaskController.fetchTaskDetails(task.id);
+                  Get.to(
+                    SetPriceTaskDetails(),
+                    transition: Transition.leftToRight,
+                  );
+                },
+              );
+            },
+          );
+        }),
+        SizedBox(height: 20),
+        Center(
+          child: TextButton(
+            onPressed: () {
+              Get.to(() => AllUpcomingTaskScreen());
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Bekijk alles',
+                  style: getTextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.primaryGold,
+                  ),
+                ),
+                SizedBox(width: 8.0),
+                Image.asset(IconPath.arrowRight6),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

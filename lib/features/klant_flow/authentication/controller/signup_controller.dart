@@ -1,5 +1,5 @@
+// ignore_for_file: unnecessary_overrides
 import 'dart:convert';
-
 import 'package:baxton/core/urls/endpoint.dart';
 import 'package:baxton/features/klant_flow/authentication/screens/login_screen.dart';
 import 'package:flutter/widgets.dart';
@@ -10,35 +10,55 @@ import 'package:http/http.dart' as http;
 class SignupController extends GetxController {
   // Declare the controllers for text fields
   TextEditingController nameController = TextEditingController();
-  TextEditingController phoneController1 = TextEditingController();
-  TextEditingController emailController1 = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController retypepasswordController = TextEditingController();
-  // TextEditingController pinController = TextEditingController();
+  TextEditingController confirmedPasswordController = TextEditingController();
+
+  // Store the full phone number with country code
+  var phoneNumberWithCode = ''.obs;  // Use '.obs' to make it reactive
+
   final isLoading = false.obs;
   final responseMessage = ''.obs;
   var isPasswordVisible = false.obs;
+  var isConfirmedPasswordVisible = false.obs;
+  var isPasswordFieldEmpty = true.obs;
+  var isConfirmedPasswordFieldEmpty = true.obs;
+  var isFromValid = false.obs;
+
   void togglePasswordVisibility() {
     isPasswordVisible.value = !isPasswordVisible.value;
   }
 
-  var isPasswordVisible1 = false.obs;
-  void togglePasswordVisibility1() {
-    isPasswordVisible1.value = !isPasswordVisible1.value;
+  void toggleConfirmedPasswordVisibility() {
+    isConfirmedPasswordVisible.value = !isConfirmedPasswordVisible.value;
   }
 
-  var isFromValid = false.obs;
-  void validateFrom() {
+  void onPasswordChanged(String value) {
+    isPasswordFieldEmpty.value = value.isEmpty;
+  }
+
+  void onConfirmedPasswordChanged(String value) {
+    isConfirmedPasswordFieldEmpty.value = value.isEmpty;
+  }
+
+  void validateForm() {
     isFromValid.value =
         nameController.text.isNotEmpty &&
-        phoneController1.text.isNotEmpty &&
-        emailController1.text.isNotEmpty &&
+        phoneNumberWithCode.value.isNotEmpty &&  // Use phone number with country code
+        emailController.text.isNotEmpty &&
         passwordController.text.isNotEmpty &&
-        retypepasswordController.text.isNotEmpty;
+        confirmedPasswordController.text.isNotEmpty;
   }
 
   Future<void> registerUser() async {
     debugPrint('Starting registerUser function');
+    debugPrint('Phone number with code: ${phoneNumberWithCode.value}');  // Add a debug print to verify the phone number
+
+    if (phoneNumberWithCode.value.isEmpty) {
+      EasyLoading.showError('Phone number is required');
+      return; // Exit early if phone number is empty
+    }
 
     try {
       // Show loading indicator before the actual work begins
@@ -46,10 +66,10 @@ class SignupController extends GetxController {
       debugPrint('EasyLoading.show called');
 
       final user = {
-        'email': emailController1.text.trim(),
+        'email': emailController.text.trim(),
         'password': passwordController.text,
         'name': nameController.text.trim(),
-        'phone': phoneController1.text.trim(),
+        'phone': phoneNumberWithCode.value,  // Send the phone number with country code
         'UserType': 'CLIENT',
       };
 
@@ -76,7 +96,6 @@ class SignupController extends GetxController {
       } else {
         if (responseData['message'] != null &&
             responseData['message'].contains('User already exist')) {
-          // Handle user already exists error
           EasyLoading.showError('Email or phone number already in use.');
         } else {
           responseMessage.value = _parseError(responseData);
@@ -88,7 +107,6 @@ class SignupController extends GetxController {
       debugPrint('Error occurred: $e');
       EasyLoading.showError('An unexpected error occurred');
     } finally {
-      // Always dismiss loading indicator, even on error
       EasyLoading.dismiss();
       debugPrint('EasyLoading.dismiss called');
     }
@@ -112,10 +130,7 @@ class SignupController extends GetxController {
   }
 
   @override
-  // ignore: unnecessary_overrides
   void onClose() {
     super.onClose();
   }
-
-  // Properly dispose of controllers when the controller is disposed
 }

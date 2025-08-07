@@ -1,56 +1,49 @@
 import 'package:baxton/features/Admin_flow/instellingen/user_management/model/user_model.dart';
+import 'package:baxton/features/Admin_flow/instellingen/user_management/repository/user_repository.dart';
 import 'package:get/get.dart';
 
 class UserController extends GetxController {
-  var users =
-      <UserModel>[
-        UserModel(
-          name: 'Jane Smith',
-          email: 'janesmith@email.com',
-          role: 'Beheerder',
-          avatarUrl: 'https://i.pravatar.cc/150?img=1',
-        ),
-        UserModel(
-          name: 'John Doe',
-          email: 'johndoe@email.com',
-          role: 'Werknemer',
-          avatarUrl: 'https://i.pravatar.cc/150?img=2',
-        ),
-        UserModel(
-          name: 'Alice Johnson',
-          email: 'alicejohnson@email.com',
-          role: 'Klant',
-          avatarUrl: 'https://i.pravatar.cc/150?img=3',
-        ),
-        UserModel(
-          name: 'Michael Brown',
-          email: 'michaelbrown@email.com',
-          role: 'Beheerder',
-          avatarUrl: 'https://i.pravatar.cc/150?img=4',
-        ),
-        UserModel(
-          name: 'Sarah Davis',
-          email: 'sarahdavis@email.com',
-          role: 'Werknemer',
-          avatarUrl: 'https://i.pravatar.cc/150?img=5',
-        ),
-        UserModel(
-          name: 'David Wilson',
-          email: 'davidwilson@email.com',
-          role: 'Werknemer',
-          avatarUrl: 'https://i.pravatar.cc/150?img=6',
-        ),
-        UserModel(
-          name: 'David Wilson',
-          email: 'davidwilson@email.com',
-          role: 'Werknemer',
-          avatarUrl: 'https://i.pravatar.cc/150?img=7',
-        ),
-        UserModel(
-          name: 'David Wilson',
-          email: 'davidwilson@email.com',
-          role: 'Werknemer',
-          avatarUrl: 'https://i.pravatar.cc/150?img=8',
-        ),
-      ].obs;
+ 
+  final UserRepository _repository = UserRepository();
+  @override
+  void onInit() {
+    super.onInit();
+    loadUsers(); // ✅ fetch as soon as controller is created
+  }
+
+  RxList<UserModel> users = <UserModel>[].obs;
+  RxBool isLoading = false.obs;
+  RxString errorMessage = ''.obs;
+  var searchQuery = ''.obs;
+  Future<void> loadUsers() async {
+    try {
+      isLoading.value = true;
+      errorMessage.value = '';
+      final result = await _repository.fetchAllUsers();
+      users.assignAll(result);
+    } catch (e) {
+      errorMessage.value = e.toString();
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  List<UserModel> get filteredUsers {
+    final query = searchQuery.value.trim().toLowerCase();
+    if (query.isEmpty) return users;
+
+    return users.where((user) {
+      final name = user.name.toLowerCase();
+      final email = user.email.toLowerCase();
+      final nameStarts = name.startsWith(query);
+      final emailStarts = email.startsWith(query);
+
+      return nameStarts || emailStarts;
+    }).toList();
+  }
+
+  // ✅ Update search query
+  void updateSearch(String query) {
+    searchQuery.value = query;
+  }
 }

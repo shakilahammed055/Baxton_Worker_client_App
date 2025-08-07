@@ -58,3 +58,18 @@ TextStyle getTextStyle3({
     letterSpacing: letterSpacing,
   );
 }
+
+TextStyle commonText({
+  double fontSize = 14.0,
+  FontWeight fontWeight = FontWeight.w400,
+  TextAlign textAlign = TextAlign.center,
+  Color color = Colors.black,
+  TextDecoration decoration = TextDecoration.none,
+}) {
+  return GoogleFonts.inter(
+    fontSize: fontSize.sp,
+    fontWeight: fontWeight,
+    color: color,
+    decoration: TextDecoration.none,
+  );
+}

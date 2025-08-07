@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:baxton/core/urls/endpoint.dart';
 import 'package:baxton/features/klant_flow/authentication/auth_service/auth_service.dart';
 import 'package:baxton/features/klant_flow/bottom_navigationbar/screens/bottom_navigation_ber.dart';
+import 'package:baxton/features/klant_flow/home_screen/controller/home_controller.dart';
 import 'package:baxton/features/klant_flow/profile_setup/screen/klant_profile_setup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -49,13 +50,16 @@ class LoginScreenController extends GetxController {
       if (response.statusCode == 200 || response.statusCode == 201) {
         // Extract relevant data from response
         String token = responseData["data"]["token"] ?? "";
+        debugPrint("shakil Token: $token");
         String userId = responseData["data"]["user"]["id"] ?? "";
-        String role = responseData["data"]["user"]["role"] ?? "";
+        String role = responseData["data"]["user"]["UserType"] ?? "";
         String isProfileCreated =
             responseData["data"]["user"]["isProfileCreated"]?.toString() ??
             "false";
         String profileId =
-            responseData["data"]["user"]["clientProfile"]["id"] ?? "";
+            responseData["data"]["user"]["clientProfile"] != null
+                ? responseData["data"]["user"]["clientProfile"]["id"] ?? ""
+                : "";
 
         // Save the authentication data using AuthService
         await AuthService.saveAuthData(
@@ -65,12 +69,15 @@ class LoginScreenController extends GetxController {
           isProfileCreated,
           profileId,
         );
+        debugPrint(
+          'shakil Auth data saved: $token, $userId, $role, $isProfileCreated, $profileId',
+        );
 
         EasyLoading.showSuccess("Login Successful");
-
-        // Navigate based on isProfileCreated
+        Get.put(HomeController());
+        // // Navigate based on isProfileCreated
         if (isProfileCreated == "true") {
-          Get.offAll(() => BottomNavbar());
+          Get.offAll(() => ClientBottomNavbar());
         } else {
           Get.offAll(() => KlantProfileSetup());
         }

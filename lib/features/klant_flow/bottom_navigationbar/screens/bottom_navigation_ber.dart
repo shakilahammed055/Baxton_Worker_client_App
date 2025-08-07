@@ -3,28 +3,42 @@ import 'package:baxton/core/utils/constants/icon_path.dart';
 import 'package:baxton/features/klant_flow/bottom_navigationbar/controller/navigation_ber_controller.dart';
 import 'package:baxton/features/klant_flow/home_screen/screens/home_screen.dart';
 import 'package:baxton/features/klant_flow/message_screen/screens/chat_page.dart';
-import 'package:baxton/features/klant_flow/profile_screen/screens/profile_screen.dart';
+import 'package:baxton/features/klant_flow/profile_screen/screens/profile_edit_screen.dart';
 import 'package:baxton/features/klant_flow/task_screen/screens/task_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 // ignore: must_be_immutable
-class BottomNavbar extends StatelessWidget {
-  BottomNavbar({super.key});
+class ClientBottomNavbar extends StatelessWidget {
+  ClientBottomNavbar({super.key});
   final BottomNavbarController controller = Get.put(BottomNavbarController());
-  final List<Widget> pages = [
-    HomeScreen(),
-    TaskScreen(),
-    MessageScreen(),
-    ProfileScreen(),
-  ];
+  // final List<Widget> pages = [
+  //   HomeScreen(),
+  //   TaskScreen(),
+  //   MessageScreen(),
+  //   ProfileScreen(),
+  // ];
+  Widget _getPage(int index) {
+    switch (index) {
+      case 0:
+        return HomeScreen();
+      case 1:
+        return TaskScreen();
+      case 2:
+        return MessageScreen();
+      case 3:
+        return ProfileScreen();
+      default:
+        return HomeScreen();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
       extendBody: true,
-      body: Obx(() => pages[controller.currentIndex.value]),
+      body: Obx(() => _getPage(controller.currentIndex.value)),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           boxShadow: [

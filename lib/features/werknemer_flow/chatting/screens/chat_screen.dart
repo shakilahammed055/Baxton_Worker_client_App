@@ -1,6 +1,7 @@
 import 'package:baxton/core/common/styles/global_text_style.dart';
 import 'package:baxton/core/utils/constants/colors.dart';
 import 'package:baxton/features/werknemer_flow/chatting/controller/chat_controller.dart';
+import 'package:baxton/features/werknemer_flow/chatting/controller/wchat_list_controller.dart';
 import 'package:baxton/features/werknemer_flow/chatting/screens/single_page_chat.dart';
 import 'package:baxton/features/werknemer_flow/chatting/widgets/custon_chatlist.dart';
 
@@ -11,9 +12,14 @@ class ChatScreen extends StatelessWidget {
   ChatScreen({super.key});
 
   final WChatController singlePageChatController = Get.put(WChatController());
+  final WChatListController wChatListController = Get.put(
+    WChatListController(),
+  );
 
   @override
   Widget build(BuildContext context) {
+    singlePageChatController.connectWebSocket();
+    wChatListController.chatList();
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(

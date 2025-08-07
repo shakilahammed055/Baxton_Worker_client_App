@@ -1,80 +1,7 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_easyloading/flutter_easyloading.dart';
-// import 'package:get/get.dart';
-// import 'package:image_picker/image_picker.dart';
-
-// class KlantProfileController extends GetxController {
-//   var name = ''.obs;
-//   var phoneNumber = ''.obs;
-//   var email = 'example123@gmail.com'.obs;
-//   var location = ''.obs;
-//   var selectedImagePath = ''.obs;
-//   var hasImageChanged = false.obs;
-//   var isEditing = false.obs;
-
-//   // Method to handle submit action
-//   void onSubmit() {
-//     // For now, simply print the values
-//     debugPrint("Name: ${name.value}");
-//     debugPrint("Phone Number: ${phoneNumber.value}");
-//     debugPrint("Email: ${email.value}");
-//     debugPrint("Location: ${location.value}");
-//   }
-
-//   // Method to handle skip action
-//   void onSkip() {
-//     // Just print skip action for now
-//     debugPrint("Skipped");
-//   }
-
-//   final ImagePicker _imagePicker = ImagePicker();
-
-//   Future<void> pickImage(ImageSource source) async {
-//     try {
-//       final XFile? pickedFile = await _imagePicker.pickImage(source: source);
-//       if (pickedFile != null) {
-//         selectedImagePath.value = pickedFile.path;
-//         hasImageChanged.value = true;
-
-//         // Set editing mode to true so Save button shows up
-//         isEditing.value = true;
-//       }
-//     } catch (e) {
-//       EasyLoading.showError("Failed to pick an image: $e");
-//     }
-//   }
-
-//   void showImagePicker(BuildContext context) {
-//     showModalBottomSheet(
-//       context: context,
-//       builder: (context) {
-//         return Wrap(
-//           children: [
-//             ListTile(
-//               leading: const Icon(Icons.camera_alt_outlined),
-//               title: const Text('Choose from Camera'),
-//               onTap: () {
-//                 pickImage(ImageSource.camera);
-//                 Navigator.pop(context);
-//               },
-//             ),
-//             ListTile(
-//               leading: const Icon(Icons.photo_outlined),
-//               title: const Text('Choose from Gallery'),
-//               onTap: () {
-//                 pickImage(ImageSource.gallery);
-//                 Navigator.pop(context);
-//               },
-//             ),
-//           ],
-//         );
-//       },
-//     );
-//   }
-// }
 
 import 'dart:convert';
 import 'dart:io';
+import 'package:baxton/core/urls/endpoint.dart';
 import 'package:baxton/features/klant_flow/authentication/auth_service/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -82,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
+// ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as path;
 
 class KlantProfileController extends GetxController {
@@ -146,6 +74,10 @@ class KlantProfileController extends GetxController {
       EasyLoading.showError('Location is required');
       return;
     }
+    if (selectedImagePath.value.isEmpty) {
+      EasyLoading.showError('Profile image is required');
+      return;
+    }
 
     try {
       EasyLoading.show(status: 'Creating profile...');
@@ -157,12 +89,14 @@ class KlantProfileController extends GetxController {
         return;
       }
 
+      // Ensure unique username by appending a timestamp
+      String uniqueUsername =
+          "${name.value}_${DateTime.now().millisecondsSinceEpoch}";
+
       // Prepare multipart request
       final request = http.MultipartRequest(
         'POST',
-        Uri.parse(
-          'https://freepik.softvenceomega.com/ts/profile/create-client-profile',
-        ),
+        Uri.parse(Urls.profilesetup),
       );
 
       // Add token to headers
@@ -170,7 +104,7 @@ class KlantProfileController extends GetxController {
       request.headers['Content-Type'] = 'multipart/form-data';
 
       // Add form fields
-      request.fields['userName'] = name.value;
+      request.fields['userName'] = uniqueUsername;
       // request.fields['email'] = email.value;
       request.fields['location'] = location.value;
 
@@ -222,9 +156,15 @@ class KlantProfileController extends GetxController {
           );
           Get.offAllNamed('/bottomnavbar'); // Adjust to your home route
         } else {
-          EasyLoading.showError(
-            responseData['message'] ?? 'Failed to create profile',
-          );
+          String errorMessage =
+              responseData['message'] ?? 'Failed to create profile';
+
+          // Handle specific error for duplicate userName
+          if (responseData['message'].contains("Unique constraint failed")) {
+            errorMessage = "Username already taken. Please choose another.";
+          }
+
+          EasyLoading.showError(errorMessage);
         }
       } else {
         final errorData = jsonDecode(responseBody.body);

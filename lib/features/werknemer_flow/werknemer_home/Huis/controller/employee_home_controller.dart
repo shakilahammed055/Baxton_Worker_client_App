@@ -1,3 +1,4 @@
+
 import 'package:baxton/features/werknemer_flow/werknemer_home/Huis/model/all_task_model.dart';
 import 'package:get/get.dart';
 
@@ -105,4 +106,5 @@ class EmployeeHomeController extends GetxController {
       allTasks.refresh(); // Trigger UI update
     }
   }
+
 }

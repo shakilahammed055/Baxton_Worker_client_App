@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:baxton/core/utils/constants/colors.dart';
 import 'package:baxton/core/utils/constants/icon_path.dart';
 import 'package:baxton/features/klant_flow/profile_screen/controller/profile_controller.dart';
@@ -40,7 +39,15 @@ class FullImageView extends StatelessWidget {
       body: Center(
         child: Hero(
           tag: imagePath,
-          child: Image.file(File(imagePath), fit: BoxFit.contain),
+          child:
+          // Image.file(File(imagePath), fit: BoxFit.contain),
+          Image.network(
+            imagePath,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              return const Icon(Icons.broken_image, size: 50);
+            },
+          ),
         ),
       ),
     );

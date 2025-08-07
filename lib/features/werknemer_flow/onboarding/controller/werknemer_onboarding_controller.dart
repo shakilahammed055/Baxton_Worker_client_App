@@ -1,4 +1,4 @@
-import 'package:baxton/features/werknemer_flow/authentication/views/login_screen.dart';
+import 'package:baxton/features/werknemer_flow/authentication/views/worker_login_screen.dart';
 import 'package:baxton/features/werknemer_flow/onboarding/model/werknemer_onboarding_model.dart';
 import 'package:get/get.dart';
 
@@ -33,7 +33,7 @@ class WOnbController extends GetxController {
     if (currentPage.value < wOnbPages.length - 1) {
       currentPage.value++;
     } else {
-      Get.off(() => WLoginScreen());
+      Get.off(() => WorkerLoginScreen());
     }
   }
 }

@@ -109,8 +109,8 @@ class SinglePageChatController extends GetxController {
                     child: Column(
                       children: [
                         CircleAvatar(
-                          backgroundColor: AppColors.buttonPrimary.withValues(alpha: 
-                            0.1,
+                          backgroundColor: AppColors.buttonPrimary.withValues(
+                            alpha: 0.1,
                           ),
                           radius: 25,
                           child: Icon(

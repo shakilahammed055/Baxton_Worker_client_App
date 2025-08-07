@@ -34,13 +34,14 @@ class CustomProfileTextField extends StatelessWidget {
 
         Expanded(
           child: TextField(
+            cursorHeight: 20,
             controller: controller,
             enabled: enabled,
             textAlign: TextAlign.right,
             style: getTextStyle(
               fontSize: 14,
-              color: AppColors.textPrimary,
-              fontWeight: FontWeight.w400,
+              color: AppColors.primaryGold,
+              fontWeight: FontWeight.w500,
             ),
             decoration: InputDecoration(
               border: InputBorder.none,

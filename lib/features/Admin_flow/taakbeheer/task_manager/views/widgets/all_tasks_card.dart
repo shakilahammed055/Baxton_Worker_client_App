@@ -39,12 +39,12 @@ class AllTaskCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: AppColors.primaryWhite,
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Container(
         height: 111,
-        width: 361,
+        width: double.infinity,
 
-        padding: const EdgeInsets.all(12),
+        padding: EdgeInsets.all(12),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,7 +66,7 @@ class AllTaskCard extends StatelessWidget {
                 Row(
                   children: [
                     Image.asset(IconPath.location),
-                    const SizedBox(width: 4),
+                    SizedBox(width: 4),
                     Text(
                       task.location,
                       style: getTextStyle(
@@ -74,6 +74,7 @@ class AllTaskCard extends StatelessWidget {
                         fontWeight: FontWeight.w400,
                         color: AppColors.textThird,
                       ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
@@ -84,12 +85,14 @@ class AllTaskCard extends StatelessWidget {
             Row(
               children: [
                 Image.asset(IconPath.employee),
-                const SizedBox(width: 4),
+                // const SizedBox(width: 4),
+                Spacer(),
                 Text(task.assignee),
-                const SizedBox(width: 16),
+                // const SizedBox(width: 8),
+                Spacer(),
                 Text(task.date.toLocal().toString().split(' ')[0]),
 
-                const Spacer(),
+                 Spacer(),
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 10,

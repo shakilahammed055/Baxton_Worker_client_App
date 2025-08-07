@@ -1,466 +1,38 @@
-// import 'package:baxton/core/common/styles/global_text_style.dart';
-// import 'package:baxton/core/common/widgets/custom_continue_button.dart';
-// import 'package:baxton/core/common/widgets/request_textfield.dart';
-// import 'package:baxton/core/utils/constants/colors.dart';
-// import 'package:baxton/core/utils/constants/icon_path.dart';
-// import 'package:baxton/features/klant_flow/task_screen/controller/request_controller.dart';
-// import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-// import 'package:image_picker/image_picker.dart';
-
-// class RequestScreen extends StatelessWidget {
-//   RequestScreen({super.key});
-
-//   final RequestController requestController = Get.put(RequestController());
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: SafeArea(
-//         child: SingleChildScrollView(
-//           child: Padding(
-//             padding: const EdgeInsets.all(16),
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 // Header
-//                 _buildHeader(),
-//                 const SizedBox(height: 20),
-
-//                 // Form fields
-//                 _buildTextFieldSection(
-//                   label: "Naam",
-//                   controller: requestController.namecontroller,
-//                 ),
-//                 _buildTextFieldSection(
-//                   label: "Telefoonnummer",
-//                   controller: requestController.phonecontroller,
-//                 ),
-//                 _buildTextFieldSection(
-//                   label: "E-mail",
-//                   hintText: 'example123@gmail.com',
-//                   controller: requestController.emailcontroller,
-//                 ),
-
-//                 // City and Postcode
-//                 _buildCityPostcodeRow(),
-
-//                 // Location Description
-//                 _buildTextFieldSection(
-//                   label: "Beschrijf Locatie",
-//                   controller: requestController.describecontroller,
-//                   maxLines: 3,
-//                 ),
-
-//                 // Task Type Dropdown
-//                 _buildTaskTypeDropdown(),
-
-//                 // Problem Description
-//                 _buildTextFieldSection(
-//                   label: "Beschrijf Probleem",
-//                   controller: requestController.problemcontroller,
-//                   maxLines: 3,
-//                 ),
-
-//                 // Image Section
-//                 _buildImageSection(context),
-
-//                 // Date and Time
-//                 _buildDateTimeSection(context),
-
-//                 // Submit Button
-//                 const SizedBox(height: 40),
-//                 CustomContinueButton(
-//                   onTap: () {},
-//                   title: "Verzoek Indienen",
-//                   backgroundColor: AppColors.buttonPrimary,
-//                   textColor: AppColors.textWhite,
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-
-//   Widget _buildHeader() {
-//     return Align(
-//       alignment: Alignment.center,
-//       child: Text(
-//         "Vraag Dienst aan",
-//         style: getTextStyle(
-//           color: AppColors.textPrimary,
-//           fontSize: 24,
-//           fontWeight: FontWeight.w600,
-//         ),
-//       ),
-//     );
-//   }
-
-//   Widget _buildTextFieldSection({
-//     required String label,
-//     required TextEditingController controller,
-//     String hintText = '',
-//     int maxLines = 1,
-//   }) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         Text(
-//           label,
-//           style: getTextStyle(
-//             fontSize: 14,
-//             fontWeight: FontWeight.w400,
-//             color: AppColors.textThird,
-//           ),
-//         ),
-//         const SizedBox(height: 8),
-//         RequestTextfield(
-//           hintText: hintText,
-//           controller: controller,
-//           maxLines: maxLines,
-//         ),
-//         const SizedBox(height: 16),
-//       ],
-//     );
-//   }
-
-//   Widget _buildCityPostcodeRow() {
-//     return Row(
-//       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//       children: [
-//         Expanded(
-//           child: _buildTextFieldSection(
-//             label: "Stad",
-//             controller: requestController.citycontroller,
-//           ),
-//         ),
-//         const SizedBox(width: 10),
-//         Expanded(
-//           child: _buildTextFieldSection(
-//             label: "Postcode",
-//             controller: requestController.postcodecontroller,
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-
-//   Widget _buildTaskTypeDropdown() {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         Text(
-//           "Taaktype",
-//           style: getTextStyle(
-//             fontSize: 14,
-//             fontWeight: FontWeight.w400,
-//             color: AppColors.textThird,
-//           ),
-//         ),
-//         const SizedBox(height: 8),
-//         DropdownButtonFormField<String>(
-//           decoration: InputDecoration(
-//             border: const OutlineInputBorder(
-//               borderSide: BorderSide(color: Color(0xffC0C0C0)),
-//             ),
-//             focusedBorder: OutlineInputBorder(
-//               borderRadius: BorderRadius.circular(12),
-//               borderSide: const BorderSide(width: 1, color: Color(0xffC0C0C0)),
-//             ),
-//           ),
-//           isExpanded: true,
-//           items:
-//               [
-//                     'Schimmelinspecties en -behandelingen',
-//                     'Voor- en na-inspecties van huurwoningen en nazorg',
-//                     'Vochtbeheersing',
-//                     'Stucwerk',
-//                     'Schilderen en Coating',
-//                     'Nicotinevlekkenverwijdering',
-//                     'Reddersteam en Nooddienst (24/7)',
-//                   ]
-//                   .map(
-//                     (skill) => DropdownMenuItem(
-//                       value: skill,
-//                       child: Text(
-//                         skill,
-//                         style: getTextStyle(color: AppColors.primaryGold),
-//                       ),
-//                     ),
-//                   )
-//                   .toList(),
-//           onChanged: (value) {},
-//           hint: Text(
-//             'Select a skill',
-//             style: getTextStyle(
-//               fontSize: 14,
-//               fontWeight: FontWeight.w400,
-//               color: AppColors.textSecondary,
-//             ),
-//           ),
-//           icon: Image.asset(IconPath.dropdown, height: 7.4, width: 12),
-//         ),
-//         const SizedBox(height: 16),
-//       ],
-//     );
-//   }
-
-//   Widget _buildImageSection(BuildContext context) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         Obx(
-//           () => Container(
-//             height: 150,
-//             width: double.infinity,
-//             decoration: BoxDecoration(
-//               borderRadius: BorderRadius.circular(12),
-//               color: const Color(0xffD9D9D9),
-//             ),
-//             child:
-//                 requestController.selectedImage.value != null
-//                     ? ClipRRect(
-//                       borderRadius: BorderRadius.circular(12),
-//                       child: Image.file(
-//                         requestController.selectedImage.value!,
-//                         fit: BoxFit.cover,
-//                       ),
-//                     )
-//                     : const Icon(Icons.image_rounded, size: 50),
-//           ),
-//         ),
-//         const SizedBox(height: 8),
-//         GestureDetector(
-//           onTap: () => _showImageSourceDialog(context),
-//           child: Container(
-//             height: 70,
-//             width: double.infinity,
-//             decoration: BoxDecoration(
-//               color: AppColors.buttonPrimary.withOpacity(.1),
-//               borderRadius: BorderRadius.circular(12),
-//             ),
-//             child: Column(
-//               mainAxisAlignment: MainAxisAlignment.center,
-//               children: [
-//                 const Icon(Icons.camera_alt, color: Color(0xff1E90FF)),
-//                 const SizedBox(height: 8),
-//                 Text(
-//                   "Afbeelding",
-//                   style: getTextStyle(
-//                     color: const Color(0xff1E90FF),
-//                     fontSize: 12,
-//                     fontWeight: FontWeight.w400,
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ),
-//         const SizedBox(height: 16),
-//       ],
-//     );
-//   }
-
-//   Widget _buildDateTimeSection(BuildContext context) {
-//     return Row(
-//       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//       children: [
-//         // Time Picker
-//         Expanded(
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               Text(
-//                 "Voorkeurs Tijd",
-//                 style: getTextStyle(
-//                   fontSize: 14,
-//                   fontWeight: FontWeight.w400,
-//                   color: AppColors.textThird,
-//                 ),
-//               ),
-//               const SizedBox(height: 8),
-//               Obx(
-//                 () => GestureDetector(
-//                   onTap: () async {
-//                     TimeOfDay? pickedTime = await showTimePicker(
-//                       context: context,
-//                       initialTime: TimeOfDay.now(),
-//                     );
-//                     if (pickedTime != null) {
-//                       requestController.selectedTime.value = pickedTime.format(
-//                         context,
-//                       );
-//                     }
-//                   },
-//                   child: Container(
-//                     padding: const EdgeInsets.symmetric(
-//                       horizontal: 12,
-//                       vertical: 14,
-//                     ),
-//                     decoration: BoxDecoration(
-//                       border: Border.all(color: const Color(0xffC0C0C0)),
-//                       borderRadius: BorderRadius.circular(12),
-//                     ),
-//                     child: Row(
-//                       children: [
-//                         Expanded(
-//                           child: Text(
-//                             requestController.selectedTime.value.isEmpty
-//                                 ? 'Tijd'
-//                                 : requestController.selectedTime.value,
-//                             style: getTextStyle(
-//                               fontSize: 14,
-//                               fontWeight: FontWeight.w400,
-//                               color:
-//                                   requestController.selectedTime.value.isEmpty
-//                                       ? AppColors.textSecondary
-//                                       : AppColors.textPrimary,
-//                             ),
-//                           ),
-//                         ),
-//                         Image.asset(
-//                           IconPath.dropdown,
-//                           color: AppColors.textThird,
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//         const SizedBox(width: 10),
-//         // Date Picker
-//         Expanded(
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               Text(
-//                 "Voorkeurs Datum",
-//                 style: getTextStyle(
-//                   fontSize: 14,
-//                   fontWeight: FontWeight.w400,
-//                   color: AppColors.textThird,
-//                 ),
-//               ),
-//               const SizedBox(height: 8),
-//               Obx(
-//                 () => GestureDetector(
-//                   onTap: () async {
-//                     DateTime? pickedDate = await showDatePicker(
-//                       context: context,
-//                       initialDate: DateTime.now(),
-//                       firstDate: DateTime(2000),
-//                       lastDate: DateTime(2100),
-//                     );
-//                     if (pickedDate != null) {
-//                       requestController.selectedDate.value =
-//                           "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
-//                     }
-//                   },
-//                   child: Container(
-//                     padding: const EdgeInsets.symmetric(
-//                       horizontal: 12,
-//                       vertical: 14,
-//                     ),
-//                     decoration: BoxDecoration(
-//                       border: Border.all(color: const Color(0xffC0C0C0)),
-//                       borderRadius: BorderRadius.circular(12),
-//                     ),
-//                     child: Row(
-//                       children: [
-//                         Expanded(
-//                           child: Text(
-//                             requestController.selectedDate.value.isEmpty
-//                                 ? 'DD/MM/YY'
-//                                 : requestController.selectedDate.value,
-//                             style: getTextStyle(
-//                               fontSize: 14,
-//                               fontWeight: FontWeight.w400,
-//                               color:
-//                                   requestController.selectedDate.value.isEmpty
-//                                       ? AppColors.textSecondary
-//                                       : AppColors.textPrimary,
-//                             ),
-//                           ),
-//                         ),
-//                         Icon(
-//                           Icons.calendar_today,
-//                           size: 20,
-//                           color: AppColors.textThird,
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-
-//   void _showImageSourceDialog(BuildContext context) {
-//     showDialog(
-//       context: context,
-//       builder: (BuildContext context) {
-//         return AlertDialog(
-//           title: const Text("Selecteer bron"),
-//           content: SingleChildScrollView(
-//             child: ListBody(
-//               children: <Widget>[
-//                 ListTile(
-//                   leading: const Icon(Icons.photo_library),
-//                   title: const Text('Galerij'),
-//                   onTap: () {
-//                     Navigator.of(context).pop();
-//                     requestController.pickImage(ImageSource.gallery);
-//                   },
-//                 ),
-//                 ListTile(
-//                   leading: const Icon(Icons.camera_alt),
-//                   title: const Text('Camera'),
-//                   onTap: () {
-//                     Navigator.of(context).pop();
-//                     requestController.pickImage(ImageSource.camera);
-//                   },
-//                 ),
-//               ],
-//             ),
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }
-
+// ignore_for_file: must_be_immutable, use_build_context_synchronously
 import 'package:baxton/core/common/styles/global_text_style.dart';
 import 'package:baxton/core/common/widgets/custom_continue_button.dart';
 import 'package:baxton/core/common/widgets/request_textfield.dart';
 import 'package:baxton/core/utils/constants/colors.dart';
 import 'package:baxton/core/utils/constants/icon_path.dart';
+import 'package:baxton/features/Admin_flow/taakbeheer/task_creation/controllers/task_creation_controller.dart';
+import 'package:baxton/features/Admin_flow/taakbeheer/task_creation/models/task_type_model.dart';
 import 'package:baxton/features/klant_flow/task_screen/controller/request_controller.dart';
 import 'package:baxton/features/klant_flow/task_screen/screens/beoordelingsverzoek_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 
 class RequestScreen extends StatelessWidget {
   RequestScreen({super.key, this.onBack});
 
   final VoidCallback? onBack;
   final RequestController requestController = Get.put(RequestController());
+  final TaskCreationController taskCreationController = Get.put(
+    TaskCreationController(),
+  );
+
+  String _formatTaskTypeName(String name) {
+    if (name.isEmpty) return name;
+    String formatted = name.toLowerCase().replaceAll('_', ' ');
+    return formatted[0].toUpperCase() + formatted.substring(1);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+          icon: Icon(Icons.arrow_back, color: AppColors.textPrimary),
           onPressed: onBack ?? () => Get.back(),
         ),
         title: Text(
@@ -475,7 +47,7 @@ class RequestScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -505,12 +77,39 @@ class RequestScreen extends StatelessWidget {
                 maxLines: 3,
               ),
               _buildImageSection(context),
+              SizedBox(height: 16.h),
               _buildDateTimeSection(context),
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
               CustomContinueButton(
-                // onTap: () => onBack?.call(),
-                onTap: () {
-                  Get.to(BeoordelingsverzoekScreen());
+                onTap: () async {
+                  // Find taskTypeId based on selected task type
+                  String? taskTypeId;
+                  if (taskCreationController.selectedTaskType.value != null) {
+                    final selectedTask = taskCreationController.taskTypes
+                        .firstWhere(
+                          (taskType) =>
+                              taskType.name ==
+                              taskCreationController.selectedTaskType.value,
+                          orElse: () => TaskType(id: '', name: ''),
+                        );
+                    taskTypeId = selectedTask.id;
+                    debugPrint(
+                      'Submitting request with Task Type ID: $taskTypeId',
+                    );
+                  }
+
+                  if (taskTypeId == null || taskTypeId.isEmpty) {
+                    Get.snackbar('Error', 'Please select a task type');
+                    return;
+                  }
+
+                  // Submit the request
+                  bool success = await requestController.submitRequest(
+                    taskTypeId,
+                  );
+                  if (success) {
+                    Get.to(() => BeoordelingsverzoekScreen());
+                  }
                 },
                 title: "Verzoek Indienen",
                 backgroundColor: AppColors.buttonPrimary,
@@ -540,13 +139,13 @@ class RequestScreen extends StatelessWidget {
             color: AppColors.textThird,
           ),
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12),
         RequestTextfield(
           hintText: hintText,
           controller: controller,
           maxLines: maxLines,
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
       ],
     );
   }
@@ -560,7 +159,7 @@ class RequestScreen extends StatelessWidget {
             controller: requestController.citycontroller,
           ),
         ),
-        const SizedBox(width: 10),
+        SizedBox(width: 10),
         Expanded(
           child: _buildTextFieldSection(
             label: "Postcode",
@@ -572,154 +171,255 @@ class RequestScreen extends StatelessWidget {
   }
 
   Widget _buildTaskTypeDropdown() {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        "Taaktype",
-        style: getTextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w400,
-          color: AppColors.textThird,
-        ),
-      ),
-      const SizedBox(height: 8),
-      DropdownButtonFormField<String>(
-        decoration: InputDecoration(
-          border: const OutlineInputBorder(
-            borderSide: BorderSide(color: Color(0xffffffff)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(width: 1, color: Color(0xffC0C0C0)),
-          ),
-        ),
-        isExpanded: true,
-        dropdownColor: Colors.white, // Set your desired background color here
-        items: [
-          'Schimmelinspecties en -behandelingen',
-          'Voor- en na-inspecties van huurwoningen en nazorg',
-          'Vochtbeheersing',
-          'Stucwerk',
-          'Schilderen en Coating',
-          'Nicotinevlekkenverwijdering',
-          'Reddersteam en Nooddienst (24/7)',
-        ]
-            .map(
-              (skill) => DropdownMenuItem(
-                value: skill,
-                child: Text(
-                  skill,
-                  style: getTextStyle(color: AppColors.textPrimary),
-                ),
-              ),
-            )
-            .toList(),
-        onChanged: (value) {},
-        hint: Text(
-          'Select a skill',
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Taaktype",
           style: getTextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w400,
-            color: AppColors.textSecondary,
+            color: AppColors.textThird,
           ),
         ),
-        icon: Image.asset(IconPath.dropdown, height: 7.4, width: 12),
-      ),
-      const SizedBox(height: 16),
-    ],
-  );
-}
+        SizedBox(height: 8),
+        Obx(
+          () => DropdownButtonFormField<String>(
+            dropdownColor: Colors.white,
+            value: taskCreationController.selectedTaskType.value,
+            items:
+                taskCreationController.taskTypes.isNotEmpty
+                    ? taskCreationController.taskTypes
+                        .map<DropdownMenuItem<String>>((TaskType taskType) {
+                          return DropdownMenuItem<String>(
+                            value: taskType.name,
+                            child: Text(_formatTaskTypeName(taskType.name)),
+                          );
+                        })
+                        .toList()
+                    : [
+                      DropdownMenuItem<String>(
+                        value: null,
+                        child: Text('Geen taaktypen beschikbaar'),
+                      ),
+                    ],
+            onChanged: (String? val) {
+              taskCreationController.selectedTaskType.value = val;
+              // Print taskTypeId when a task type is selected
+              if (val != null) {
+                final selectedTask = taskCreationController.taskTypes
+                    .firstWhere(
+                      (taskType) => taskType.name == val,
+                      orElse: () => TaskType(id: '', name: ''),
+                    );
+                debugPrint('Selected Task Type ID: ${selectedTask.id}');
+              }
+            },
+            style: TextStyle(
+              color: AppColors.primaryGold,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+            decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: AppColors.secondaryWhite),
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            icon: Image.asset(IconPath.dropDown2),
+          ),
+        ),
+        SizedBox(height: 16),
+      ],
+    );
+  }
 
   Widget _buildImageSection(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Obx(
-          () => Container(
-            height: 150,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: const Color(0xffD9D9D9),
-            ),
-            child:
-                requestController.selectedImage.value != null
-                    ? ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.file(
-                        requestController.selectedImage.value!,
-                        fit: BoxFit.cover,
-                      ),
-                    )
-                    : const Icon(Icons.image_rounded, size: 50),
+        Text(
+          'Afbeeldingen toevoegen',
+          style: getTextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: AppColors.primaryBlack,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 12),
+
         GestureDetector(
-          onTap: () => _showImageSourceDialog(context),
+          onTap: () => requestController.pickImagesWithCaptions(context),
           child: Container(
             height: 70,
             width: double.infinity,
             decoration: BoxDecoration(
-              color: AppColors.buttonPrimary.withValues(alpha: .1),
+              color: AppColors.buttonPrimary.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                width: 1,
-                color: Color(0xff1E90FF)
-              )
+              border: Border.all(width: 1, color: const Color(0xff1E90FF)),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.camera_alt, color: Color(0xff1E90FF)),
+                const Icon(
+                  Icons.camera_alt,
+                  color: Color(0xff1E90FF),
+                  size: 24,
+                ),
                 const SizedBox(height: 8),
                 Text(
                   "Afbeelding",
                   style: getTextStyle(
                     color: const Color(0xff1E90FF),
                     fontSize: 12,
-                    fontWeight: FontWeight.w400,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ],
             ),
           ),
         ),
-        const SizedBox(height: 16),
-      ],
-    );
-  }
+        SizedBox(height: 16.h),
 
-  void _showImageSourceDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            backgroundColor: Colors.white, // set background color here
-            title: const Text("Selecteer bron"),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
+        // Reactive section: show placeholder or image grid
+        Obx(() {
+          final images = requestController.selectedImages;
+          final captions = requestController.imageCaptions;
+
+          if (images.isEmpty) {
+            // Show placeholder when no images are selected
+            return GestureDetector(
+              onTap: () => requestController.pickImagesWithCaptions(context),
+              child: Container(
+                height: 150,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.grey.shade200),
+                ),
+                alignment: Alignment.center,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      IconPath.photoUpload,
+                      height: 40,
+                      fit: BoxFit.cover,
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      "Klik om afbeeldingen toe te voegen",
+                      style: getTextStyle(
+                        fontSize: 14,
+                        color: Colors.grey.shade600,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+
+          // Show image grid when images are selected
+          return Obx(() {
+            final showAllImages = requestController.showAllImages;
+            final displayCount =
+                showAllImages.value
+                    ? images.length
+                    : (images.length > 2 ? 2 : images.length);
+
+            return Column(
               children: [
-                ListTile(
-                  leading: const Icon(Icons.photo_library),
-                  title: const Text('Galerij'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    requestController.pickImage(ImageSource.gallery);
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: displayCount,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                    childAspectRatio: 0.9,
+                  ),
+                  itemBuilder: (_, index) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.darkTextColor,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.08),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(12),
+                              ),
+                              child: SizedBox(
+                                width: double.infinity,
+                                child: Image.file(
+                                  images[index],
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                              color: AppColors.secondaryGold,
+                              borderRadius: const BorderRadius.vertical(
+                                bottom: Radius.circular(12),
+                              ),
+                            ),
+                            child: Text(
+                              captions[index],
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: AppColors.primaryBlack,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
                   },
                 ),
-                ListTile(
-                  leading: const Icon(Icons.camera_alt),
-                  title: const Text('Camera'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    requestController.pickImage(ImageSource.camera);
-                  },
-                ),
+
+                if (images.length > 2) ...[
+                  const SizedBox(height: 12),
+                  GestureDetector(
+                    onTap: () {
+                      requestController.toggleShowAllImages();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        showAllImages.value ? "Close" : "Bekijk alle foto’s",
+                        style: getTextStyle(
+                          color: AppColors.primaryGold,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ],
-            ),
-          ),
+            );
+          });
+        }),
+      ],
     );
   }
 
@@ -738,7 +438,7 @@ class RequestScreen extends StatelessWidget {
                   color: AppColors.textThird,
                 ),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8),
               Obx(
                 () => GestureDetector(
                   onTap: () async {
@@ -748,19 +448,15 @@ class RequestScreen extends StatelessWidget {
                     );
                     if (pickedTime != null) {
                       requestController.selectedTime.value = pickedTime.format(
-                        // ignore: use_build_context_synchronously
                         context,
                       );
                     }
                   },
                   child: Container(
                     height: 50,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 15,
-                      vertical: 14,
-                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 14),
                     decoration: BoxDecoration(
-                      border: Border.all(color: const Color(0xffC0C0C0)),
+                      border: Border.all(color: Color(0xffC0C0C0)),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(
@@ -792,7 +488,7 @@ class RequestScreen extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(width: 10),
+        SizedBox(width: 10),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -805,7 +501,7 @@ class RequestScreen extends StatelessWidget {
                   color: AppColors.textThird,
                 ),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8),
               Obx(
                 () => GestureDetector(
                   onTap: () async {
@@ -821,12 +517,9 @@ class RequestScreen extends StatelessWidget {
                     }
                   },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 14,
-                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 14),
                     decoration: BoxDecoration(
-                      border: Border.all(color: const Color(0xffC0C0C0)),
+                      border: Border.all(color: Color(0xffC0C0C0)),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(
@@ -836,9 +529,7 @@ class RequestScreen extends StatelessWidget {
                           size: 20,
                           color: AppColors.primaryGold,
                         ),
-                        const SizedBox(
-                          width: 20,
-                        ), // optional spacing between icon and text
+                        SizedBox(width: 20),
                         Expanded(
                           child: Text(
                             requestController.selectedDate.value.isEmpty
@@ -847,8 +538,7 @@ class RequestScreen extends StatelessWidget {
                             style: getTextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
-                              color:
-                                     AppColors.textPrimary,
+                              color: AppColors.textPrimary,
                             ),
                           ),
                         ),

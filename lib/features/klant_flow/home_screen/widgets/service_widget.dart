@@ -1,24 +1,31 @@
 import 'package:baxton/core/common/styles/global_text_style.dart';
 import 'package:baxton/core/utils/constants/colors.dart';
+import 'package:baxton/features/klant_flow/task_screen/model/all_task_model.dart';
 import 'package:flutter/material.dart';
-
-import '../models/home_model.dart';
+import 'package:intl/intl.dart';
 
 class ServiceContainer extends StatelessWidget {
-  final Service service;
+  final ServiceRequest service;
 
   const ServiceContainer({super.key, required this.service});
 
   @override
   Widget build(BuildContext context) {
+    DateTime parsedDate;
+    try {
+      parsedDate = DateTime.parse(service.preferredDate ?? '');
+    } catch (e) {
+      parsedDate = DateTime.now();
+    }
+
     return Column(
       children: [
         Container(
           height: 180,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: Color(0xffFFFFFF),
-            border: Border.all(width: 1, color: Color(0xffEBEBEB)),
+            color: const Color(0xffFFFFFF),
+            border: Border.all(width: 1, color: const Color(0xffEBEBEB)),
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -28,12 +35,16 @@ class ServiceContainer extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      service.title,
-                      style: getTextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textPrimary,
+                    SizedBox(
+                      width: 230,
+                      child: Text(
+                        service.name ?? 'Unknown Service',
+                        style: getTextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textPrimary,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     Row(
@@ -43,30 +54,34 @@ class ServiceContainer extends StatelessWidget {
                           size: 16,
                           color: AppColors.buttonPrimary,
                         ),
-                        Text(
-                          service.location,
-                          style: getTextStyle(
-                            color: Color(0xff666666),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
+                        SizedBox(
+                          width: 100,
+                          child: Text(
+                            service.city ?? 'Unknown City',
+                            style: getTextStyle(
+                              color: const Color(0xff666666),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Text(
-                  service.description,
+                  service.problemDescription ?? 'No Description',
                   style: getTextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
-                    color: Color(0xff666666),
+                    color: const Color(0xff666666),
                     lineHeight: 11,
                   ),
                 ),
-                SizedBox(height: 21),
-                Spacer(),
+                const SizedBox(height: 21),
+                const Spacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -74,17 +89,17 @@ class ServiceContainer extends StatelessWidget {
                       children: [
                         Container(
                           height: 29,
-                          width: 85,
+                          width: MediaQuery.of(context).size.width * 0.3,
                           decoration: BoxDecoration(
-                            color: Color(0xffE9F4FF),
-                            borderRadius: BorderRadius.circular(8),
+                            color: const Color(0xffE9F4FF),
+                            borderRadius: BorderRadius.circular(85),
                           ),
                           child: Align(
                             alignment: Alignment.center,
                             child: Padding(
                               padding: const EdgeInsets.all(2),
                               child: Text(
-                                "Gepland",
+                                service.status.isEmpty ? 'Unknown Status' : service.status,
                                 style: getTextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400,
@@ -94,11 +109,13 @@ class ServiceContainer extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         Text(
-                          service.time,
+                          service.preferredDate != null
+                              ? DateFormat('dd MMMM, yyyy').format(parsedDate)
+                              : 'No Date',
                           style: getTextStyle(
-                            color: Color(0xff666666),
+                            color: const Color(0xff666666),
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
                           ),
@@ -130,7 +147,7 @@ class ServiceContainer extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
       ],
     );
   }

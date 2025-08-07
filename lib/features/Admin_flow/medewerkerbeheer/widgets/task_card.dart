@@ -51,20 +51,25 @@ class TaskCard extends StatelessWidget {
                 ),
               ],
             ),
-            const Spacer(),
+            Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   children: [
                     Image.asset(IconPath.idcard, height: 16.7, width: 15),
-                    const SizedBox(width: 8),
-                    Text(
-                      userName,
-                      style: getTextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.textThird,
+                    SizedBox(width: 8),
+                    SizedBox(
+                      width: 80,
+                      child: Text(
+                        userName,
+                        style: getTextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.textThird,
+                          lineHeight: 10,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
@@ -79,8 +84,8 @@ class TaskCard extends StatelessWidget {
                 ),
                 Container(
                   height: 29,
-                  constraints: const BoxConstraints(minWidth: 70),
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  constraints: BoxConstraints(minWidth: 70),
+                  padding: EdgeInsets.symmetric(horizontal: 8),
                   decoration: BoxDecoration(
                     color: statusColor,
                     borderRadius: BorderRadius.circular(8),

@@ -1,6 +1,12 @@
+// lib/features/Admin_flow/betalingsbeheer/widgets/invoice_card.dart
 import 'package:flutter/material.dart';
 import 'package:baxton/core/common/styles/global_text_style.dart';
 import 'package:baxton/features/Admin_flow/betalingsbeheer/model/invoice_model.dart';
+import 'package:intl/intl.dart';
+import 'package:get/get.dart';
+import 'package:baxton/features/Admin_flow/betalingsbeheer/controller/betalingsbeheer_controller.dart';
+import 'package:baxton/features/Admin_flow/betalingsbeheer/screen/betalingsbeheer_details_screen.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class InvoiceCard extends StatelessWidget {
   final Invoice invoice;
@@ -10,6 +16,15 @@ class InvoiceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final BetalingsbeheerController controller =
+        Get.find<BetalingsbeheerController>();
+    String formattedDate = 'Unknown';
+    try {
+      final dateTime = DateTime.parse(invoice.date);
+      formattedDate = DateFormat('dd/MM/yyyy').format(dateTime);
+    } catch (e) {
+      debugPrint('Error parsing date: ${invoice.date}, error: $e');
+    }
     return Container(
       width: double.infinity,
       height: 182,
@@ -36,7 +51,7 @@ class InvoiceCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: 97,
+                    width: 95,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -45,20 +60,50 @@ class InvoiceCard extends StatelessWidget {
                         Text(
                           'Factuurnummer',
                           style: getTextStyle(
+                            color: Color(0xFF666666),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            lineHeight: 12,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(height: 4),
+                        Text(
+                          invoice.invoiceNumber,
+                          style: getTextStyle(
+                            color: Color(0xFF333333),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            lineHeight: 12,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 5),
+                  SizedBox(
+                    width: 100,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Klantnaam',
+                          style: getTextStyle(
                             color: const Color(0xFF666666),
                             fontSize: 12,
-
                             fontWeight: FontWeight.w400,
                             lineHeight: 12,
                           ),
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          invoice.invoiceNumber,
+                          invoice.customerName,
                           style: getTextStyle(
                             color: const Color(0xFF333333),
                             fontSize: 14,
-
                             fontWeight: FontWeight.w500,
                             lineHeight: 12,
                           ),
@@ -66,61 +111,36 @@ class InvoiceCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Klantnaam',
-                        style: getTextStyle(
-                          color: const Color(0xFF666666),
-                          fontSize: 12,
-
-                          fontWeight: FontWeight.w400,
-                          lineHeight: 12,
+                  SizedBox(
+                    width: 120,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Taaknaam',
+                          style: getTextStyle(
+                            color: Color(0xFF666666),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            lineHeight: 9,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        invoice.customerName,
-                        style: getTextStyle(
-                          color: const Color(0xFF333333),
-                          fontSize: 14,
-
-                          fontWeight: FontWeight.w500,
-                          lineHeight: 12,
+                        SizedBox(height: 4),
+                        Text(
+                          invoice.taskName,
+                          style: getTextStyle(
+                            color: Color(0xFF333333),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            lineHeight: 15,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Taaknaam',
-                        style: getTextStyle(
-                          color: const Color(0xFF666666),
-                          fontSize: 12,
-
-                          fontWeight: FontWeight.w400,
-                          lineHeight: 9,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        invoice.taskName,
-                        style: getTextStyle(
-                          color: const Color(0xFF333333),
-                          fontSize: 14,
-
-                          fontWeight: FontWeight.w500,
-                          lineHeight: 15,
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -150,7 +170,6 @@ class InvoiceCard extends StatelessWidget {
                           style: getTextStyle(
                             color: const Color(0xFF666666),
                             fontSize: 12,
-
                             fontWeight: FontWeight.w400,
                             lineHeight: 7,
                           ),
@@ -163,7 +182,6 @@ class InvoiceCard extends StatelessWidget {
                             style: getTextStyle(
                               color: const Color(0xFF333333),
                               fontSize: 14,
-
                               fontWeight: FontWeight.w500,
                               lineHeight: 15,
                             ),
@@ -182,7 +200,6 @@ class InvoiceCard extends StatelessWidget {
                         style: getTextStyle(
                           color: const Color(0xFF666666),
                           fontSize: 12,
-
                           fontWeight: FontWeight.w400,
                           lineHeight: 7,
                         ),
@@ -191,32 +208,35 @@ class InvoiceCard extends StatelessWidget {
                       _buildStatusIndicator(invoice.status),
                     ],
                   ),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Datum',
-                        style: getTextStyle(
-                          color: const Color(0xFF666666),
-                          fontSize: 12,
-
-                          fontWeight: FontWeight.w400,
-                          lineHeight: 7,
+                  SizedBox(
+                    width: 100,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Datum',
+                          style: getTextStyle(
+                            color: const Color(0xFF666666),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            lineHeight: 7,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        invoice.date,
-                        style: getTextStyle(
-                          color: const Color(0xFF333333),
-                          fontSize: 14,
-
-                          fontWeight: FontWeight.w500,
+                        const SizedBox(height: 4),
+                        Text(
+                          formattedDate,
+                          style: getTextStyle(
+                            color: const Color(0xFF333333),
+                            fontSize: 14,
+                            lineHeight: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -225,20 +245,33 @@ class InvoiceCard extends StatelessWidget {
 
           // Details button
           Positioned(
-            left: 8,
+            left: 10,
             top: 130,
             child: InkWell(
-              onTap: onDetailsPressed,
+              onTap: () {
+                if (invoice.id != null) {
+                  controller.fetchInvoiceDetails(invoice.id!);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:
+                          (context) => BetalingsbeheerDetailsScreen(
+                            invoiceId: invoice.id!,
+                          ),
+                    ),
+                  );
+                } else {
+                  debugPrint('Invoice ID is null');
+                  EasyLoading.showError('Invoice ID is not available');
+                }
+              },
               borderRadius: BorderRadius.circular(62),
               child: Container(
                 width: 345,
                 height: 44,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 10,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                 decoration: ShapeDecoration(
-                  color: const Color(0xFF1E90FF),
+                  color: Color(0xFF1E90FF),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(62),
                   ),
